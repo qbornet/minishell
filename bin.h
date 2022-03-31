@@ -5,7 +5,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-void	ft_echo(char *s, int flag);
 void	ft_pwd(void);
+int		ft_echo(char *s, int flag);
 
 #endif
