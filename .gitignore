@@ -1,0 +1,5 @@
+*.[oad]
+*.out
+*.sw*
+.DS_Store
+tags
