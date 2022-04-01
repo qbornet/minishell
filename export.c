@@ -84,7 +84,7 @@ int	ft_export(char *var, char ***env_curr)
 		return (ft_free_err(new, temp));
 	while (envp[++i])
 	{
-		new[i] = strdup(envp[i]);
+		new[i] = ft_strdup(envp[i]);
 		if (!new[i])
 			return (ft_free_err(new, temp));
 	}
