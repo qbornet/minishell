@@ -20,7 +20,7 @@ static int	index_match(char *var, char **envp)
 	int		i;
 
 	i = 0;
-	cmp_var = ft_strjoin(var, "=");	
+	cmp_var = ft_strjoin(var, "=");
 	while (envp[i])
 	{
 		if (!ft_strncmp(cmp_var, envp[i], ft_strlen(var) + 1))
@@ -34,32 +34,38 @@ static int	index_match(char *var, char **envp)
 	return (-1);
 }
 
+static int	free_str_tab(char **new, int last)
+{
+	while (last--)
+		free(new[last]);
+	return (-1);
+}
+
 /* Prend env, regarde pour var dans env et le retire.
  * Alloue de la memoire de facon approprie */
 
 int	ft_unset(char *var, char ***env_curr)
 {
 	int		i;
-	int		len;
-	char 	**new;
 	char	**envp;
+	char	**new;
 	int		index_to_unset;
 
 	envp = *env_curr;
-	len = ft_len(envp) - 1;
-	new = (char **)malloc(sizeof(char *) * (len + 1));
+	new = (char **)malloc(sizeof(char *) * ft_len(envp));
 	if (!new)
 		return (1);
 	index_to_unset = index_match(var, envp);
 	if (index_to_unset == -1)
 		return (2);
 	i = 0;
-	while (i < len)
+	while (*envp)
 	{
 		if (i == index_to_unset)
 			envp++;
-		new[i] = ft_strdup(*envp);
-		envp++;
+		new[i] = ft_strdup(*envp++);
+		if (!new[i])
+			return (free_str_tab(new, i));
 		i++;
 	}
 	new[i] = NULL;
