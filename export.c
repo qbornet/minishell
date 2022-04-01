@@ -20,6 +20,9 @@ static long	ft_len(char **envp)
  * et eviter d'avoir une erreur a longterme si on ajoute plusieur fois des variables avec export
  * ou unset des variables ce sera toujours a jour */
 
+/* NOTE :
+ * Rajouter un check pour voir si la variable existe. Si oui alors il faut remplacer sa valeur */
+
 int	ft_export(char *var, char ***env_curr)
 {
 	long	i;
