@@ -6,5 +6,10 @@ int	ft_pwd(void)
 
 	cwd = getcwd(NULL, PATH_MAX);
 	if (cwd)
-		return (printf("%s\n", cwd));
+	{
+		printf("%s\n", cwd);
+		free(cwd);
+		return (0);
+	}
+	return (0);
 }

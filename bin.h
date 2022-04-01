@@ -6,6 +6,7 @@
 # include <string.h>
 # include <stdlib.h>
 
+int		ft_free_err(char **old, char **new);
 int		ft_pwd(void);
 int		ft_echo(const char *s, int flag);
 int		ft_cd(const char *path);
