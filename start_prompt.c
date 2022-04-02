@@ -1,15 +1,6 @@
+/* clang -Wall -Werror -Wextra -g3 start_prompt.c -lreadline */
+
 #include "prompt.h"
-
-/* ft_endl creer une nouvelle ligne pour readline
- * apres chaque commande entree*/
-
-void	ft_endl(void)
-{
-	rl_replace_line("\n", 0);
-	rl_redisplay();
-	rl_redisplay();
-	rl_on_new_line();
-}
 
 void	ft_history(char *str)
 {
@@ -17,19 +8,48 @@ void	ft_history(char *str)
 		add_history(str);
 }
 
-/* temp existe juste pour rentrer dans le while, oui oui c'est overkill */
+int	ft_check_tty(void)
+{
+	if (isatty(STDIN_FILENO) &&
+		isatty(STDOUT_FILENO) && isatty(STDERR_FILENO))
+		return (1);
+	return (0);
+}
+
+/* J'ai ajouter des check tty pour pouvoir rentrer et utiliser,
+ * les fonction genre readline a besoin d'avoir un tty,
+ * j'ai aussi enlever le ft_endl car c'est de la merde et en plus,
+ * c'est un enfer a essaye de comprendre le line_buffer de mort */
+
+int	start_prompt(void)
+{
+	char	*temp;
+	char	*str;
+
+	temp = ttyname(STDOUT_FILENO);
+	str = temp;
+	if (temp)
+		printf("tty %s\n\n", temp);
+	while (str)
+	{
+		if (ft_check_tty())
+		{
+			str = readline(PROMPT);
+			ft_history(str);
+		}
+		else
+		{
+			perror("Error tty");
+			return (1);
+		}
+	}
+	if (!temp)
+		perror("Error tty");
+	return (0);
+}
 
 int	main(void)
 {
-	char	temp;
-	char	*str;
-
-	str = &temp;
-	while (str)
-	{
-		str = readline(PROMPT);
-		ft_history(str);
-		ft_endl();
-	}
+	start_prompt();
 	return (0);
 }
