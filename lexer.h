@@ -2,16 +2,18 @@
 # define LEXER_H
 # include <stdio.h>
 # include <unistd.h>
-# include "libft.h"
+# include <libft.h>
 
-#define INIT_TOKEN 300
-#define WORD 301
-#define ASSIGNMENT_WORD 302
-#define AND_IF 305
-#define OR_IF 306
-#define DLESS 307
-#define DGREAT 308
-#define EOI 309
+# define INIT_TOKEN 300
+# define WORD 301
+# define ASSIGNMENT_WORD 302
+# define AND_IF 305
+# define OR_IF 306
+# define DLESS 307
+# define DGREAT 308
+# define EOI 309
+
+typedef struct t_list	t_garbage;
 
 typedef struct s_token {
 	char	*lex;
@@ -24,6 +26,7 @@ typedef struct s_tokenlist
 	t_token	*token;
 	struct 	s_tokenlist	*next;
 } t_tokenlist;
+
 
 t_tokenlist	*ft_tokennew(void *content);
 void		ft_tokenadd_front(t_tokenlist **alst, t_tokenlist *new);

@@ -56,14 +56,7 @@ SRCS = ft_isalpha.c \
 	ft_lstclear.c \
 	ft_lstiter.c \
 	ft_lstmap.c \
-	ft_lstlast.c \
-	ft_tokennew.c \
-	ft_tokenadd_front.c \
-	ft_tokensize.c \
-	ft_tokenadd_back.c \
-	ft_tokendelone.c \
-	ft_tokenclear.c \
-	ft_tokenlast.c
+	ft_lstlast.c
 
 
 # Colors
