@@ -16,7 +16,7 @@
 #define EOI 309
 
 typedef struct s_word {
-	char	*lex;
+	char	*lexeme;
 	int		token;	
 } t_word;
 

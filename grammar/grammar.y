@@ -6,7 +6,6 @@
 %token  WORD
 %token  ASSIGNMENT_WORD
 %token  NEWLINE
-%token  IO_NUMBER
 
 
 /* The following are the operators mentioned above. */
@@ -26,31 +25,26 @@
 
 %start  complete_command
 %%
-complete_command : list
+complete_command : and_or
+				 ;
+and_or           :               pipeline
+                 | and_or AND_IF pipeline
+                 | and_or OR_IF  pipeline
                  ;
-list             : and_or
+pipeline         :              command
+                 | pipeline '|' command
                  ;
-and_or           :                         pipeline
-                 | and_or AND_IF linebreak pipeline
-                 | and_or OR_IF  linebreak pipeline
-                 ;
-pipeline         :                        command
-                 | pipeline '|' linebreak command
-                 ;
-command          : simple_command
-                 | subshell
-                 | subshell redirect_list
-                 ;
-subshell         : '(' compound_list ')'
-                 ;
-compound_list    :              and_or
-                 | newline_list and_or
-                 ;
-simple_command   : cmd_prefix cmd_word cmd_suffix
+command          : cmd_prefix cmd_word cmd_suffix
                  | cmd_prefix cmd_word
                  | cmd_prefix
                  | cmd_name cmd_suffix
                  | cmd_name
+				 | subshell redirect_list
+                 ;
+subshell         : '(' compound_list ')'
+                 ;
+compound_list    :               and_or
+                 | compound_list and_or
                  ;
 cmd_name         : WORD                   /* Apply rule 7a */
                  ;
@@ -69,10 +63,8 @@ cmd_suffix       :            io_redirect
 redirect_list    :               io_redirect
                  | redirect_list io_redirect
                  ;
-io_redirect      :           io_file
-                 | IO_NUMBER io_file
-                 |           io_here
-                 | IO_NUMBER io_here
+io_redirect      : io_file
+                 | io_here
                  ;
 io_file          : '<'       filename
                  | '>'       filename
@@ -83,10 +75,4 @@ filename         : WORD                      /* Apply rule 2 */
 io_here          : DLESS     here_end
                  ;
 here_end         : WORD                      /* Apply rule 3 */
-                 ;
-newline_list     :              NEWLINE
-                 | newline_list NEWLINE
-                 ;
-linebreak        : newline_list
-                 | /* empty */
                  ;
