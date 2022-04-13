@@ -43,14 +43,12 @@ SRCS = ft_isalpha.c \
 	ft_strnstr.c \
 	ft_substr.c \
 	ft_strmapi.c \
-	ft_striteri.c \
-	ft_putchar_fd.c \
 	ft_putstr_fd.c \
 	ft_putendl_fd.c \
 	ft_putnbr_fd.c \
 	ft_atoi.c \
-	ft_itoa.c
-BONUS = ft_lstnew.c \
+	ft_itoa.c \
+	ft_lstnew.c \
 	ft_lstadd_front.c \
 	ft_lstsize.c \
 	ft_lstadd_back.c \
@@ -58,7 +56,15 @@ BONUS = ft_lstnew.c \
 	ft_lstclear.c \
 	ft_lstiter.c \
 	ft_lstmap.c \
-	ft_lstlast.c
+	ft_lstlast.c \
+	ft_tokennew.c \
+	ft_tokenadd_front.c \
+	ft_tokensize.c \
+	ft_tokenadd_back.c \
+	ft_tokendelone.c \
+	ft_tokenclear.c \
+	ft_tokenlast.c
+
 
 # Colors
 GREEN   = \033[1;32m
@@ -70,9 +76,7 @@ WHITE   = \033[0;m
 UTILS = $(UTILS_DIR)/$(addsufix .h, $(NAME))
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
-OBJS_BONUS = $(BONUS:%.c=$(OBJS_DIR)/%.o)
 DEPS = $(OBJS:%.o=%.d)
-DEPS_BONUS = $(OBJS_BONUS:%.o=%.d)
 
 all: $(NAME)
 
@@ -96,12 +100,7 @@ fclean: clean
 
 re: fclean all
 
-bonus: $(OBJS) $(OBJS_BONUS)
-	echo "-------------------"
-	ar -rcs $(NAME) $(OBJS) $(OBJS_BONUS)
-	printf "\n[$(GREEN)OK$(WHITE)] Library with bonus : $(NAME)\n\n"
-
--include $(DEPS) $(DEPS_BONUS)
+-include $(DEPS)
 
 .PHONNY: all clean fclean re
 
