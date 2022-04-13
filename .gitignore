@@ -3,5 +3,3 @@
 *.sw*
 .DS_Store
 tags
-# remove libft/ before pushing
-libft/
