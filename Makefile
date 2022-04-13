@@ -17,5 +17,5 @@ CFLAGS = -Wall -Werror -Wextra
 %.o: %.c
 	$(CC) $(CFLAGS) -I ./libft/utils -c $< -o $@
 
-lexer: $(OBJS)
+lexer.out: $(OBJS)
 	$(CC) $(CFLAGS) $^ -o  $@
