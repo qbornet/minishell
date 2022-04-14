@@ -73,6 +73,5 @@ re: fclean all
 ifndef VERBOSE
 .SILENT:
 endif
-=======
 lexer.out: $(OBJS)
 	$(CC) $(CFLAGS) $^ -o  $@
