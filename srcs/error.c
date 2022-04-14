@@ -12,7 +12,7 @@ int	print_error(t_error code)
 
 int	main(void)
 {
-	print_error(1);
-	print_error(2);
+	print_error(E_PARSER);
+	print_error(E_COMMAND);
 	return (0);
 }

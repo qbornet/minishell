@@ -70,7 +70,9 @@ re: fclean all
 
 .PHONNY: all clean fclean re
 
-# Set VERBOSE=1 for verbose
 ifndef VERBOSE
 .SILENT:
 endif
+=======
+lexer.out: $(OBJS)
+	$(CC) $(CFLAGS) $^ -o  $@

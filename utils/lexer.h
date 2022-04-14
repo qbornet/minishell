@@ -15,12 +15,14 @@
 #define DLESS 307
 #define DGREAT 308
 
+#define EOI 309
+
 #define LESS 310
 #define GREAT 311
 #define LBRACE 312
 #define RBRACE 313
 
-#define EOI 309
+typedef struct t_list	t_garbage;
 
 typedef struct s_token {
 	char		*lex;
@@ -33,6 +35,7 @@ typedef struct s_tokenlist
 	t_token	*token;
 	struct 	s_tokenlist	*next;
 } t_tokenlist;
+
 
 t_tokenlist	*ft_tokennew(void *content);
 void		ft_tokenadd_front(t_tokenlist **alst, t_tokenlist *new);

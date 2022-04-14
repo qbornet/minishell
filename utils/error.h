@@ -6,8 +6,8 @@
 
 typedef enum e_error
 {
-	E_PARSER = 1,
-	E_COMMAND,
+	E_PARSER = 2,
+	E_COMMAND = 127,
 	E_MAX
 }	t_error;
 
