@@ -5,7 +5,6 @@
 
 %token  WORD
 %token  ASSIGNMENT_WORD
-%token  NEWLINE
 
 
 /* The following are the operators mentioned above. */
