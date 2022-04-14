@@ -1,20 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tokenlast.c                                     :+:      :+:    :+:   */
+/*   ft_tokenadd_back.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/28 18:21:06 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/04/13 15:20:30 by jfrancai         ###   ########.fr       */
+/*   Created: 2021/11/28 18:41:01 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/04/14 14:19:09 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-t_tokenlist	*ft_tokenlast(t_tokenlist *lst)
+void	ft_tokenadd_back(t_tokenlist **alst, t_tokenlist *new)
 {
-	while (lst && lst->next)
-		lst = lst->next;
-	return (lst);
+	t_tokenlist	*last;
+
+	if (alst)
+	{
+		if (*alst)
+		{
+			last = ft_tokenlast(*alst);
+			last->next = new;
+		}
+		else
+			*alst = new;
+	}
 }
