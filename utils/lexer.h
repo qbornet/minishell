@@ -24,6 +24,22 @@
 
 typedef struct t_list	t_garbage;
 
+enum e_token
+{
+	E_INIT = 300,
+	E_WORD,
+	E_ASSIGNEMENT_WORD,
+	E_AND_IF,
+	E_OR_IF,
+	E_DLESS,
+	E_DGREAT,
+	E_EOI,
+	E_LESS,
+	E_GREAT,
+	E_LBRACE,
+	E_RBRACE
+};
+
 typedef struct s_token {
 	char		*lex;
 	size_t		len;

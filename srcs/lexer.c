@@ -39,7 +39,7 @@ void	lexer(char *input, t_tokenlist **lst)
 	if (!token)
 		return ;
 	*lst = NULL;
-	while (token->id != EOI)
+	while (token->id != E_EOI)
 	{
 		node = ft_tokennew(token);
 		if (!node)
