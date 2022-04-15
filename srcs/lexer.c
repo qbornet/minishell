@@ -3,7 +3,7 @@
 void	set_token(char *input, t_token *token)
 {
 	token->lex = input;
-	token->id = 0;
+	token->type = 0;
 	if (is_eoi(*input, token))
 		token->len = 0;
 	else if (is_token_2(input, token))
@@ -25,7 +25,7 @@ t_token	*get_next_token(char **input)
 	*input += token->len;
 	while (**input == ' ')
 		*input += 1;
-	if (token->id)
+	if (token->type)
 		return (token);
 	return (NULL);
 }
@@ -39,7 +39,7 @@ void	lexer(char *input, t_tokenlist **lst)
 	if (!token)
 		return ;
 	*lst = NULL;
-	while (token->id != E_EOI)
+	while (token->type != E_EOI)
 	{
 		node = ft_tokennew(token);
 		if (!node)
@@ -58,6 +58,7 @@ void	lexer(char *input, t_tokenlist **lst)
 	ft_tokenadd_back(lst, node);
 }
 
+/*
 int	main(void)
 {
 	char		*input;
@@ -69,8 +70,9 @@ int	main(void)
 	lexer(input, &lst);
 	while (lst)
 	{
-		printf("lex : %s\nlen : %ld\nid %d\n-------------------------------\n", lst->token->lex, lst->token->len, lst->token->id);
+		printf("lex : %s\nlen : %ld\ntype %d\n-------------------------------\n", lst->token->lex, lst->token->len, lst->token->type);
 		lst = lst->next;
 	}
 	return (0);
 }
+*/

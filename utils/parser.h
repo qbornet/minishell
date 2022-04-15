@@ -4,6 +4,7 @@
 # include "error.h"
 # include <libft.h>
 
+/*
 typedef struct s_cmd_name		t_cmd_name;
 typedef struct s_cmd_prefix		t_cmd_prefix;
 typedef	struct s_cmd_suffix		t_cmd_suffix;
@@ -21,24 +22,24 @@ typedef struct s_and_or			t_and_or;
 typedef struct s_complete_cmd	t_complete_cmd;
 typedef struct s_rules			t_rules;
 
-/* HARD WAY */
+// HARD WAY
 struct s_cmd_word
 {
-	/* TOKEN_ID == WORD */
+	//TOKEN_ID == WORD
 	t_token	*token;
 	t_error	*error;
 };
 
 struct s_cmd_name
 {
-	/* TOKEN_ID == WORD */
+	//TOKEN_ID == WORD
 	t_token	*token;
 	t_error	*error;
 };
 
 struct s_cmd_prefix
 {
-	/* TOKEN_ID == ASSIGNMENT_WORD */
+	//TOKEN_ID == ASSIGNMENT_WORD
 	t_token			*token;
 	t_io_redirect	*io_redirect;
 	t_cmd_prefix	*cmd_prefix;
@@ -47,7 +48,7 @@ struct s_cmd_prefix
 
 struct s_cmd_suffix
 {
-	/* TOKEN_ID == WORD */
+	//TOKEN_ID == WORD
 	t_token			*token;
 	t_io_redirect	*io_redirect;
 	t_cmd_suffix	*cmd_suffix;
@@ -56,21 +57,21 @@ struct s_cmd_suffix
 
 struct s_filename
 {
-	/* TOKEN_ID == WORD */
+	//TOKEN_ID == WORD
 	t_token	*token;
 	t_error	*error;
 };
 
 struct s_here_end
 {
-	/* TOKEN_ID == WORD */
-	t_token	*token
+	// TOKEN_ID == WORD
+	t_token	*token;
 	t_error	*error;
 };
 
 struct s_io_here
 {
-	/* TOKEN_ID == DLESS */
+	// TOKEN_ID == DLESS
 	t_token		*token;
 	t_here_end	*here_end;
 	t_error		*error;
@@ -78,7 +79,7 @@ struct s_io_here
 
 struct s_io_file
 {
-	/*	TOKEN_ID == GREAT or LESS or DGREAT */
+	//	TOKEN_ID == GREAT or LESS or DGREAT
 	t_token		*token;
 	t_filename	*filename;
 	t_error		*error;
@@ -86,7 +87,7 @@ struct s_io_file
 
 struct s_simple_cmd
 {
-	/* TOKEN_ID == NONE (NULL)*/
+	// TOKEN_ID == NONE (NULL)
 	t_token			*token;
 	t_cmd_prefix	*cmd_prefix;
 	t_cmd_suffix	*cmd_suffix;
@@ -97,7 +98,7 @@ struct s_simple_cmd
 
 struct s_io_redirect
 {
-	/* TOKEN_ID == NONE (NULL)*/
+	// TOKEN_ID == NONE (NULL)
 	t_token		*token;
 	t_io_file	*io_file;
 	t_io_here	*io_here;
@@ -106,7 +107,7 @@ struct s_io_redirect
 
 struct s_redirect_list
 {
-	/* TOKEN ID == NONE (NULL)*/
+	// TOKEN ID == NONE (NULL)
 	t_token			*token;
 	t_redirect_list	*redirect_list;
 	t_io_redirect	*io_redirect;
@@ -115,7 +116,7 @@ struct s_redirect_list
 
 struct s_command
 {
-	/* TOKEN ID == NONE (NULL)*/
+	// TOKEN ID == NONE (NULL)
 	t_token			*token;
 	t_simple_cmd	*simple_cmd;
 	t_subshell		*subshell;
@@ -124,7 +125,7 @@ struct s_command
 
 struct s_pipeline
 {
-	/* TOKEN ID == '|' */
+	// TOKEN ID == '|'
 	t_token		*token;
 	t_command	*command;
 	t_pipeline	*pipeline;
@@ -132,7 +133,7 @@ struct s_pipeline
 
 struct s_and_or
 {
-	/* TOKEN ID == AND_IF or OR_IF */
+	// TOKEN ID == AND_IF or OR_IF
 	t_token		*token;
 	t_and_or	*and_or;
 	t_pipeline	*pipeline;
@@ -143,7 +144,6 @@ struct s_complete_cmd
 	t_and_or	*and_or;
 };
 
-/*
 struct s_rules
 {
 	t_cmd_word		*cmd_word;
@@ -164,17 +164,17 @@ struct s_rules
 };
 */
 
-/* END OF HARDWAY */
-/* EASY WAY */
+// END OF HARDWAY
+// EASY WAY
 
-/* Node a mettre dans l'arbre binaire */
+// Node a mettre dans l'arbre binaire
 typedef struct s_nodes
 {
-	enum e_type	type;
-	t_token		*token;
+	enum e_token	type;
+	t_token			*token;
 }	t_nodes;
 
-/* Abre binaire AST */
+// Abre binaire AST
 typedef struct s_btree
 {
 	t_nodes			*node;
@@ -182,7 +182,8 @@ typedef struct s_btree
 	struct s_btree	*right;
 }	t_btree;
 
-/* Les regles de syntax 0 == faux et 1 == vrai */
+/*
+// Les regles de syntax 0 == faux et 1 == vrai
 typedef struct s_rules
 {
 	int	cmd_word;
@@ -201,7 +202,8 @@ typedef struct s_rules
 	int	and_or;
 	int	complete_cmd;
 }	t_rules;
+*/
 
-/* END OF EASY WAY */
+//END OF EASY WAY
 
 #endif
