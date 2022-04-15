@@ -28,7 +28,7 @@ enum e_token
 {
 	E_INIT = 300,
 	E_WORD,
-	E_ASSIGNEMENT_WORD,
+	E_ASSIGNMENT_WORD,
 	E_AND_IF,
 	E_OR_IF,
 	E_DLESS,

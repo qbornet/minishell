@@ -167,25 +167,11 @@ struct s_rules
 /* END OF HARDWAY */
 /* EASY WAY */
 
-/* A refaire, si jamais au besoin des type pour l'arbre */
-typedef enum e_type
-{
-	E_LESS,
-	E_GREAT,
-	E_DGREAT,
-	E_DLESS,
-	E_CMD_NAME,
-	E_CMD_ARGS,
-	E_AND_IF,
-	E_OR_IF,
-	E_MAX
-}	t_type;
-
 /* Node a mettre dans l'arbre binaire */
 typedef struct s_nodes
 {
-	t_type	type;
-	void	*data;
+	enum e_type	type;
+	t_token		*token;
 }	t_nodes;
 
 /* Abre binaire AST */
