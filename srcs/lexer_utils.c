@@ -7,20 +7,40 @@ size_t	is_eoi(char c, t_token *token)
 	return (token->type);
 }
 
+int	is_special_token(char c)
+{
+	if (c == '$'
+		|| c == '&'
+		|| c == '='
+		|| c == '|'
+		|| c == '>'
+		|| c == '<'
+		|| c == ')'
+		|| c == '(')
+		return (c);
+	return (0);
+}
+
 void	word_token(char *input, t_token *token)
 {
 	char	*tmp;
 
 	tmp = input;
-	while (*input && *input != ' ' && *input != '&'
-		&& *input != '|'
-		&& *input != '>'
-		&& *input != '<'
-		&& *input != ')'
-		&& *input != '(')
+	while (*input && *input != ' ' && !is_special_token(*input))
 		input++;
 	token->len = input - tmp;
 	token->type  = E_WORD;
+}
+
+void	sep_token(char *input, t_token *token)
+{
+	char *tmp;
+
+	tmp = input;
+	while (*input == ' ')
+		input++;
+	token->len = input - tmp;
+	token->type = E_SEP;
 }
 
 size_t	is_token_1(char *input, t_token *token)
@@ -33,6 +53,10 @@ size_t	is_token_1(char *input, t_token *token)
 		token->type  = E_LBRACE;
 	else if (*input == ')')
 		token->type  = E_RBRACE;
+	else if (*input == '=')
+		token->type = E_ASSIGNMENT_WORD;
+	else if (*input == '$')
+		token->type = E_EXPANSION;
 	return (token->type);
 }
 

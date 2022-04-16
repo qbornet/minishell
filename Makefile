@@ -11,7 +11,7 @@ UTILS_DIR = utils
 
 # Utils
 CC = clang
-CFLAGS = -MMD -Wall -Wextra -Werror
+CFLAGS = -MMD -Wall -Wextra -Werror -g3
 CPPFLAGS = -I ./$(UTILS_DIR) -I ./libft/utils
 LDFLAGS = -L ./libft
 RM = rm -rf
