@@ -206,4 +206,8 @@ typedef struct s_rules
 
 //END OF EASY WAY
 
+// tree_utils.c
+void	ft_treeclear(t_btree *tree, void (*del) (void *));
+void	ft_treeprint(t_btree *tree, int type);
+
 #endif
