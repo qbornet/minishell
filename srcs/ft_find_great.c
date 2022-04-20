@@ -1,53 +1,51 @@
 #include "ast.h"
 
-static int	ft_redirection(t_btree *tree, enum e_token type, t_termstd **curr_std)
+int	ft_lstexist(t_list **w_curr, char *str)
 {
-	int			fd;
-	int			new_fd;
-	char		*str;
-	t_termstd	*saved_fd;
+	char		*compare;
+	t_wordlist	*wordlst;
 
-	new_fd = 0;
-	saved_fd = *curr_std;
-	str = ft_recreate_str(tree->node->token->lex, tree->node->token->len);
-	if (!str)
-		return (-1);
-	saved_fd->std_out_fd = dup(STDOUT_FILENO);
-	if (type == E_DGREAT)
+	wordlst = *w_curr;
+	while (wordlst)
 	{
-		fd = open(str, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		free(str);
-		if (fd == -1)
-			return (-1);
-		new_fd = dup2(fd, STDOUT_FILENO);
-		close(fd);
-		return (new_fd);
+		compare = wordlst->content;
+		if (!ft_strncmp(compare, str, ft_strlen(str)))
+				return (1);
+		wordlst = wordlst->next;
 	}
-	fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	free(str);
-	if (fd == -1)
-		return (-1);
-	new_fd = dup2(fd, STDOUT_FILENO);
-	close(fd);
-	return (new_fd);
+	return (0);
 }
 
-char	*ft_recreate_str(char *lex, int len)
+void	*ft_recreate_str(t_token *token, t_wordlist **w_curr)
 {
-	int		i;
-	char	*str;
-	
+	int			i;
+	int			len;
+	char		*lex;
+	char		*str;
+	t_wordlist	*wordlst;
+
 	i = 0;
-	str = malloc(sizeof(char) * (len + 1));
+	len = token->len;
+	lex = token->lex;
+	wordlst = *w_curr;
+	str = (char *)malloc(sizeof(char) * (len + 1));
 	if (!str)
 		return (NULL);
 	while (i < len && *lex)
-		str[i++] = *lex++;
+		str[i++] = *len++;
 	str[i] = '\0';
-	return (str);
+	if (!wordlst)
+		wordlst = ft_wordlst_new(str);
+	if (ft_lstexist(&wordlst, str))
+	{
+		free(str);
+		return (NULL);
+	}
+	ft_wordlst_addback(&wordlst, str);
+	return ((void *)command);
 }
 
-int	ft_go_preorder(t_btree *tree, (int *f) (t_btree *tree))
+int	ft_go_preorder(t_btree *tree, int (*f) (t_btree *tree))
 {
 	int	res;
 
@@ -62,29 +60,39 @@ int	ft_go_preorder(t_btree *tree, (int *f) (t_btree *tree))
 	return (0);
 }
 
-/* Fonctionne que pour les GREAT STDOUT_FILENO maintenant renvoie dans le fd de la redirection 
- * t_termstd doit recevoir les dup de 0, 1, 2 (STDOUT, STDIN, STDERR),
- * pour pouvoir remettre la bonne sortie une fois finie */
+//int	ft_here_doc()
 
-int	ft_find_great(t_btree *tree, t_termstd **saved)
+int	ft_find_redirection(t_btree *tree)
 {
-	int	res;
-
-	res = 0;
-	if (tree)
+	if (tree && tree->node)
 	{
-		if (!tree->node)
-			return ;
-		if (tree->node->type == E_GREAT
-				|| tree->node->type == E_DGREAT)
-		{
-			res = ft_redirection(tree->right, tree->node->type, saved);
-			if (res < 0)
-				return (res);
-			return (res);
-		}
-		ft_find_great(tree->left, saved);
-		ft_find_great(tree->right, saved);
+		if (tree->node->type == E_GREAT || tree->node->type == E_DGREAT)
+			return (1);
+		else if (tree->node->type == E_LESS)
+			return (2);
 	}
 	return (0);
+}
+
+int	ft_read_flow(t_btree *tree, t_wordlist **w_curr)
+{
+	int			res;
+	t_wordlist	*wordlist;
+
+	wordlist = *w_curr;
+	if (tree && tree->node)
+	{
+		if (tree->node->type == E_WORD)
+			ft_recreate_str(tree->node->token);
+		ft_read_flow(tree->left);
+		res = ft_find_redirection(tree)
+		if (res)
+		{
+			ft_reverse_list(wordlist);
+			ft_redirection(tree, res);
+		}
+		else if (ft_find_logical(tree))
+			ft_reverse_list(wordlist);
+		ft_read_flow(tree->right);
+	}
 }
