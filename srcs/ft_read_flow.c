@@ -35,13 +35,13 @@ void	*ft_recreate_str(t_token *token, t_wordlist **w_curr)
 		str[i++] = *len++;
 	str[i] = '\0';
 	if (!wordlst)
-		wordlst = ft_wordlst_new(str);
+		wordlst = ft_wordlst_new(str, token->type);
 	if (ft_lstexist(&wordlst, str))
 	{
 		free(str);
 		return (NULL);
 	}
-	ft_wordlst_addback(&wordlst, str);
+	ft_wordlst_addback(&wordlst, str, token->type);
 	return ((void *)command);
 }
 
@@ -82,17 +82,19 @@ int	ft_read_flow(t_btree *tree, t_wordlist **w_curr)
 	wordlist = *w_curr;
 	if (tree && tree->node)
 	{
-		if (tree->node->type == E_WORD)
+		if (tree->node->type == E_WORD || tree->node->type == E_ASSIGNMENT_WORD)
 			ft_recreate_str(tree->node->token);
-		ft_read_flow(tree->left);
+		if (ft_read_flow(tree->left) < 0)
+			return (-1);
 		res = ft_find_redirection(tree)
 		if (res)
 		{
-			ft_reverse_list(wordlist);
-			ft_redirection(tree, res);
+			ft_reverse_list(&wordlist);
+			if (ft_redirection(tree, res) < 0)
+				return (-1);
 		}
 		else if (ft_find_logical(tree))
-			ft_reverse_list(wordlist);
-		ft_read_flow(tree->right);
+			ft_reverse_list(&wordlist);
 	}
+	return (0);
 }

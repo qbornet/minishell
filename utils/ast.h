@@ -18,13 +18,14 @@ typedef struct s_termstd
 typedef struct s_wordlist
 {
 	void				*data;
+	enum e_token		type;
 	struct s_wordlist	*next;
 	struct s_wordlist	*prev;
 }	t_wordlist;
 
-int			ft_wordlst_addback(t_wordlist **lst_curr, void *data);
+int			ft_wordlst_addback(t_wordlist **lst_curr, void *data, enum e_token type);
 int			ft_go_preorder(t_btree *tree, int (*f) (t_btree *tree));
 int			ft_find_great(t_btree *tree, t_termstd **saved);
 char		*ft_recreate_str(char *lex, int len);
-t_wordlist	*ft_wordlst_new(void *data);
+t_wordlist	*ft_wordlst_new(void *data, enum e_token type);
 #endif
