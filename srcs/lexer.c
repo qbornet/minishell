@@ -1,7 +1,22 @@
 #include "lexer.h"
 
-void	set_token(char *input, t_token *token)
+/* Fonction pour recuperer le prochain token dans la string
+ * @param: input
+ * - La chaine de caracter a tokeniser
+ *
+ * @return: NULL
+ * - En cas d'erreur 
+ *
+ * @return: t_token *
+ * - Le token malloc (penser a le free)
+ * */
+t_token	*get_next_token(char **input)
 {
+	t_token	*token;
+
+	token = malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
 	token->lex = input;
 	token->type = 0;
 	if (is_eoi(*input, token))
@@ -10,30 +25,26 @@ void	set_token(char *input, t_token *token)
 		token->len = 2;
 	else if (is_token_1(input, token))
 		token->len = 1;
-	else if (*input == ' ')
-		sep_token(input, token);
 	else
 		word_token(input, token);
-}
-
-t_token	*get_next_token(char **input)
-{
-	t_token	*token;
-
-	token = malloc(sizeof(t_token));
-	if (!token)
-		return (NULL);
-	set_token(*input, token);
 	*input += token->len;
-	/*
 	while (**input == ' ')
 		(*input)++;
-	*/
 	if (token->type)
 		return (token);
 	return (NULL);
 }
 
+/* Fonction pour gerer le cas du premier token (gestion cas d'erreur pour plus tard)
+ * @param: input
+ * - La chaine de caracter a tokeniser
+ *
+ * @return: NULL
+ * - En cas d'erreur 
+ *
+ * @return: t_token *
+ * - Le token malloc (penser a free)
+ * */
 t_token	*get_first_token(char **input)
 {
 	t_token	*token;
@@ -53,7 +64,17 @@ t_token	*get_first_token(char **input)
 	return (token);
 }
 
-void	lexer(char *input, t_tokenlist **lst)
+/* Fonction pour generer une liste chaine de token
+ * @param: input
+ * - La chaine de caracter a tokeniser
+ *
+ * @param: lst
+ * - Point vers la HEAD de la liste chaine que l'on veut modifier
+ *
+ * @return: void
+ * - La valeur de retour sera determine plus tard pour gerer les cas d'erreurs
+ * */
+void	lexical_analysis(char *input, t_tokenlist **lst)
 {
 	t_token		*token;
 	t_tokenlist	*newlst;
@@ -85,7 +106,7 @@ int	main(void)
 	t_tokenlist	*lst;
 	t_tokenlist *tmp;
 
-	input = "monmo||onnai( ssee&&ttoitco)mmentc ava>>p < lutot <<biene< ttoia;sdfjas;dfjaspdfji                   world && Hello Bob";
+	input = "= mo=nmo||onnai( ssee&&ttoitco)mmentc ava>>p < lutot <<biene< ttoia;sdfjas;dfjaspdfji                   world && Hello Bob";
 	if (!input)
 		return (-1);
 	lexer(input, &lst);

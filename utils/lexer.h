@@ -22,7 +22,8 @@ enum e_token
 	E_GREAT,
 	E_LBRACE,
 	E_RBRACE,
-	E_SEP
+	E_SEP,
+	E_VALID_CMD
 };
 
 typedef struct s_token {
@@ -47,10 +48,10 @@ t_tokenlist	*ft_tokenlast(t_tokenlist *lst);
 
 int			is_special_token(char c);
 void		word_token(char *input, t_token *token);
-size_t		is_eoi(char c, t_token *token);
-size_t		is_token_1(char *input, t_token *token);
-size_t		is_token_2(char *input, t_token *token);
-void		sep_token(char *input, t_token *token);
+int			is_eoi(char c, t_token *token);
+int			is_token_1(char *input, t_token *token);
+int			is_token_2(char *input, t_token *token);
+//void		sep_token(char *input, t_token *token);
 
-void		lexer(char *input, t_tokenlist **lst);
+void		lexical_analysis(char *input, t_tokenlist **lst);
 #endif
