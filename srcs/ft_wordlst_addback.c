@@ -6,12 +6,12 @@
 /*   By: qbornet <qbornet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 13:19:47 by qbornet           #+#    #+#             */
-/*   Updated: 2022/04/19 14:44:45 by qbornet          ###   ########.fr       */
+/*   Updated: 2022/04/20 08:17:23 by qbornet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ast.h"
 
-t_wordlist	*ft_wordlst_new(void *data)
+t_wordlist	*ft_wordlst_new(void *data, enum e_token type)
 {
 	t_wordlist	*new;
 
@@ -21,10 +21,11 @@ t_wordlist	*ft_wordlst_new(void *data)
 	if (!new)
 		return (NULL);
 	new->data = data;
+	new->type = type;
 	return (new);
 }
 
-int	ft_wordlst_addback(t_wordlist **lst_curr, void *data)
+int	ft_wordlst_addback(t_wordlist **lst_curr, void *data, enum e_token type)
 {
 	t_wordlist	*head;
 
@@ -42,6 +43,7 @@ int	ft_wordlst_addback(t_wordlist **lst_curr, void *data)
 	head->next = ft_wordlst_new(data);
 	if (!head->next)
 		return (-1);
+	head->next->type = type;
 	head->next->prev = head;
 	return (0);
 }
