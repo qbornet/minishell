@@ -172,6 +172,7 @@ typedef struct s_nodes
 {
 	enum e_token	type;
 	t_token			*token;
+	t_tokenlist		*tokenlst;
 }	t_nodes;
 
 // Abre binaire AST

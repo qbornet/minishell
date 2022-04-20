@@ -41,12 +41,12 @@ void	ft_treeprint(t_btree *tree, int type)
 	if (tree && !type)
 	{
 		ft_treeprint(tree->left, type);
-		printf("node %p[%d]:\n\e[20G-	type: %d\n\e[20G-	token: %p\n\n", tree, node_pos++, tree->node->type, tree->node->token);
+		printf("node %p[%d]:\n\e[20G-	type: %d\n\e[20G-	token: %p\n\e[20G-	lex: %s\n\e[20G-	len: %zu\n\n", tree, node_pos++, tree->node->type, tree->node->token, tree->node->token->lex, tree->node->token->len);
 		ft_treeprint(tree->right, type);
 	}
 	else if (tree && type == 1)
 	{
-		printf("node %p[%d]:\n\e[20G-	type: %d\n\e[20G-	token: %p\n\n", tree, node_pos++, tree->node->type, tree->node->token);
+		printf("node %p[%d]:\n\e[20G-	type: %d\n\e[20G-	token: %p\n\e[20G-	lex: %s\n\e[20G-	len: %zu\n\n", tree, node_pos++, tree->node->type, tree->node->token, tree->node->token->lex, tree->node->token->len);
 		ft_treeprint(tree->left, type);
 		ft_treeprint(tree->right, type);
 	}
@@ -54,7 +54,7 @@ void	ft_treeprint(t_btree *tree, int type)
 	{
 		ft_treeprint(tree->left, type);
 		ft_treeprint(tree->right, type);
-		printf("node %p[%d]:\n\e[20G-	type: %d\n\e[20G-	token: %p\n\n", tree, node_pos++, tree->node->type, tree->node->token);
+		printf("node %p[%d]:\n\e[20G-	type: %d\n\e[20G-	token: %p\n\e[20G-	lex: %s\n\e[20G-	len: %zu\n\n", tree, node_pos++, tree->node->type, tree->node->token, tree->node->token->lex, tree->node->token->len);
 	}
 }
 

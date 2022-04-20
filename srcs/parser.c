@@ -62,25 +62,28 @@ t_btree	*ft_newleaf(t_token *token)
 	return (btree);
 }
 
-t_btree	*ft_wordleaf(t_btree **root, t_tokenlist **lst)
+void	btree_addnode(t_btree **root, t_tokenlist **lst)
 {
 	t_btree		*leaf;
 
-	while ((*lst)->token->type == E_WORD)
+	leaf = ft_newleaf((*lst)->token);
+	if (!leaf)
+		return ;
+	if (*root && ((*root)->node->type == E_WORD
+			|| ((*root)->left && (*root)->right)))
 	{
-		leaf = ft_newleaf((*lst)->token);
-		if (!leaf)
-			return (NULL);
-		if (root)
-		{
-			leaf->left = *root;
-			*root = leaf;
-		}
-		else
-			*root = leaf;
-		*lst = (*lst)->next;
+		leaf->left = *root;
+		*root = leaf;
+		while ((*lst)->token->type == E_WORD)
+			*lst = (*lst)->next;
 	}
-	return (*root);
+	else
+	{
+		if (*root && !(*root)->left)
+			(*root)->left = leaf;	
+		else if (*root && !(*root)->right)
+			(*root)->right = leaf;
+	}
 }
 
 t_btree	*ft_buildtree(char *input)
@@ -90,38 +93,33 @@ t_btree	*ft_buildtree(char *input)
 	//t_leaf		*leaf;
 	//t_btree	*tmp;
 
-	root = NULL;
 	lexer(input, &lst);
-	ft_print_tokenlist(lst);
-	return (root);
-	/*
+	if (!lst)
+		return (NULL);
+	return (NULL);
+	root = ft_newleaf(lst->token);
+	if (!root)
+		return (NULL);
 	while (lst->token->type != E_EOI)
 	{
-		if (lst->token->type == E_WORD)
-			root = ft_wordleaf(&root, &lst);
-		leaf = malloc(sizeof(t_btree));	
-		if (!leaf)
-			return ;
-		if (root)
-		{
-			leaf->left = root;
-			root = leaf;
-		}
+		btree_addnode(&root, &lst);
+		if (!root)
+			return (NULL);
 		lst = lst->next;
 	}
 	return (root);
-	*/
 }
 
+/*
 int main(void)
 {
 	char	*input;
 	t_btree	*root;
 
-	input = "=Hello               A=toto worlds && Hello la pluie";
+	input = "Hello               A=toto worlds && Hello la pluie";
 	root = ft_buildtree(input);
-	/*
+	//ft_treeprint(root, 0);
 	printf("%s\nlen = %lu\n\n", root->node->token->lex, root->node->token->len);
 	printf("%s\nlen = %lu\n", root->left->node->token->lex, root->left->node->token->len);
-	*/
 }
+*/
