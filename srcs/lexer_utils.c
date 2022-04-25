@@ -100,6 +100,8 @@ int	is_token_1(char *input, t_token *token)
 		token->type  = E_GREAT;
 	else if (*input == '<')
 		token->type  = E_LESS;
+	else if (*input == '|')
+		token->type  = E_PIPE;
 	else if (*input == '(')
 		token->type  = E_LBRACE;
 	else if (*input == ')')

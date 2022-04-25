@@ -17,16 +17,16 @@ t_token	*get_next_token(char **input)
 	token = malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
-	token->lex = input;
+	token->lex = *input;
 	token->type = 0;
-	if (is_eoi(*input, token))
+	if (is_eoi(**input, token))
 		token->len = 0;
-	else if (is_token_2(input, token))
+	else if (is_token_2(*input, token))
 		token->len = 2;
-	else if (is_token_1(input, token))
+	else if (is_token_1(*input, token))
 		token->len = 1;
 	else
-		word_token(input, token);
+		word_token(*input, token);
 	*input += token->len;
 	while (**input == ' ')
 		(*input)++;
@@ -99,17 +99,16 @@ void	lexical_analysis(char *input, t_tokenlist **lst)
 	ft_tokenadd_back(lst, newlst);
 }
 
-/*
 int	main(void)
 {
 	char		*input;
 	t_tokenlist	*lst;
 	t_tokenlist *tmp;
 
-	input = "= mo=nmo||onnai( ssee&&ttoitco)mmentc ava>>p < lutot <<biene< ttoia;sdfjas;dfjaspdfji                   world && Hello Bob";
+	input = "= mo=nmo||onnai( ssee&&ttoitco)mm|e|||ntc ava>>>>>p < lutot <<biene< ttoia;sdfjas;dfjaspdfji                   world && Hello Bob";
 	if (!input)
 		return (-1);
-	lexer(input, &lst);
+	lexical_analysis(input, &lst);
 	while (lst)
 	{
 		tmp = lst;
@@ -120,4 +119,3 @@ int	main(void)
 	}
 	return (0);
 }
-*/

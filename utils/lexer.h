@@ -23,6 +23,7 @@ enum e_token
 	E_LBRACE,
 	E_RBRACE,
 	E_SEP,
+	E_PIPE,
 	E_VALID_CMD
 };
 
