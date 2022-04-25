@@ -1,4 +1,10 @@
-#include "lexer.h"
+#include "minishell.h"
+
+void	skip_separator(char **input)
+{
+	while (**input == ' ')
+		(*input)++;
+}
 
 /* Fonction pour recuperer le prochain token dans la string
  * @param: input
@@ -17,6 +23,7 @@ t_token	*get_next_token(char **input)
 	token = malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
+	skip_separator(input);
 	token->lex = *input;
 	token->type = 0;
 	if (is_eoi(**input, token))
@@ -28,8 +35,6 @@ t_token	*get_next_token(char **input)
 	else
 		word_token(*input, token);
 	*input += token->len;
-	while (**input == ' ')
-		(*input)++;
 	if (token->type)
 		return (token);
 	return (NULL);
@@ -106,6 +111,7 @@ int	main(void)
 	t_tokenlist *tmp;
 
 	input = "= mo=nmo||onnai( ssee&&ttoitco)mm|e|||ntc ava>>>>>p < lutot <<biene< ttoia;sdfjas;dfjaspdfji                   world && Hello Bob";
+//	input = "  Hello world Bob";
 	if (!input)
 		return (-1);
 	lexical_analysis(input, &lst);

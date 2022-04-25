@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "minishell.h"
 
 int	ft_tokensize(t_tokenlist *lst)
 {

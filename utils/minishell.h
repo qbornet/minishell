@@ -3,6 +3,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdbool.h>
 # include "libft.h"
 
 typedef struct t_list	t_garbage;
@@ -24,7 +25,10 @@ enum e_token
 	E_RBRACE,
 	E_SEP,
 	E_PIPE,
-	E_VALID_CMD
+	E_VALID_BUILTIN,
+	E_VALID_EXEC,
+	E_VALID_FILE,
+	E_UNKNOWN_WORD
 };
 
 typedef struct s_token {
@@ -55,4 +59,6 @@ int			is_token_2(char *input, t_token *token);
 //void		sep_token(char *input, t_token *token);
 
 void		lexical_analysis(char *input, t_tokenlist **lst);
+
+bool		token_identification(t_tokenlist *lst);
 #endif
