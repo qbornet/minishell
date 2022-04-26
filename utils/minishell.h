@@ -51,6 +51,18 @@ enum e_token
 	E_UNKNOWN_WORD
 };
 
+typedef struct s_token {
+	char		*lex;
+	size_t		len;
+	enum e_token		type;	
+} t_token;
+
+typedef struct s_tokenlist
+{
+	t_token	*token;
+	struct 	s_tokenlist	*next;
+} t_tokenlist;
+
 // Node a mettre dans l'arbre binaire
 typedef struct s_nodes
 {
@@ -82,18 +94,6 @@ typedef struct s_strlist
 	struct s_strlist	*next;
 	struct s_strlist	*prev;
 }	t_strlist;
-
-typedef struct s_token {
-	char		*lex;
-	size_t		len;
-	enum e_token		type;	
-} t_token;
-
-typedef struct s_tokenlist
-{
-	t_token	*token;
-	struct 	s_tokenlist	*next;
-} t_tokenlist;
 
 int			ft_tokentsize(t_tokenlist *lst);
 void		ft_tokenadd_front(t_tokenlist **alst, t_tokenlist *new);
