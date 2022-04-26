@@ -28,6 +28,9 @@ SRCS = ft_tokenadd_back.c \
 	ft_tokennew.c \
 	ft_tokensize.c \
 	lexer.c \
+	check_cmd.c \
+	free_str_utils.c \
+	env_utils.c \
 	lexer_utils.c
 
 GREEN   = \033[1;32m
