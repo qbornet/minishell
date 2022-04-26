@@ -1,13 +1,33 @@
-#ifndef LEXER_H
-# define LEXER_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
+# include <sys/stat.h>
+# include <sys/types.h>
+# include <limits.h>
+# include <fcntl.h>
 # include <stdio.h>
 # include <unistd.h>
+# include <string.h>
 # include <stdlib.h>
 # include <stdbool.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "libft.h"
+
 # define DEFAULT_PATH "PATH=/usr/local/bin:/usr/bin:/bin"
+# define PROMPT "$> "
+# define ERR_PARSER "Error: Syntax error\n"
+# define ERR_COMMAND "Error: command not found\n"
+# define ERR_FILE "Error: no such file\n"
 
 typedef struct t_list	t_garbage;
+
+typedef enum e_error
+{
+	E_FILE = 1,
+	E_PARSER,
+	E_COMMAND = 127,
+	E_MAX
+}	t_error;
 
 enum e_token
 {
@@ -30,6 +50,38 @@ enum e_token
 	E_VALID_FILE,
 	E_UNKNOWN_WORD
 };
+
+// Node a mettre dans l'arbre binaire
+typedef struct s_nodes
+{
+	enum e_token	type;
+	t_token			*token;
+	t_tokenlist		*tokenlst;
+}	t_nodes;
+
+// Abre binaire AST
+typedef struct s_btree
+{
+	t_nodes			*node;
+	struct s_btree	*left;
+	struct s_btree	*right;
+}	t_btree;
+
+/* a init au debut du program pour avoir tout les bons fd */
+typedef struct s_termstd
+{
+	int	std_out_fd;
+	int	std_in_fd;
+	int	std_err_fd;
+}	t_termstd;
+
+typedef struct s_strlist
+{
+	void				*data;
+	enum e_token		type;
+	struct s_strlist	*next;
+	struct s_strlist	*prev;
+}	t_strlist;
 
 typedef struct s_token {
 	char		*lex;
@@ -68,4 +120,24 @@ char		*free_str(char *str);
 char		*free_tab(char **tab);
 char		*free_elt_tab(char **tab);
 char		*free_str_tab(char **tab, int index);
+
+// a refaire les fonction t_wordlist en t_strlist refaire une fonction recreate_str
+int			ft_wordlst_addback(t_strlist **lst_curr, void *data, enum e_token type);
+int			ft_find_great(t_btree *tree, t_termstd **saved);
+char		*ft_recreate_str(char *lex, int len);
+t_strlist	*ft_wordlst_new(void *data, enum e_token type);
+
+int		ft_free_err(char **old, char **new);
+int		ft_pwd(void);
+int		ft_echo(const char *s, int flag);
+int		ft_cd(const char *path);
+int		ft_export(char *var, char ***env_curr);
+int		ft_unset(char *var, char ***env_curr);
+int		ft_env(char **envp);
+
+int	print_error(t_error);
+
+// tree_utils.c
+void	ft_treeclear(t_btree *tree, void (*del) (void *));
+void	ft_treeprint(t_btree *tree, int type);
 #endif
