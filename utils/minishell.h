@@ -5,6 +5,7 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include "libft.h"
+# define DEFAULT_PATH "PATH=/usr/local/bin:/usr/bin:/bin"
 
 typedef struct t_list	t_garbage;
 
@@ -26,7 +27,6 @@ enum e_token
 	E_SEP,
 	E_PIPE,
 	E_VALID_BUILTIN,
-	E_VALID_EXEC,
 	E_VALID_FILE,
 	E_UNKNOWN_WORD
 };
@@ -60,5 +60,12 @@ int			is_token_2(char *input, t_token *token);
 
 void		lexical_analysis(char *input, t_tokenlist **lst);
 
-bool		token_identification(t_tokenlist *lst);
+bool		check_cmd(t_tokenlist *lst, char **envp);
+
+char		*get_path(char **env, char *pg);
+
+char		*free_str(char *str);
+char		*free_tab(char **tab);
+char		*free_elt_tab(char **tab);
+char		*free_str_tab(char **tab, int index);
 #endif

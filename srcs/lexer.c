@@ -40,7 +40,8 @@ t_token	*get_next_token(char **input)
 	return (NULL);
 }
 
-/* Fonction pour gerer le cas du premier token (gestion cas d'erreur pour plus tard)
+/* Fonction pour gerer le cas du premier token
+ * (gestion cas d'erreur pour plus tard)
  * @param: input
  * - La chaine de caracter a tokeniser
  *
@@ -104,17 +105,20 @@ void	lexical_analysis(char *input, t_tokenlist **lst)
 	ft_tokenadd_back(lst, newlst);
 }
 
-int	main(void)
+int	main(int ac, char **av, char **envp)
 {
 	char		*input;
 	t_tokenlist	*lst;
 	t_tokenlist *tmp;
 
-	input = "= mo=nmo||onnai( ssee&&ttoitco)mm|e|||ntc ava>>>>>p < lutot <<biene< ttoia;sdfjas;dfjaspdfji                   world && Hello Bob";
-//	input = "  Hello world Bob";
+	(void)ac;
+	(void)av;
+//	input = "= mo=nmo||onnai( ssee&&ttoitco)mm|e|||ntc ava>>>>>p < lutot <<biene< ttoia;sdfjas;dfjaspdfji                   world && Hello Bob";
+	input = " echo>  Hello world Bob";
 	if (!input)
 		return (-1);
 	lexical_analysis(input, &lst);
+	check_cmd(lst, envp);
 	while (lst)
 	{
 		tmp = lst;
@@ -123,5 +127,6 @@ int	main(void)
 		free(tmp->token);
 		free(tmp);
 	}
+	printf("E_VALID_BUILTIN : %d\nE_VALID_FILE : %d\nE_UNKNOWN_WORD : %d\n", E_VALID_BUILTIN, E_VALID_FILE, E_UNKNOWN_WORD);
 	return (0);
 }
