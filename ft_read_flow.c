@@ -1,66 +1,60 @@
 #include "ast.h"
 
-int	ft_lstexist(t_list **w_curr, char *str)
+int	ft_lstexist(t_strlist **s_curr, char *str)
 {
 	char		*compare;
-	t_wordlist	*wordlst;
+	t_strlist	*strlst;
 
-	wordlst = *w_curr;
-	while (wordlst)
+	strlst = *s_curr;
+	while (strlst)
 	{
-		compare = wordlst->content;
+		compare = strlst->data;
 		if (!ft_strncmp(compare, str, ft_strlen(str)))
 				return (1);
-		wordlst = wordlst->next;
+		wordlst = strlst->next;
 	}
 	return (0);
 }
 
-void	*ft_recreate_str(t_token *token, t_wordlist **w_curr)
+char	*ft_create_str(char *lex, size_t len)
 {
-	int			i;
-	int			len;
-	char		*lex;
-	char		*str;
-	t_wordlist	*wordlst;
+	int		i;
+	char	*str;
 
 	i = 0;
-	len = token->len;
-	lex = token->lex;
-	wordlst = *w_curr;
 	str = (char *)malloc(sizeof(char) * (len + 1));
 	if (!str)
 		return (NULL);
-	while (i < len && *lex)
-		str[i++] = *len++;
+	while (i < len)
+		str[i++] = *lex++;
 	str[i] = '\0';
-	if (!wordlst)
-		wordlst = ft_wordlst_new(str, token->type);
-	if (ft_lstexist(&wordlst, str))
-	{
-		free(str);
-		return (NULL);
-	}
-	ft_wordlst_addback(&wordlst, str, token->type);
-	return ((void *)command);
+	return (str);
 }
 
-int	ft_go_preorder(t_btree *tree, int (*f) (t_btree *tree))
+void	*ft_create_lst(t_tokenlist *tokenlst, t_strlist **s_curr)
 {
-	int	res;
+	char		*str;
+	t_strlist	*strlst;
+	t_token		*token;
 
-	if (tree)
-	{
-		res = f(tree);
-		if (res < 0)
-			return (res);
-		ft_go_preorder(tree->left);
-		ft_go_preorder(tree->right);
-	}
-	return (0);
+	strlst = *s_curr;
+	token = tokenlst->token;
+	if (!token)
+		return ;
+	if (token && token->type == E_AND_IF
+		|| token->type == E_OR_IF || token->type == E_GREAT
+		|| token->type == E_DGREAT || token->type == E_LESS
+		|| token->type == E_DLESS)
+		return ;
+	str = ft_create_str(token->lex, token->len);
+	if (!str)
+		return ;
+	if (!strlst)
+		strlst = ft_strlst_new(str, token->type);
+	else
+		ft_strlst_addback(&strlst, str, token->type);
+	ft_create_lst(tokenlst->next, &strlst->next);
 }
-
-//int	ft_here_doc()
 
 int	ft_find_redirection(t_btree *tree)
 {
@@ -74,16 +68,16 @@ int	ft_find_redirection(t_btree *tree)
 	return (0);
 }
 
-int	ft_read_flow(t_btree *tree, t_wordlist **w_curr)
+int	ft_read_flow(t_btree *tree, t_strlist **s_curr)
 {
 	int			res;
-	t_wordlist	*wordlist;
+	t_strlist	*strlst;
 
-	wordlist = *w_curr;
+	strlst = *s_curr;
 	if (tree && tree->node)
 	{
-		if (tree->node->type == E_WORD || tree->node->type == E_ASSIGNMENT_WORD)
-			ft_recreate_str(tree->node->token);
+		if (tree->node->type == E_VALID_CMD)
+			ft_recreate_str(tree->node->tokenlst, &strlst);
 		if (ft_read_flow(tree->left) < 0)
 			return (-1);
 		res = ft_find_redirection(tree)
