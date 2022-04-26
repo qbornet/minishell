@@ -1,21 +1,5 @@
 #include "ast.h"
 
-int	ft_lstexist(t_strlist **s_curr, char *str)
-{
-	char		*compare;
-	t_strlist	*strlst;
-
-	strlst = *s_curr;
-	while (strlst)
-	{
-		compare = strlst->data;
-		if (!ft_strncmp(compare, str, ft_strlen(str)))
-				return (1);
-		wordlst = strlst->next;
-	}
-	return (0);
-}
-
 char	*ft_create_str(char *lex, size_t len)
 {
 	int		i;
@@ -53,7 +37,7 @@ void	*ft_create_lst(t_tokenlist *tokenlst, t_strlist **s_curr)
 		strlst = ft_strlst_new(str, token->type);
 	else
 		ft_strlst_addback(&strlst, str, token->type);
-	ft_create_lst(tokenlst->next, &strlst->next);
+	ft_create_lst(tokenlst->next, &strlst);
 }
 
 int	ft_find_redirection(t_btree *tree)
@@ -70,25 +54,19 @@ int	ft_find_redirection(t_btree *tree)
 
 int	ft_read_flow(t_btree *tree, t_strlist **s_curr)
 {
-	int			res;
-	t_strlist	*strlst;
+	int	res;
 
-	strlst = *s_curr;
+	res = 0;
 	if (tree && tree->node)
 	{
-		if (tree->node->type == E_VALID_CMD)
-			ft_recreate_str(tree->node->tokenlst, &strlst);
+		if (tree->node->type == E_VALID_BUILTIN)
+			ft_recreate_str(tree->node->tokenlst, s_curr);
 		if (ft_read_flow(tree->left) < 0)
 			return (-1);
 		res = ft_find_redirection(tree)
 		if (res)
-		{
-			ft_reverse_list(&wordlist);
 			if (ft_redirection(tree, res) < 0)
 				return (-1);
-		}
-		else if (ft_find_logical(tree))
-			ft_reverse_list(&wordlist);
 	}
 	return (0);
 }
