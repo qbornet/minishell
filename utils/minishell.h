@@ -1,10 +1,11 @@
 #ifndef LEXER_H
 # define LEXER_H
 # include <stdio.h>
+# include <stddef.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdbool.h>
-# include "libft.h"
+# include <libft.h>
 # define DEFAULT_PATH "PATH=/usr/local/bin:/usr/bin:/bin"
 
 typedef struct t_list	t_garbage;
@@ -43,6 +44,38 @@ typedef struct s_tokenlist
 	struct 	s_tokenlist	*next;
 } t_tokenlist;
 
+/* AST_H */
+// s_termstd doit etre des dup des STDIN, STDOUT, STDERR constant
+typedef struct s_termstd
+{
+	int	stdout;
+	int	stdin;
+	int	stderr;
+}	t_termstd;
+
+typedef struct s_strlist
+{
+	void				*data;
+	enum e_token		type;
+	struct s_strlist	*next;
+	struct s_strlist	*prev;
+}	t_strlist;
+
+/* PARSER_H */
+typedef struct s_nodes
+{
+	enum e_token	type;
+	t_token			*token;
+	t_tokenlist		*tokenlst;
+}	t_nodes;
+
+typedef struct s_btree
+{
+	t_nodes			*node;
+	struct s_btree	*left;
+	struct s_btree	*right;
+}	t_btree;
+
 int			ft_tokentsize(t_tokenlist *lst);
 void		ft_tokenadd_front(t_tokenlist **alst, t_tokenlist *new);
 void		ft_tokenadd_back(t_tokenlist **alst, t_tokenlist *new);
@@ -68,4 +101,13 @@ char		*free_str(char *str);
 char		*free_tab(char **tab);
 char		*free_elt_tab(char **tab);
 char		*free_str_tab(char **tab, int index);
+/* AST_H */
+/* ft_strlist.c ft_read_flow.c */
+int			ft_strlst_addback(t_strlist **lst_curr, void *data, enum e_token type);
+void		*ft_strlstclear(t_strlist **s_curr, void (*del) (void *));
+t_strlist	*ft_strlst_new(void *data, enum e_token type);
+/* PARSER_H */
+/* parser.c tree_utils.c */
+void		ft_treeclear(t_btree *tree, void (*del) (void *));
+void		ft_treeprint(t_btree *tree, int type);
 #endif

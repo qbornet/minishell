@@ -33,6 +33,10 @@ SRCS = ft_tokenadd_back.c \
 	env_utils.c \
 	lexer_utils.c
 
+# File to create read parser part
+READ = ft_read_flow.c \
+	   ft_strlist.c
+
 GREEN   = \033[1;32m
 WHITE   = \033[0;m
 
@@ -41,8 +45,20 @@ WHITE   = \033[0;m
 # Header files
 UTILS = $(UTILS_DIR)/$(addsufix .h, $(NAME))
 
+
+READOBJS = $(READ:%.c=$(OBJS_DIR)/%.o)
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS = $(OBJS:%.o=%.d)
+
+read: $(READOBJS) $(OBJS)
+	make -C $(LFT)
+	echo "-------------------"
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(OBJS) -lft -o $@
+	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
+
+rclean:
+	$(RM) $(OBJS_DIR)
+	$(RM) read
 
 all: $(NAME)
 
@@ -71,7 +87,7 @@ re: fclean all
 
 -include $(DEPS)
 
-.PHONNY: all clean fclean re
+.PHONNY: all clean fclean re rclean
 
 ifndef VERBOSE
 .SILENT:
