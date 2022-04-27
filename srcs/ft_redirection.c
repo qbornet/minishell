@@ -1,4 +1,4 @@
-/* fonction pour refaire les redirection, */
+ /* fonction utile au moment de l'execution fait toute les redirection */
 
 static char	*ft_do_str(char *lex, int len)
 {
