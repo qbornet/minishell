@@ -40,7 +40,7 @@ void	*ft_create_lst(t_tokenlist *tokenlst, t_strlist **s_curr)
 	ft_create_lst(tokenlst->next, &strlst);
 }
 
-int	ft_find_redirection(t_btree *tree)
+int	ft_find_operator(t_btree *tree)
 {
 	if (tree && tree->node)
 	{
@@ -48,6 +48,10 @@ int	ft_find_redirection(t_btree *tree)
 			return (1);
 		else if (tree->node->type == E_LESS)
 			return (2);
+		else if (tree->node->type == E_DLESS)
+			return (3);
+		else if (tree->node->type == E_AND_IF || tree->node->type == E_OR_IF)
+			return (4);
 	}
 	return (0);
 }
@@ -59,13 +63,13 @@ int	ft_read_flow(t_btree *tree, t_strlist **s_curr)
 	res = 0;
 	if (tree && tree->node)
 	{
-		if (tree->node->type == E_VALID_BUILTIN)
+		if (tree->node->type == E_VALID_BUILTIN || tree->node->type == E_VALID_FILE)
 			ft_recreate_str(tree->node->tokenlst, s_curr);
 		if (ft_read_flow(tree->left) < 0)
 			return (-1);
-		res = ft_find_redirection(tree)
+		res = ft_find_operator(tree);
 		if (res)
-			if (ft_redirection(tree, res) < 0)
+			if (!tree->right)
 				return (-1);
 	}
 	return (0);

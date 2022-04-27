@@ -1,4 +1,4 @@
-#include "ast.h"
+/* fonction pour refaire les redirection, */
 
 static char	*ft_do_str(char *lex, int len)
 {
