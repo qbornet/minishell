@@ -96,8 +96,9 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	(void)envp;
-	input = "=toto tata echo toto mo ===nmo||onnai( ssee&&ttoitco)mm|e|||ntc ava>>>>>p < lutot <<biene< ttoia;sdfjas;dfjaspdfji                   world && Hello Bob=";
+	//input = "=toto tata= echo toto mo ===nmo||onnai( ssee&&ttoitco)mm|e|||ntc ava>>>>>p < lutot <<biene< ttoia;sdfjas;dfjaspdfji                   world && Hello Bob=";
 	//input = " echo>  Hello world Bob";
+	input = "=toto tata= toto=| echo toto mo ===nmo Bob====";
 	if (!input)
 		return (-1);
 	lexical_analysis(input, &lst);
