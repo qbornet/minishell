@@ -31,7 +31,9 @@ SRCS = ft_tokenadd_back.c \
 	check_cmd.c \
 	free_str_utils.c \
 	env_utils.c \
-	lexer_utils.c
+	lexer_utils.c \
+	tree_utils.c \
+	parser.c
 
 GREEN   = \033[1;32m
 WHITE   = \033[0;m

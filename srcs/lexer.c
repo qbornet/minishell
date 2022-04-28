@@ -105,6 +105,7 @@ void	lexical_analysis(char *input, t_tokenlist **lst)
 	ft_tokenadd_back(lst, newlst);
 }
 
+/*
 int	main(int ac, char **av, char **envp)
 {
 	char		*input;
@@ -130,3 +131,4 @@ int	main(int ac, char **av, char **envp)
 	printf("E_VALID_BUILTIN : %d\nE_VALID_FILE : %d\nE_UNKNOWN_WORD : %d\n", E_VALID_BUILTIN, E_VALID_FILE, E_UNKNOWN_WORD);
 	return (0);
 }
+*/

@@ -48,8 +48,10 @@ int	start_prompt(void)
 	return (0);
 }
 
+/*
 int	main(void)
 {
 	start_prompt();
 	return (0);
 }
+*/

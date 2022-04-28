@@ -11,9 +11,11 @@ int	print_error(t_error code)
 	return (code);
 }
 
+/*
 int	main(void)
 {
 	print_error(E_PARSER);
 	print_error(E_COMMAND);
 	return (0);
 }
+*/
