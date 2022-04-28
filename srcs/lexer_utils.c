@@ -29,7 +29,6 @@ int	is_special_token(char c)
 {
 	if (c == '$'
 		|| c == '&'
-		|| c == '='
 		|| c == '|'
 		|| c == '>'
 		|| c == '<'
@@ -37,6 +36,15 @@ int	is_special_token(char c)
 		|| c == '(')
 		return (c);
 	return (0);
+}
+
+int	is_valid_assignment(char *input)
+{
+	if (*(input + 1) == ' ' || is_special_token(*(input + 1))
+		|| *(input - 1) == ' ' || is_special_token(*(input - 1))
+		|| !*(input + 1))
+		return (0);
+	return (1);
 }
 
 /* Fonction pour generer les tokens E_WORD
@@ -56,7 +64,12 @@ void	word_token(char *input, t_token *token)
 
 	tmp = input;
 	while (*input && *input != ' ' && !is_special_token(*input))
+	{
+		if (*input == '=')
+			if (!is_valid_assignment(input))
+				return ;
 		input++;
+	}
 	token->len = input - tmp;
 	token->type = E_WORD;
 }
@@ -107,8 +120,6 @@ int	is_token_1(char *input, t_token *token)
 		token->type = E_LBRACE;
 	else if (*input == ')')
 		token->type = E_RBRACE;
-	else if (*input == '=')
-		token->type = E_ASSIGNMENT_WORD;
 	else if (*input == '$')
 		token->type = E_EXPANSION;
 	return (token->type);
