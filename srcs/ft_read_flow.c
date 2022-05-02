@@ -1,5 +1,25 @@
 #include <minishell.h>
 
+int	ft_lstexist(t_strlist **s_curr, char *str)
+{
+	int			i;
+	char		*data;
+	t_strlist	*strlst;
+
+	strlst = *s_curr;
+	while (strlst)
+	{
+		data = strlst->data;
+		if (!ft_strncmp(data, str, ft_strlen(str)))
+		{
+			free(str);
+			return (1);
+		}
+		strlst = strlst->next;
+	}
+	return (0);
+}
+
 char	*ft_create_str(char *lex, size_t len)
 {
 	size_t	i;
@@ -33,6 +53,8 @@ t_strlist	*ft_create_lst(t_tokenlist *tokenlst, t_strlist **s_curr)
 	str = ft_create_str(token->lex, token->len);
 	if (!str)
 		return (ft_strlstclear(&strlst, &free));
+	if (ft_lstexist(&strlst, str))
+		return (strlst);
 	if (!strlst)
 		strlst = ft_strlst_new(str, token->type);
 	else
@@ -45,6 +67,8 @@ int	ft_find_operator(t_btree *tree)
 {
 	if (tree && tree->node)
 	{
+		if (!tree->right)
+			return (-1);
 		if (tree->node->type == E_GREAT || tree->node->type == E_DGREAT)
 			return (1);
 		else if (tree->node->type == E_LESS)
@@ -64,19 +88,24 @@ int	ft_read_flow(t_btree *tree, t_strlist **s_curr)
 	res = 0;
 	if (tree && tree->node)
 	{
+		if (ft_read_flow(tree->left, s_curr) < 0)
+			return (-1);
 		if (tree->node->type == E_VALID_BUILTIN
-			|| tree->node->type == E_VALID_FILE)
+			|| tree->node->type == E_VALID_FILE
+			|| tree->node->type == E_WORD)
 		{
 			*s_curr = ft_create_lst(tree->node->tokenlst, s_curr);
 			if (!*s_curr)
 				return (-1);
 		}
-		if (ft_read_flow(tree->left, s_curr) < 0)
-			return (-1);
 		res = ft_find_operator(tree);
-		if (res)
-			if (!tree->right)
-				return (-1);
+		if (res > 0 && res < 4)
+			tree = tree->right;
+		else if (res == -1)
+			return (-1);
+		if (ft_read_flow(tree->right, s_curr) < 0)
+			return (-1);
+		//else if (res == 3) here_doc
 	}
 	return (0);
 }
