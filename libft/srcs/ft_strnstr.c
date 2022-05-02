@@ -6,7 +6,7 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 12:33:04 by jfrancai          #+#    #+#             */
-/*   Updated: 2021/11/25 11:50:34 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/05/02 15:27:13 by qbornet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
-	size_t	little_len;
 	int		j;
 
-	little_len = ft_strlen(little);
 	if (!*little)
 		return ((char *)big);
 	while (*big && len > 0)
