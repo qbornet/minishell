@@ -9,8 +9,8 @@
 # include <string.h>
 # include <stdlib.h>
 # include <stdbool.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+//# include <readline/readline.h>
+//# include <readline/history.h>
 # include "libft.h"
 
 # define DEFAULT_PATH "PATH=/usr/local/bin:/usr/bin:/bin"
