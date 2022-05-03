@@ -2,7 +2,7 @@
 #---------------------------------------------------
 
 # Output 
-NAME = lexer
+NAME = minishell
 
 # Sources directories
 SRCS_DIR = srcs
@@ -27,13 +27,17 @@ SRCS = ft_tokenadd_back.c \
 	ft_tokenlast.c \
 	ft_tokennew.c \
 	ft_tokensize.c \
-	lexer.c \
-	check_cmd.c \
 	free_str_utils.c \
-	env_utils.c \
-	lexer_utils.c \
+	env_utils.c 
+
+# File to create lexer part
+LEXER = lexer.c \
+	lexer_utils.c
+
+# File to create binary tree part
+BTREE = parser.c \
 	tree_utils.c \
-	parser.c
+	check_cmd.c
 
 GREEN   = \033[1;32m
 WHITE   = \033[0;m
@@ -43,14 +47,28 @@ WHITE   = \033[0;m
 # Header files
 UTILS = $(UTILS_DIR)/$(addsufix .h, $(NAME))
 
+LEXEROBJS = $(LEXER:%.c=$(OBJS_DIR)/%.o)
+BTREEOBJS = $(BTREE:%.c=$(OBJS_DIR)/%.o)
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS = $(OBJS:%.o=%.d)
 
 all: $(NAME)
 
+lexer: $(LEXEROBJS) $(OBJS)
+	make -C $(LFT)
+	echo "-------------------"
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LEXEROBJS) $(OBJS) -lft -o $@
+	printf "\n[$(GREEN)OK$(WHITE)] Binary : $(NAME)\n\n"
+
+btree: $(BTREEOBJS) $(LEXEROBJS) $(OBJS)
+	make -C $(LFT)
+	echo "-------------------"
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(BTREEOBJS) $(LEXEROBJS) $(OBJS) -lft -o $@
+	printf "\n[$(GREEN)OK$(WHITE)] Binary : $(NAME)\n\n"
+
 $(NAME): $(OBJS)
 	make -C $(LFT) 
-	echo "-------------------"
+	echo "------------------"
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(OBJS) -lft -o $(NAME)
 	printf "\n[$(GREEN)OK$(WHITE)] Binary : $(NAME)\n\n"
 
