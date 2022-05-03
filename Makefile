@@ -35,7 +35,8 @@ LEXER = lexer.c \
 	lexer_utils.c
 
 # File to create binary tree part
-BTREE = parser.c \
+BTREE = btreebuilder.c \
+	btreebuilder_utils.c \
 	tree_utils.c \
 	check_cmd.c
 

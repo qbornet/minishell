@@ -96,6 +96,7 @@ typedef struct s_strlist
 	struct s_strlist	*prev;
 }	t_strlist;
 
+// Token list utils
 int			ft_tokentsize(t_tokenlist *lst);
 void		ft_tokenadd_front(t_tokenlist **alst, t_tokenlist *new);
 void		ft_tokenadd_back(t_tokenlist **alst, t_tokenlist *new);
@@ -104,6 +105,7 @@ void		ft_tokenclear(t_tokenlist **lst, void (*del)(void *));
 t_tokenlist	*ft_tokennew(void *content);
 t_tokenlist	*ft_tokenlast(t_tokenlist *lst);
 
+// Lexer utils
 int			is_special_token(char c);
 void		word_token(char *input, t_token *token);
 int			is_eoi(char c, t_token *token);
@@ -111,12 +113,25 @@ int			is_token_1(char *input, t_token *token);
 int			is_token_2(char *input, t_token *token);
 //void		sep_token(char *input, t_token *token);
 
+// Lexer
 void		lexical_analysis(char *input, t_tokenlist **lst);
 
+// Btree builder
+t_btree	*buildbtree(char *input, char **envp);
+
+// Btree utils
+t_btree	*ft_newbtree(t_nodes *node);
+t_nodes	*ft_newnodes(t_tokenlist *lst);
+t_btree	*ft_newleaf(t_tokenlist *lst);
+void	btree_addnode(t_btree **root, t_tokenlist **lst);
+
+// Check for valid built-in, valid file in filesystem or unknow word; used in btreebuilder
 bool		check_cmd(t_tokenlist *lst, char **envp);
 
+// Check cmd utils
 char		*get_path(char **env, char *pg);
 
+// Free utils for strings
 char		*free_str(char *str);
 char		*free_tab(char **tab);
 char		*free_elt_tab(char **tab);
@@ -128,6 +143,7 @@ int			ft_find_great(t_btree *tree, t_termstd **saved);
 char		*ft_recreate_str(char *lex, int len);
 t_strlist	*ft_wordlst_new(void *data, enum e_token type);
 
+// Built in
 int		ft_free_err(char **old, char **new);
 int		ft_pwd(void);
 int		ft_echo(const char *s, int flag);
