@@ -99,6 +99,7 @@ typedef struct s_btree
 	struct s_btree	*right;
 }	t_btree;
 
+/* LEXER_H */
 int			ft_tokentsize(t_tokenlist *lst);
 void		ft_tokenadd_front(t_tokenlist **alst, t_tokenlist *new);
 void		ft_tokenadd_back(t_tokenlist **alst, t_tokenlist *new);
@@ -134,17 +135,13 @@ t_strlist	*ft_strlst_new(void *data, enum e_token type);
 void		ft_treeclear(t_btree *tree, void (*del) (void *));
 void		ft_treeprint(t_btree *tree, int type);
 
-int		ft_free_err(char **old, char **new);
-int		ft_pwd(void);
-int		ft_echo(const char *s, int flag);
-int		ft_cd(const char *path);
-int		ft_export(char *var, char ***env_curr);
-int		ft_unset(char *var, char ***env_curr);
-int		ft_env(char **envp);
-
-int	print_error(t_error);
-
-// tree_utils.c
-void	ft_treeclear(t_btree *tree, void (*del) (void *));
-void	ft_treeprint(t_btree *tree, int type);
+/* BIN_H */
+int			ft_free_err(char **old, char **new);
+int			ft_pwd(void);
+int			ft_echo(const char *s, int flag);
+int			ft_cd(const char *path);
+int			ft_export(char *var, char ***env_curr);
+int			ft_unset(char *var, char ***env_curr);
+int			ft_env(char **envp);
+int			print_error(t_error);
 #endif
