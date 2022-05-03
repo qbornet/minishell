@@ -53,16 +53,16 @@ enum e_token
 };
 
 typedef struct s_token {
-	char		*lex;
-	size_t		len;
-	enum e_token		type;	
-} t_token;
+	char			*lex;
+	size_t			len;
+	enum e_token	type;	
+}	t_token;
 
 typedef struct s_tokenlist
 {
-	t_token	*token;
-	struct 	s_tokenlist	*next;
-} t_tokenlist;
+	t_token				*token;
+	struct s_tokenlist	*next;
+}	t_tokenlist;
 
 /* AST_H */
 // s_termstd doit etre des dup des STDIN, STDOUT, STDERR constant
@@ -127,7 +127,8 @@ char		*free_elt_tab(char **tab);
 char		*free_str_tab(char **tab, int index);
 /* AST_H */
 /* ft_strlist.c ft_read_flow.c */
-int			ft_strlst_addback(t_strlist **lst_curr, void *data, enum e_token type);
+int			ft_strlst_addback(\
+		t_strlist **lst_curr, void *data, enum e_token type);
 void		*ft_strlstclear(t_strlist **s_curr, void (*del) (void *));
 t_strlist	*ft_strlst_new(void *data, enum e_token type);
 /* PARSER_H */
@@ -143,5 +144,5 @@ int			ft_cd(const char *path);
 int			ft_export(char *var, char ***env_curr);
 int			ft_unset(char *var, char ***env_curr);
 int			ft_env(char **envp);
-int			print_error(t_error);
+int			print_error(t_error code);
 #endif
