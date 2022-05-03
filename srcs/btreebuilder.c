@@ -47,11 +47,21 @@ int	main(int ac, char **av, char **envp)
 {
 	char	*input;
 	t_btree	*root;
+	t_token *token;
 
 	(void)ac;
 	(void)av;
-	input = "echo toto > outfile > outfile1 > outfile2 > outfile3 || ./toto -a yalalallalalall";
+	(void)token;
+	input = "echo tata || (echo toto &&  echo bonjour)";
 	root = buildbtree(input, envp);
-	ft_treeprint(root, 0);
+	root = root->left->left;
+	//ft_treeprint(root, 0);
+	if (!root)
+	{
+		printf("no leaf here\n");
+		return (0);
+	}
+	token = root->node->token;
+	printf("lex : %s\nlen: %lu\ntype: %d\n", token->lex, token->len, token->type);
 	//printf("-------------\nlex = %s\nlen = %lu\n-------------\n", root->node->token->lex, root->node->token->len);
 }

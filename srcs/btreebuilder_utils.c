@@ -40,6 +40,13 @@ t_btree	*ft_newleaf(t_tokenlist *lst)
 	return (btree);
 }
 
+int	is_word_or_brace(int type)
+{
+	if (type == E_WORD || type == E_LBRACE || type == E_RBRACE)
+		return (1);
+	return (0);
+}
+
 void	btree_addnode(t_btree **root, t_tokenlist **lst)
 {
 	t_btree	*leaf;
@@ -49,19 +56,27 @@ void	btree_addnode(t_btree **root, t_tokenlist **lst)
 	leaf = ft_newleaf(*lst);
 	if (!leaf)
 		return ;
-	if ((*root)->node->type == E_WORD)
+	if (!is_word_or_brace(leaf->node->type))
 	{
 		leaf->left = *root;
 		*root = leaf;
 	}
 	else
 	{
-		if (!(*root)->right && leaf->node->type == E_WORD)
-			(*root)->right = leaf;
-		else
+		if (is_word_or_brace((*root)->node->type))
 		{
 			leaf->left = *root;
 			*root = leaf;
+		}
+		else
+		{
+			if (!(*root)->right)	
+				(*root)->right = leaf;
+			else
+			{
+				leaf->left = (*root)->right;
+				(*root)->right = leaf;
+			}
 		}
 	}
 }
