@@ -127,7 +127,7 @@ int main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	input = "echo               A=toto worlds && > ls la pluie";
+	input = "echo               A=toto worlds && > echo la pluie";
 	root = ft_buildtree(input, envp);
 	ft_treeprint(root, 0);
 	//printf("-------------\nlex = %s\nlen = %lu\n-------------\n", root->node->token->lex, root->node->token->len);
