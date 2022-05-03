@@ -1,5 +1,4 @@
-#include "lexer.h"
-#include "parser.h"
+#include "minishell.h"
 
 //Tools
 void	ft_print_tokenlist(t_tokenlist *lst)
@@ -30,30 +29,25 @@ t_btree	*ft_newbtree(t_nodes *node)
 	return (btree);
 }
 
-void	ft_nodedelone(t_nodes *node)
-{
-	free(node->token);
-	free(node);
-}
-
-t_nodes	*ft_newnodes(t_token *token)
+t_nodes	*ft_newnodes(t_tokenlist *lst)
 {
 	t_nodes	*node;	
 	
 	node = malloc(sizeof(t_nodes));
 	if (!node)
 		return (NULL);
-	node->type = token->type;
-	node->token = token;
+	node->tokenlst = lst;
+	node->token = node->tokenlst->token;
+	node->type = node->token->type;
 	return (node); 
 }
 
-t_btree	*ft_newleaf(t_token *token)
+t_btree	*ft_newleaf(t_tokenlist *lst)
 {
 	t_nodes	*node;
 	t_btree *btree;
 
-	node = ft_newnodes(token);
+	node = ft_newnodes(lst);
 	if (!node)
 		return (NULL);
 	btree = ft_newbtree(node);
@@ -66,60 +60,75 @@ void	btree_addnode(t_btree **root, t_tokenlist **lst)
 {
 	t_btree		*leaf;
 
-	leaf = ft_newleaf((*lst)->token);
+	if (!*root)
+		return ;
+	leaf = ft_newleaf(*lst);
 	if (!leaf)
 		return ;
-	if (*root && ((*root)->node->type == E_WORD
-			|| ((*root)->left && (*root)->right)))
+	if ((*root)->node->type == E_WORD)
 	{
 		leaf->left = *root;
 		*root = leaf;
-		while ((*lst)->token->type == E_WORD)
-			*lst = (*lst)->next;
 	}
 	else
 	{
-		if (*root && !(*root)->left)
-			(*root)->left = leaf;	
-		else if (*root && !(*root)->right)
+		if (!(*root)->right && leaf->node->type == E_WORD)
 			(*root)->right = leaf;
+		else
+		{
+			leaf->left = *root;
+			*root = leaf;	
+		}
 	}
 }
 
-t_btree	*ft_buildtree(char *input)
+void	next_step(char **envp, t_btree *root, t_tokenlist **lst)
+{
+	if (root->node->type == E_WORD || (root->right && root->right->node->type == E_WORD))
+	{
+		if (root->right && root->right->node->type == E_WORD)
+			check_cmd(root->right->node->tokenlst, envp);
+		else
+			check_cmd(root->node->tokenlst, envp);
+		*lst = (*lst)->next;
+		while (*lst && (*lst)->token->type == E_WORD)
+			*lst = (*lst)->next;
+	}
+	else
+		*lst = (*lst)->next;
+}
+
+t_btree	*ft_buildtree(char *input, char **envp)
 {
 	t_tokenlist	*lst;
 	t_btree 	*root;
-	//t_leaf		*leaf;
-	//t_btree	*tmp;
 
-	lexer(input, &lst);
+	lexical_analysis(input, &lst);
 	if (!lst)
 		return (NULL);
-	return (NULL);
-	root = ft_newleaf(lst->token);
+	root = ft_newleaf(lst);
 	if (!root)
 		return (NULL);
-	while (lst->token->type != E_EOI)
+	next_step(envp, root, &lst);	
+	while (lst && lst->token->type != E_EOI)
 	{
 		btree_addnode(&root, &lst);
 		if (!root)
 			return (NULL);
-		lst = lst->next;
+		next_step(envp, root, &lst);
 	}
 	return (root);
 }
 
-/*
-int main(void)
+int main(int ac, char **av, char **envp)
 {
 	char	*input;
 	t_btree	*root;
 
-	input = "Hello               A=toto worlds && Hello la pluie";
-	root = ft_buildtree(input);
-	//ft_treeprint(root, 0);
-	printf("%s\nlen = %lu\n\n", root->node->token->lex, root->node->token->len);
-	printf("%s\nlen = %lu\n", root->left->node->token->lex, root->left->node->token->len);
+	(void)ac;
+	(void)av;
+	input = "echo               A=toto worlds && > echo la pluie";
+	root = ft_buildtree(input, envp);
+	ft_treeprint(root, 0);
+	//printf("-------------\nlex = %s\nlen = %lu\n-------------\n", root->node->token->lex, root->node->token->len);
 }
-*/

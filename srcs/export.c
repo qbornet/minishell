@@ -94,6 +94,7 @@ int	ft_export(char *var, char ***env_curr)
 	return (ft_free_envp(temp));
 }
 
+/*
 int	main(int ac, char **av, char **envp)
 {
 	int		i;
@@ -120,3 +121,4 @@ int	main(int ac, char **av, char **envp)
 	free(new);
 	return (0);
 }
+*/

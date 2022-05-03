@@ -31,7 +31,9 @@ SRCS = ft_tokenadd_back.c \
 	check_cmd.c \
 	free_str_utils.c \
 	env_utils.c \
-	lexer_utils.c
+	lexer_utils.c \
+	tree_utils.c \
+	parser.c
 
 # File to create read parser part
 READ = ft_read_flow.c \

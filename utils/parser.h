@@ -1,8 +1,5 @@
 #ifndef PARSER_H
 # define PARSER_H
-# include "lexer.h"
-# include "error.h"
-# include <libft.h>
 
 /*
 typedef struct s_cmd_name		t_cmd_name;
@@ -167,22 +164,6 @@ struct s_rules
 // END OF HARDWAY
 // EASY WAY
 
-// Node a mettre dans l'arbre binaire
-typedef struct s_nodes
-{
-	enum e_token	type;
-	t_token			*token;
-	t_tokenlist		*tokenlst;
-}	t_nodes;
-
-// Abre binaire AST
-typedef struct s_btree
-{
-	t_nodes			*node;
-	struct s_btree	*left;
-	struct s_btree	*right;
-}	t_btree;
-
 /*
 // Les regles de syntax 0 == faux et 1 == vrai
 typedef struct s_rules
@@ -207,8 +188,5 @@ typedef struct s_rules
 
 //END OF EASY WAY
 
-// tree_utils.c
-void	ft_treeclear(t_btree *tree, void (*del) (void *));
-void	ft_treeprint(t_btree *tree, int type);
 
 #endif

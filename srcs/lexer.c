@@ -6,6 +6,19 @@ void	skip_separator(char **input)
 		(*input)++;
 }
 
+t_token	*tokeninit(char **input)
+{
+	t_token	*token;
+
+	token = malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->lex = *input;
+	token->type = 0;
+	token->len = 0;
+	return (token);
+}
+
 /* Fonction pour recuperer le prochain token dans la string
  * @param: input
  * - La chaine de caracter a tokeniser
@@ -20,12 +33,10 @@ t_token	*get_next_token(char **input)
 {
 	t_token	*token;
 
-	token = malloc(sizeof(t_token));
+	skip_separator(input);
+	token = tokeninit(input);
 	if (!token)
 		return (NULL);
-	skip_separator(input);
-	token->lex = *input;
-	token->type = 0;
 	if (is_eoi(**input, token))
 		token->len = 0;
 	else if (is_token_2(*input, token))
@@ -37,37 +48,8 @@ t_token	*get_next_token(char **input)
 	*input += token->len;
 	if (token->type)
 		return (token);
+	free(token);
 	return (NULL);
-}
-
-/* Fonction pour gerer le cas du premier token
- * (gestion cas d'erreur pour plus tard)
- * @param: input
- * - La chaine de caracter a tokeniser
- *
- * @return: NULL
- * - En cas d'erreur 
- *
- * @return: t_token *
- * - Le token malloc (penser a free)
- * */
-t_token	*get_first_token(char **input)
-{
-	t_token	*token;
-
-	token = NULL;
-	while (token == NULL)
-	{
-		token = get_next_token(input);
-		if (!token)
-			return (NULL);
-		if (token->type == E_ASSIGNMENT_WORD)
-		{
-			free(token);
-			token = NULL;
-		}
-	}
-	return (token);
 }
 
 /* Fonction pour generer une liste chaine de token
@@ -86,7 +68,7 @@ void	lexical_analysis(char *input, t_tokenlist **lst)
 	t_tokenlist	*newlst;
 
 	*lst = NULL;
-	token = get_first_token(&input);
+	token = get_next_token(&input);
 	if (!token)
 		return ;
 	while (token->type != E_EOI)
@@ -104,6 +86,7 @@ void	lexical_analysis(char *input, t_tokenlist **lst)
 		return ;
 	ft_tokenadd_back(lst, newlst);
 }
+
 /*
 int	main(int ac, char **av, char **envp)
 {
@@ -113,12 +96,13 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-//	input = "= mo=nmo||onnai( ssee&&ttoitco)mm|e|||ntc ava>>>>>p < lutot <<biene< ttoia;sdfjas;dfjaspdfji                   world && Hello Bob";
-	input = " echo>  Hello world Bob";
+	(void)envp;
+	//input = "=toto tata= echo toto mo ===nmo||onnai( ssee&&ttoitco)mm|e|||ntc ava>>>>>p < lutot <<biene< ttoia;sdfjas;dfjaspdfji                   world && Hello Bob=";
+	//input = " echo>  Hello world Bob";
+	input = "=toto tata= toto=| echo toto mo ===nmo Bob====";
 	if (!input)
 		return (-1);
 	lexical_analysis(input, &lst);
-	check_cmd(lst, envp);
 	while (lst)
 	{
 		tmp = lst;

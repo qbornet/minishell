@@ -1,14 +1,34 @@
-#ifndef LEXER_H
-# define LEXER_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
+# include <sys/stat.h>
+# include <sys/types.h>
+# include <limits.h>
+# include <fcntl.h>
 # include <stdio.h>
 # include <stddef.h>
 # include <unistd.h>
+# include <string.h>
 # include <stdlib.h>
 # include <stdbool.h>
 # include <libft.h>
+//# include <readline/readline.h>
+//# include <readline/history.h>
+
 # define DEFAULT_PATH "PATH=/usr/local/bin:/usr/bin:/bin"
+# define PROMPT "$> "
+# define ERR_PARSER "Error: Syntax error\n"
+# define ERR_COMMAND "Error: command not found\n"
+# define ERR_FILE "Error: no such file\n"
 
 typedef struct t_list	t_garbage;
+
+typedef enum e_error
+{
+	E_FILE = 1,
+	E_PARSER,
+	E_COMMAND = 127,
+	E_MAX
+}	t_error;
 
 enum e_token
 {
@@ -62,13 +82,16 @@ typedef struct s_strlist
 }	t_strlist;
 
 /* PARSER_H */
+// Node a mettre dans l'arbre binaire
 typedef struct s_nodes
 {
+	size_t			lentokenlist;
 	enum e_token	type;
 	t_token			*token;
 	t_tokenlist		*tokenlst;
 }	t_nodes;
 
+// Abre binaire AST
 typedef struct s_btree
 {
 	t_nodes			*node;
@@ -110,4 +133,18 @@ t_strlist	*ft_strlst_new(void *data, enum e_token type);
 /* parser.c tree_utils.c */
 void		ft_treeclear(t_btree *tree, void (*del) (void *));
 void		ft_treeprint(t_btree *tree, int type);
+
+int		ft_free_err(char **old, char **new);
+int		ft_pwd(void);
+int		ft_echo(const char *s, int flag);
+int		ft_cd(const char *path);
+int		ft_export(char *var, char ***env_curr);
+int		ft_unset(char *var, char ***env_curr);
+int		ft_env(char **envp);
+
+int	print_error(t_error);
+
+// tree_utils.c
+void	ft_treeclear(t_btree *tree, void (*del) (void *));
+void	ft_treeprint(t_btree *tree, int type);
 #endif

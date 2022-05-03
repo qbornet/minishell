@@ -73,6 +73,7 @@ int	ft_unset(char *var, char ***env_curr)
 	return (0);
 }
 
+/*
 int	main(int ac, char **av, char **envp)
 {
 	char	*str;
@@ -94,3 +95,4 @@ int	main(int ac, char **av, char **envp)
 	free(str);
 	return (0);
 }
+*/
