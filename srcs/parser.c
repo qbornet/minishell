@@ -1,21 +1,5 @@
 #include "minishell.h"
 
-//Tools
-void	ft_print_tokenlist(t_tokenlist *lst)
-{
-	t_tokenlist *tmp;
-
-	while (lst)
-	{
-		tmp = lst;
-		printf("lex : %s\nlen : %ld\ntype %d\n-------------------------------\n", lst->token->lex, lst->token->len, lst->token->type);
-		lst = lst->next;
-		free(tmp->token);
-		free(tmp);
-	}
-}
-//
-
 t_btree	*ft_newbtree(t_nodes *node)
 {
 	t_btree	*btree;
@@ -84,7 +68,12 @@ void	btree_addnode(t_btree **root, t_tokenlist **lst)
 
 void	next_step(char **envp, t_btree *root, t_tokenlist **lst)
 {
-	if (root->node->type == E_WORD || (root->right && root->right->node->type == E_WORD))
+	if (root->node->type != E_GREAT
+		&& root->node->type != E_LESS
+		&& root->node->type != E_DLESS
+		&& root->node->type != E_DGREAT
+		&& (root->node->type == E_WORD 
+		|| (root->right && root->right->node->type == E_WORD)))
 	{
 		if (root->right && root->right->node->type == E_WORD)
 			check_cmd(root->right->node->tokenlst, envp);
@@ -127,7 +116,7 @@ int main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	input = "echo               A=toto worlds && > echo la pluie";
+	input = "echo toto > outfile > outfile1 > outfile2 > outfile3 || ./toto -a yalalallalalall";
 	root = ft_buildtree(input, envp);
 	ft_treeprint(root, 0);
 	//printf("-------------\nlex = %s\nlen = %lu\n-------------\n", root->node->token->lex, root->node->token->len);

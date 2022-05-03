@@ -141,4 +141,5 @@ int	print_error(t_error);
 // tree_utils.c
 void	ft_treeclear(t_btree *tree, void (*del) (void *));
 void	ft_treeprint(t_btree *tree, int type);
+void	ft_print_tokenlist(t_tokenlist *lst);
 #endif
