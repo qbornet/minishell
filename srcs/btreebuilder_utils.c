@@ -4,11 +4,9 @@ t_btree	*ft_newbtree(t_nodes *node)
 {
 	t_btree	*btree;
 
-	btree = malloc(sizeof(btree));
+	btree = ft_calloc(1, sizeof(btree));
 	if (!btree)
 		return (NULL);
-	btree->left = NULL;
-	btree->right = NULL;
 	btree->node = node;
 	return (btree);
 }

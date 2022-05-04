@@ -28,7 +28,8 @@ SRCS = ft_tokenadd_back.c \
 	ft_tokennew.c \
 	ft_tokensize.c \
 	free_str_utils.c \
-	env_utils.c 
+	env_utils.c \
+	lexer_parser_main.c
 
 # File to create lexer part
 LEXER = lexer.c \
@@ -64,11 +65,18 @@ read: $(READOBJS) $(OBJS)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(OBJS) -lft -o $@
 	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
 
+test: $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS)
+	make -C $(LFT)
+	echo "-------------------"
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) -lft -o $@
+	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
+
 rclean:
 	$(RM) $(OBJS_DIR)
 	$(RM) read
 
 all: $(NAME)
+
 
 lexer: $(LEXEROBJS) $(OBJS)
 	make -C $(LFT)

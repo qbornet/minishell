@@ -2,10 +2,11 @@
 
 int	ft_lstexist(t_strlist **s_curr, char *str)
 {
-	int			i;
 	char		*data;
 	t_strlist	*strlst;
 
+	if (!str)
+		return (0);
 	strlst = *s_curr;
 	while (strlst)
 	{
@@ -86,13 +87,14 @@ int	ft_read_flow(t_btree *tree, t_strlist **s_curr)
 	int	res;
 
 	res = 0;
+	printf("tree: %p\n", tree);
 	if (tree && tree->node)
 	{
 		if (ft_read_flow(tree->left, s_curr) < 0)
 			return (-1);
-		if (tree->node->type == E_VALID_BUILTIN
+		if (tree && (tree->node->type == E_VALID_BUILTIN
 			|| tree->node->type == E_VALID_FILE
-			|| tree->node->type == E_WORD)
+			|| tree->node->type == E_WORD))
 		{
 			*s_curr = ft_create_lst(tree->node->tokenlst, s_curr);
 			if (!*s_curr)

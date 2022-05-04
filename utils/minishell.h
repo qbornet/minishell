@@ -141,6 +141,7 @@ char		*free_elt_tab(char **tab);
 char		*free_str_tab(char **tab, int index);
 /* AST_H */
 /* ft_strlist.c ft_read_flow.c */
+int			ft_read_flow(t_btree *tree, t_strlist **s_curr);
 int			ft_strlst_addback(\
 		t_strlist **lst_curr, void *data, enum e_token type);
 void		*ft_strlstclear(t_strlist **s_curr, void (*del) (void *));
