@@ -52,9 +52,9 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	(void)token;
-	input = "echo tata || (echo toto &&  echo bonjour)";
+	input = "echo tata || (echo toto && echo titi)";
 	root = buildbtree(input, envp);
-	root = root->left->left;
+	root = root->right->left;
 	//ft_treeprint(root, 0);
 	if (!root)
 	{
