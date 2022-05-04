@@ -10,15 +10,25 @@ void	next_step(char **envp, t_btree *root, t_tokenlist **lst)
 			|| (root->right && root->right->node->type == E_WORD)))
 	{
 		if (root && root->right && root->right->node->type == E_WORD)
-			check_cmd(root->right->node->tokenlst, envp);
+			check_cmd(root->right->node, envp);
 		else
-			check_cmd(root->node->tokenlst, envp);
+			check_cmd(root->node, envp);
 		*lst = (*lst)->next;
 		while (*lst && (*lst)->token->type == E_WORD)
 			*lst = (*lst)->next;
 	}
 	else
-		*lst = (*lst)->next;
+	{
+		if (root->right && root->right->left)
+		{
+			check_cmd(root->right->node, envp);
+			*lst = (*lst)->next;
+			while (*lst && (*lst)->token->type == E_WORD)
+				*lst = (*lst)->next;
+		}
+		else
+			*lst = (*lst)->next;
+	}
 }
 
 t_btree	*buildbtree(char **envp, t_tokenlist *lst)
@@ -52,7 +62,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	(void)token;
 
-	input = "echo tata || (echo toto && echo titi)";
+	input = "> outfile ls -l -a || ls -la";
 	lexical_analysis(input, &lst);
 	if (!lst)
 		return (0);

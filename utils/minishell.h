@@ -49,6 +49,7 @@ enum e_token
 	E_PIPE,
 	E_VALID_BUILTIN,
 	E_VALID_FILE,
+	E_FD,
 	E_UNKNOWN_WORD
 };
 
@@ -129,7 +130,7 @@ t_btree	*ft_newleaf(t_tokenlist *lst);
 void	btree_addnode(t_btree **root, t_tokenlist **lst);
 
 // Check for valid built-in, valid file in filesystem or unknow word; used in btreebuilder
-bool		check_cmd(t_tokenlist *lst, char **envp);
+bool		check_cmd(t_nodes *node, char **envp);
 
 // Check cmd utils
 char		*get_path(char **env, char *pg);

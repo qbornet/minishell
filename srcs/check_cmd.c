@@ -39,15 +39,25 @@ bool	is_valid_file(t_token *token, char **envp)
 	return (boolean);
 }
 
-bool	check_cmd(t_tokenlist *lst, char **envp)
+bool	check_cmd(t_nodes *node, char **envp)
 {
-	if (is_valid_builtin(lst->token))
-		lst->token->type = E_VALID_BUILTIN;
-	else if (is_valid_file(lst->token, envp))
-		lst->token->type = E_VALID_FILE;
+	if (is_valid_builtin(node->tokenlst->token))
+	{
+		node->tokenlst->token->type = E_VALID_BUILTIN;
+		node->type = E_VALID_BUILTIN;
+	}
+	else if (is_valid_file(node->tokenlst->token, envp))
+	{
+		node->tokenlst->token->type = E_VALID_FILE;
+		node->type = E_VALID_FILE;
+	}
 	else
-		lst->token->type = E_UNKNOWN_WORD;
-	if (lst->token->type == E_UNKNOWN_WORD)
+	{
+		node->tokenlst->token->type = E_UNKNOWN_WORD;
+		node->type = E_UNKNOWN_WORD;
+	}
+	if (node->tokenlst->token->type == E_UNKNOWN_WORD
+		|| node->type == E_UNKNOWN_WORD)
 		return (false);
 	return (true);
 }
