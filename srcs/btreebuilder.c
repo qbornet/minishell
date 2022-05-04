@@ -39,6 +39,7 @@ t_btree	*buildbtree(char **envp, t_tokenlist *lst)
 	return (root);
 }
 
+/*
 int	main(int ac, char **av, char **envp)
 {
 	char		*input;
@@ -65,7 +66,7 @@ int	main(int ac, char **av, char **envp)
 		free(tmp);
 	}
 
-	/*root = root->right->left;
+	root = root->right->left;
 	if (!root)
 	{
 		printf("no leaf here\n");
@@ -73,6 +74,6 @@ int	main(int ac, char **av, char **envp)
 	}
 	token = root->node->token;
 	printf("lex : %s\nlen: %lu\ntype: %d\n", token->lex, token->len, token->type);
-	*/
 	//printf("-------------\nlex = %s\nlen = %lu\n-------------\n", root->node->token->lex, root->node->token->len);
 }
+*/
