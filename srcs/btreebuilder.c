@@ -21,14 +21,10 @@ void	next_step(char **envp, t_btree *root, t_tokenlist **lst)
 		*lst = (*lst)->next;
 }
 
-t_btree	*buildbtree(char *input, char **envp)
+t_btree	*buildbtree(char **envp, t_tokenlist *lst)
 {
-	t_tokenlist	*lst;
 	t_btree		*root;
 
-	lexical_analysis(input, &lst);
-	if (!lst)
-		return (NULL);
 	root = ft_newleaf(lst);
 	if (!root)
 		return (NULL);
@@ -45,16 +41,30 @@ t_btree	*buildbtree(char *input, char **envp)
 
 int	main(int ac, char **av, char **envp)
 {
-	char	*input;
-	t_btree	*root;
-	t_token *token;
+	char		*input;
+	t_btree		*root;
+	t_token 	*token;
+	t_tokenlist	*lst;
+	t_tokenlist	*tmp;
 
 	(void)ac;
 	(void)av;
 	(void)token;
+
 	input = "echo tata || (echo toto && echo titi)";
-	root = buildbtree(input, envp);
+	lexical_analysis(input, &lst);
+	if (!lst)
+		return (0);
+	root = buildbtree(envp, lst);
 	ft_treeprint(root, 0);
+	while (lst)
+	{
+		tmp = lst;
+		lst = lst->next;
+		free(tmp->token);
+		free(tmp);
+	}
+
 	/*root = root->right->left;
 	if (!root)
 	{

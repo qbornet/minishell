@@ -120,7 +120,7 @@ int			is_token_2(char *input, t_token *token);
 void		lexical_analysis(char *input, t_tokenlist **lst);
 
 // Btree builder
-t_btree	*buildbtree(char *input, char **envp);
+t_btree	*buildbtree(char **envp, t_tokenlist *lst);
 
 // Btree utils
 t_btree	*ft_newbtree(t_nodes *node);

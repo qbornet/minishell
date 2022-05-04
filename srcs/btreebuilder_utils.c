@@ -4,7 +4,7 @@ t_btree	*ft_newbtree(t_nodes *node)
 {
 	t_btree	*btree;
 
-	btree = ft_calloc(1, sizeof(btree));
+	btree = ft_calloc(1, sizeof(t_btree));
 	if (!btree)
 		return (NULL);
 	btree->node = node;
@@ -15,7 +15,7 @@ t_nodes	*ft_newnodes(t_tokenlist *lst)
 {
 	t_nodes	*node;
 
-	node = malloc(sizeof(t_nodes));
+	node = ft_calloc(1, sizeof(t_nodes));
 	if (!node)
 		return (NULL);
 	node->tokenlst = lst;
@@ -34,7 +34,10 @@ t_btree	*ft_newleaf(t_tokenlist *lst)
 		return (NULL);
 	btree = ft_newbtree(node);
 	if (!btree)
+	{
+		free(node);
 		return (NULL);
+	}
 	return (btree);
 }
 
