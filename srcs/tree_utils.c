@@ -67,6 +67,20 @@ void	ft_treeprint(t_btree *tree, int type)
 	}
 }
 
+void	ft_print_tokenlist(t_tokenlist *lst)
+{
+	t_tokenlist *tmp;
+
+	while (lst)
+	{
+		tmp = lst;
+		printf("lex : %s\nlen : %ld\ntype %d\n-------------------------------\n", lst->token->lex, lst->token->len, lst->token->type);
+		lst = lst->next;
+		free(tmp->token);
+		free(tmp);
+	}
+}
+
 /*
 
 int	main(void)
