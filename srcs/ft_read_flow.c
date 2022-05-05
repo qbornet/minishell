@@ -1,26 +1,5 @@
 #include <minishell.h>
 
-int	ft_lstexist(t_strlist **s_curr, char *str)
-{
-	char		*data;
-	t_strlist	*strlst;
-
-	if (!str)
-		return (0);
-	strlst = *s_curr;
-	while (strlst)
-	{
-		data = strlst->data;
-		if (!ft_strncmp(data, str, ft_strlen(str)))
-		{
-			free(str);
-			return (1);
-		}
-		strlst = strlst->next;
-	}
-	return (0);
-}
-
 char	*ft_create_str(char *lex, size_t len)
 {
 	size_t	i;
@@ -53,9 +32,7 @@ t_strlist	*ft_create_lst(t_tokenlist *tokenlst, t_strlist **s_curr)
 		return (NULL);
 	str = ft_create_str(token->lex, token->len);
 	if (!str)
-		return (ft_strlstclear(&strlst, &free));
-	if (ft_lstexist(&strlst, str))
-		return (strlst);
+		return (ft_strclear(&strlst, &free));
 	if (!strlst)
 		strlst = ft_strlst_new(str, token->type);
 	else
@@ -68,16 +45,16 @@ int	ft_find_operator(t_btree *tree)
 {
 	if (tree && tree->node)
 	{
-		if (!tree->right)
-			return (-1);
 		if (tree->node->type == E_GREAT || tree->node->type == E_DGREAT)
 			return (1);
-		else if (tree->node->type == E_LESS)
-			return (2);
-		else if (tree->node->type == E_DLESS)
-			return (3);
 		else if (tree->node->type == E_AND_IF || tree->node->type == E_OR_IF)
+			return (2);
+		else if (tree->node->type == E_PIPE)
+			return (3);
+		else if (tree->node->type == E_LESS)
 			return (4);
+		else if (tree->node->type == E_DLESS)
+			return (5);
 	}
 	return (0);
 }
@@ -87,7 +64,6 @@ int	ft_read_flow(t_btree *tree, t_strlist **s_curr)
 	int	res;
 
 	res = 0;
-	printf("tree: %p\n", tree);
 	if (tree && tree->node)
 	{
 		if (ft_read_flow(tree->left, s_curr) < 0)
@@ -101,13 +77,12 @@ int	ft_read_flow(t_btree *tree, t_strlist **s_curr)
 				return (-1);
 		}
 		res = ft_find_operator(tree);
-		if (res > 0 && res < 4)
-			tree = tree->right;
-		else if (res == -1)
-			return (-1);
+		printf("res :%d\n", res);
+		if (res)
+			if (!tree->right)
+				return (-1);
 		if (ft_read_flow(tree->right, s_curr) < 0)
 			return (-1);
-		//else if (res == 3) here_doc
 	}
 	return (0);
 }

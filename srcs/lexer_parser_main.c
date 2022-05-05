@@ -1,5 +1,41 @@
 #include <minishell.h>
 
+
+int	lexer_parser_main(char *input, char **envp, t_data **d_curr)
+{
+	t_data	*frame;
+
+	frame = *d_curr;
+	lexical_analysis(input, &frame->tokenlst);
+	frame->root = buildbtree(envp, frame->tokenlst);
+	ft_treeprint(frame->root, 0);
+	if (ft_read_flow(frame->root, &frame->strlst) < 0)
+		return (-1); // parsing error (tmp pour le moment)
+	*d_curr = frame;
+	return (0);
+}
+/*
+// Juste pour tester la struct t_data
+char	**ft_dup_envp(char **envp)
+{
+	int		i;
+	char	**new_envp;
+
+	i = 0;
+	while (envp[i])
+		i++;
+	new_envp = (char **)ft_calloc(i + 1, sizeof(char *));
+	if (!new_envp)
+		return (NULL);
+	i = 0;
+	while (envp[i])
+	{
+		new_envp[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	return (new_envp);
+}
+
 void	print_strlst(t_strlist *strlst)
 {
 	printf("strlst: ");
@@ -13,30 +49,29 @@ void	print_strlst(t_strlist *strlst)
 
 int	main(int ac, char **av, char **envp)
 {
-	char		*input;
-	t_btree		*root;
-	t_strlist	*strlst;
-	t_tokenlist	*lst;
-	t_tokenlist	*tmp;
+	int		i;
+	t_data	*frame;
 
-	(void)ac;
-	(void)av;
-
-	input = "echo hello || echo hi";
-	lexical_analysis(input, &lst);
-	if (!lst)
+	if (ac != 2)
 		return (-1);
-	root = buildbtree(envp, lst);
-	//printf("root: %p\n", root);
-	ft_treeprint(root, 0);
-	ft_read_flow(root, &strlst);
-	print_strlst(strlst);
-	while (lst)
-	{
-		tmp = lst;
-		lst = lst->next;
-		free(tmp->token);
-		free(tmp);
-	}
+	i = 0;
+	frame = ft_calloc(1, sizeof(t_data));
+	frame->std_fd.stdin = dup(STDIN_FILENO);
+	frame->std_fd.stdout = dup(STDOUT_FILENO);
+	frame->std_fd.stderr = dup(STDERR_FILENO);
+	frame->envp = ft_dup_envp(envp);
+	if (!frame->envp)
+		return (-1);
+	if (lexer_parser_main(av[1], frame->envp, &frame) < 0)
+		return (-1);
+	print_strlst(frame->strlst);
+	ft_strclear(&frame->strlst, &free);
+	ft_treeclear(frame->root, &free);
+	ft_tokenclear(&frame->tokenlst, &free);
+	while (frame->envp[i])
+		free(frame->envp[i++]);
+	free(frame->envp);
+	free(frame);
 	return (0);
 }
+*/

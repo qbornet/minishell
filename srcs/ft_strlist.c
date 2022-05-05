@@ -36,7 +36,7 @@ int	ft_strlst_addback(t_strlist **lst_curr, void *data, enum e_token type)
 	return (0);
 }
 
-void	*ft_strlstclear(t_strlist **s_curr, void (*del) (void *))
+void	*ft_strclear(t_strlist **s_curr, void (*del) (void *))
 {
 	t_strlist	*tmp;
 	t_strlist	*strlst;

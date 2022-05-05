@@ -84,8 +84,12 @@ typedef struct s_strlist
 
 /* PARSER_H */
 // Node a mettre dans l'arbre binaire
+// Question de packing pas touche a braces c'est un bitfield de 1 + pad1 et pad2 sont la pour optimiser l'access
 typedef struct s_nodes
 {
+	short int		braces : 1;
+	short int		pad1;
+	int				pad2;
 	size_t			lentokenlist;
 	enum e_token	type;
 	t_token			*token;
@@ -99,6 +103,16 @@ typedef struct s_btree
 	struct s_btree	*left;
 	struct s_btree	*right;
 }	t_btree;
+
+// Notre struct "foure tout"
+typedef struct s_data
+{
+	char		**envp; // pas oublier a strdup le envp au debut
+	t_btree		*root;
+	t_termstd	std_fd;
+	t_strlist	*strlst;
+	t_tokenlist	*tokenlst;
+}	t_data;
 
 // Token list utils
 int			ft_tokentsize(t_tokenlist *lst);
@@ -145,7 +159,7 @@ char		*free_str_tab(char **tab, int index);
 int			ft_read_flow(t_btree *tree, t_strlist **s_curr);
 int			ft_strlst_addback(\
 		t_strlist **lst_curr, void *data, enum e_token type);
-void		*ft_strlstclear(t_strlist **s_curr, void (*del) (void *));
+void		*ft_strclear(t_strlist **s_curr, void (*del) (void *));
 t_strlist	*ft_strlst_new(void *data, enum e_token type);
 /* PARSER_H */
 /* parser.c tree_utils.c */
