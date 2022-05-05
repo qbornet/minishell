@@ -1,13 +1,20 @@
 #include "minishell.h"
 
+int	is_redirection(int type)
+{
+	if (type == E_GREAT
+		|| type == E_LESS
+		|| type == E_DGREAT
+		|| type == E_DLESS)
+		return (1);
+	return (0);
+}
+
 void	next_step(char **envp, t_btree *root, t_tokenlist **lst)
 {
-	if (root->node->type != E_GREAT
-		&& root->node->type != E_LESS
-		&& root->node->type != E_DLESS
-		&& root->node->type != E_DGREAT
+	if (!is_redirection(root->node->type)
 		&& (root->node->type == E_WORD
-			|| (root->right && root->right->node->type == E_WORD)))
+		|| (root->right && root->right->node->type == E_WORD)))
 	{
 		if (root && root->right && root->right->node->type == E_WORD)
 			check_cmd(root->right->node, envp);
@@ -27,7 +34,14 @@ void	next_step(char **envp, t_btree *root, t_tokenlist **lst)
 				*lst = (*lst)->next;
 		}
 		else
+		{
+			if (root->right && is_redirection(root->node->type))
+			{
+				root->right->node->type = E_FD;
+				root->right->node->tokenlst->token->type = E_FD;
+			}
 			*lst = (*lst)->next;
+		}
 	}
 }
 
@@ -49,7 +63,6 @@ t_btree	*buildbtree(char **envp, t_tokenlist *lst)
 	return (root);
 }
 
-/*
 int	main(int ac, char **av, char **envp)
 {
 	char		*input;
@@ -62,12 +75,24 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	(void)token;
 
-	input = "> outfile ls -l -a || ls -la";
+	input = "> outfile0 > outfile1 > outfile2 ls -a && (echo hello > outfile3 || echo tata > outfile4)";
 	lexical_analysis(input, &lst);
 	if (!lst)
 		return (0);
 	root = buildbtree(envp, lst);
 	ft_treeprint(root, 0);
+	/*
+	root = root->left;
+	if (!root)
+	{
+		printf("no leaf here\n");
+	}
+	else
+	{
+		token = root->node->token;
+		printf("lex : %s\nlen: %lu\ntype: %d\n", token->lex, token->len, token->type);
+	}
+	*/
 	while (lst)
 	{
 		tmp = lst;
@@ -75,15 +100,5 @@ int	main(int ac, char **av, char **envp)
 		free(tmp->token);
 		free(tmp);
 	}
-
-	root = root->right->left;
-	if (!root)
-	{
-		printf("no leaf here\n");
-		return (0);
-	}
-	token = root->node->token;
-	printf("lex : %s\nlen: %lu\ntype: %d\n", token->lex, token->len, token->type);
 	//printf("-------------\nlex = %s\nlen = %lu\n-------------\n", root->node->token->lex, root->node->token->len);
 }
-*/
