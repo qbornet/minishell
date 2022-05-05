@@ -28,7 +28,7 @@ void	next_step(char **envp, t_btree *root, t_tokenlist **lst)
 	{
 		if (root->right && root->right->left)
 		{
-			check_cmd(root->right->node, envp);
+			//check_cmd(root->right->node, envp);
 			*lst = (*lst)->next;
 			while (*lst && (*lst)->token->type == E_WORD)
 				*lst = (*lst)->next;
@@ -63,6 +63,7 @@ t_btree	*buildbtree(char **envp, t_tokenlist *lst)
 	return (root);
 }
 
+/*
 int	main(int ac, char **av, char **envp)
 {
 	char		*input;
@@ -81,7 +82,6 @@ int	main(int ac, char **av, char **envp)
 		return (0);
 	root = buildbtree(envp, lst);
 	ft_treeprint(root, 0);
-	/*
 	root = root->left;
 	if (!root)
 	{
@@ -92,7 +92,6 @@ int	main(int ac, char **av, char **envp)
 		token = root->node->token;
 		printf("lex : %s\nlen: %lu\ntype: %d\n", token->lex, token->len, token->type);
 	}
-	*/
 	while (lst)
 	{
 		tmp = lst;
@@ -102,3 +101,4 @@ int	main(int ac, char **av, char **envp)
 	}
 	//printf("-------------\nlex = %s\nlen = %lu\n-------------\n", root->node->token->lex, root->node->token->len);
 }
+*/
