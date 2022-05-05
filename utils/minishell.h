@@ -50,7 +50,8 @@ enum e_token
 	E_VALID_BUILTIN,
 	E_VALID_FILE,
 	E_FD,
-	E_UNKNOWN_WORD
+	E_CONTINUE,
+	E_ERROR
 };
 
 typedef struct s_token {
@@ -138,10 +139,11 @@ void		lexical_analysis(char *input, t_tokenlist **lst);
 t_btree	*buildbtree(char **envp, t_tokenlist *lst);
 
 // Btree utils
-t_btree	*ft_newbtree(t_nodes *node);
-t_nodes	*ft_newnodes(t_tokenlist *lst);
-t_btree	*ft_newleaf(t_tokenlist *lst);
-void	btree_addnode(t_btree **root, t_tokenlist **lst);
+t_btree		*ft_newbtree(t_nodes *node);
+t_nodes		*ft_newnodes(t_tokenlist *lst);
+t_btree		*ft_newleaf(t_tokenlist *lst);
+void		btree_addnode(t_btree **root, t_tokenlist **lst);
+int			is_redirection(int type);
 
 // Check for valid built-in, valid file in filesystem or unknow word; used in btreebuilder
 bool		check_cmd(t_nodes *node, char **envp);

@@ -76,22 +76,24 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	(void)token;
 
-	input = "> outfile0 > outfile1 > outfile2 ls -a && (echo hello > outfile3 || echo tata > outfile4)";
+	//input = "> outfile0 > outfile1 > outfile2 ls -a && (echo hello > outfile3 || echo tata > outfile4)";
+	//input = "| > outfile echo hello world";
+	input = "echo hello && > outfile";
 	lexical_analysis(input, &lst);
 	if (!lst)
 		return (0);
 	root = buildbtree(envp, lst);
 	ft_treeprint(root, 0);
-	root = root->left;
-	if (!root)
-	{
-		printf("no leaf here\n");
-	}
-	else
-	{
-		token = root->node->token;
-		printf("lex : %s\nlen: %lu\ntype: %d\n", token->lex, token->len, token->type);
-	}
+	//root = root->left;
+	//if (!root)
+	//{
+	//	printf("no leaf here\n");
+	//}
+	//else
+	//{
+	//	token = root->node->token;
+	//	printf("lex : %s\nlen: %lu\ntype: %d\n", token->lex, token->len, token->type);
+	//}
 	while (lst)
 	{
 		tmp = lst;
