@@ -51,13 +51,5 @@ bool	check_cmd(t_nodes *node, char **envp)
 		node->tokenlst->token->type = E_VALID_FILE;
 		node->type = E_VALID_FILE;
 	}
-	else if (node->type != E_LBRACE && node->type != E_RBRACE)
-	{
-		node->tokenlst->token->type = E_UNKNOWN_WORD;
-		node->type = E_UNKNOWN_WORD;
-	}
-	if (node->tokenlst->token->type == E_UNKNOWN_WORD
-		|| node->type == E_UNKNOWN_WORD)
-		return (false);
 	return (true);
 }

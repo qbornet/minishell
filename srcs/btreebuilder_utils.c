@@ -19,6 +19,8 @@ t_nodes	*ft_newnodes(t_tokenlist *lst)
 	if (!node)
 		return (NULL);
 	node->tokenlst = lst;
+	if (!lst)
+		return (node);
 	node->token = node->tokenlst->token;
 	node->type = node->token->type;
 	return (node);
@@ -59,6 +61,33 @@ void	btree_addnode(t_btree **root, t_tokenlist **lst)
 		return ;
 	if (!is_word_or_brace(leaf->node->type))
 	{
+		if (!(*root)->right && !is_word_or_brace((*root)->node->type)
+			&& (*root)->node->type != E_VALID_BUILTIN
+			&& (*root)->node->type != E_VALID_FILE)
+		{
+			(*root)->right = ft_newleaf(NULL);
+			if (!(*root)->right)
+			{
+				free(leaf->node);
+				free(leaf);
+				return ;
+			}
+			(*root)->right->node->type = E_CONTINUE;
+		}
+		if (!(*root)->left && !is_word_or_brace((*root)->node->type)
+			&& (*root)->node->type != E_VALID_BUILTIN
+			&& (*root)->node->type != E_VALID_FILE
+			&& !is_redirection((*root)->node->type))
+		{
+			(*root)->left = ft_newleaf(NULL);
+			if (!(*root)->left)
+			{
+				free(leaf->node);
+				free(leaf);
+				return ;
+			}
+			(*root)->left->node->type = E_ERROR;
+		}
 		leaf->left = *root;
 		*root = leaf;
 	}

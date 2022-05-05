@@ -111,7 +111,6 @@ int	main(int ac, char **av, char **envp)
 		free(tmp->token);
 		free(tmp);
 	}
-	printf("E_VALID_BUILTIN : %d\nE_VALID_FILE : %d\nE_UNKNOWN_WORD : %d\n", E_VALID_BUILTIN, E_VALID_FILE, E_UNKNOWN_WORD);
 	return (0);
 }
 */
