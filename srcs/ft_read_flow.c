@@ -25,10 +25,11 @@ t_strlist	*ft_create_lst(t_tokenlist *tokenlst, t_strlist **s_curr)
 		return (NULL);
 	strlst = *s_curr;
 	token = tokenlst->token;
-	if (token && (token->type == E_AND_IF
+	if (token && (token->type == E_AND_IF || token->type == E_PIPE
 			|| token->type == E_OR_IF || token->type == E_GREAT
 			|| token->type == E_DGREAT || token->type == E_LESS
-			|| token->type == E_DLESS || token->type == E_EOI))
+			|| token->type == E_DLESS || token->type == E_EOI
+			|| token->type == E_LBRACE || token->type == E_RBRACE))
 		return (NULL);
 	str = ft_create_str(token->lex, token->len);
 	if (!str)
@@ -69,15 +70,16 @@ int	ft_read_flow(t_btree *tree, t_strlist **s_curr)
 		if (ft_read_flow(tree->left, s_curr) < 0)
 			return (-1);
 		if (tree && (tree->node->type == E_VALID_BUILTIN
-			|| tree->node->type == E_VALID_FILE
-			|| tree->node->type == E_WORD))
+				|| tree->node->type == E_VALID_FILE
+				|| tree->node->type == E_WORD))
 		{
 			*s_curr = ft_create_lst(tree->node->tokenlst, s_curr);
 			if (!*s_curr)
 				return (-1);
 		}
+		else if (tree && tree->node->type == E_ERROR)
+			return (-1);
 		res = ft_find_operator(tree);
-		printf("res :%d\n", res);
 		if (res)
 			if (!tree->right)
 				return (-1);

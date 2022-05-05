@@ -1,5 +1,24 @@
 #include <minishell.h>
 
+int	ft_free_parser_error(t_data **d_curr)
+{
+	int		i;
+	t_data	*frame;
+
+	i = 0;
+	frame = *d_curr;
+	close(frame->std_fd.stdin);
+	close(frame->std_fd.stdout);
+	close(frame->std_fd.stderr);
+	ft_strclear(&frame->strlst, &free);
+	ft_treeclear(frame->root, &free);
+	ft_tokenclear(&frame->tokenlst, &free);
+	while (frame->envp[i])
+		free(frame->envp[i++]);
+	free(frame->envp);
+	free(frame);
+	return (-1);
+}
 
 int	lexer_parser_main(char *input, char **envp, t_data **d_curr)
 {
@@ -10,11 +29,11 @@ int	lexer_parser_main(char *input, char **envp, t_data **d_curr)
 	frame->root = buildbtree(envp, frame->tokenlst);
 	ft_treeprint(frame->root, 0);
 	if (ft_read_flow(frame->root, &frame->strlst) < 0)
-		return (-1); // parsing error (tmp pour le moment)
+		return (ft_free_parser_error(&frame)); // parsing error (tmp pour le moment)
 	*d_curr = frame;
 	return (0);
 }
-/*
+
 // Juste pour tester la struct t_data
 char	**ft_dup_envp(char **envp)
 {
@@ -65,13 +84,6 @@ int	main(int ac, char **av, char **envp)
 	if (lexer_parser_main(av[1], frame->envp, &frame) < 0)
 		return (-1);
 	print_strlst(frame->strlst);
-	ft_strclear(&frame->strlst, &free);
-	ft_treeclear(frame->root, &free);
-	ft_tokenclear(&frame->tokenlst, &free);
-	while (frame->envp[i])
-		free(frame->envp[i++]);
-	free(frame->envp);
-	free(frame);
+	ft_free_parser_error(&frame);
 	return (0);
 }
-*/
