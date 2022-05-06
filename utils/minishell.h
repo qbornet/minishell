@@ -169,6 +169,10 @@ void		ft_treeclear(t_btree *tree, void (*del) (void *));
 void		ft_treeprint(t_btree *tree, int type);
 void		ft_print_tokenlist(t_tokenlist *lst);
 
+/* EXPANSION_H */
+/* expansion.c */
+int			start_expansion(t_data **d_curr);
+
 /* BIN_H */
 int			ft_free_err(char **old, char **new);
 int			ft_pwd(void);
