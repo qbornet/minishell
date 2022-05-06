@@ -158,13 +158,16 @@ char		*free_elt_tab(char **tab);
 char		*free_str_tab(char **tab, int index);
 /* AST_H */
 /* ft_strlist.c ft_read_flow.c */
+int			ft_find_operator(t_btree *tree);
 int			ft_read_flow(t_btree *tree, t_strlist **s_curr);
 int			ft_strlst_addback(\
 		t_strlist **lst_curr, void *data, enum e_token type);
 void		*ft_strclear(t_strlist **s_curr, void (*del) (void *));
+char		*ft_create_str(char *lex, size_t len);
 t_strlist	*ft_strlst_new(void *data, enum e_token type);
 /* PARSER_H */
 /* parser.c tree_utils.c */
+void		ft_treesearch(t_btree *tree, char *to_find);
 void		ft_treeclear(t_btree *tree, void (*del) (void *));
 void		ft_treeprint(t_btree *tree, int type);
 void		ft_print_tokenlist(t_tokenlist *lst);

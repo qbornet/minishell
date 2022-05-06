@@ -1,5 +1,11 @@
 #include "minishell.h"
 
+static int free_ret(char *str)
+{
+	free(str);
+	return (1);
+}
+
 /* Fonction qui free tout l'arbre
  * @param: tree
  * - L'arbre qu'ont veut free
@@ -37,20 +43,11 @@ void	ft_treeclear(t_btree *tree, void (*del) (void *))
 void	ft_treeprint(t_btree *tree, int type)
 {
 	static int	node_pos;
-	static int	lst_pos;
-	t_tokenlist	*lst;
 
 	if (tree && !type)
 	{
 		ft_treeprint(tree->left, type);
 		printf("node %p[%d]:\n\e[20G-	type: %d\n\e[20G-	token: %p\n\n", tree, node_pos++, tree->node->type, tree->node->token);
-		lst = tree->node->tokenlst;
-		lst_pos = 0;
-		while (lst)
-		{
-			printf("\e[20G-elt tokenlist %p[%d]: %s\n\e[20G-elt len : %zu, elt type : %d\n", lst, lst_pos++, lst->token->lex, lst->token->len, lst->token->type);
-			lst = lst->next;
-		}
 		ft_treeprint(tree->right, type);
 	}
 	else if (tree && type == 1)
@@ -65,6 +62,36 @@ void	ft_treeprint(t_btree *tree, int type)
 		ft_treeprint(tree->right, type);
 		printf("node %p[%d]:\n\e[20G-	type: %d\n\e[20G-	token: %p\n\e[20G-	lex: %s\n\e[20G-	len: %zu\n\n", tree, node_pos++, tree->node->type, tree->node->token, tree->node->token->lex, tree->node->token->len);
 	}
+}
+
+void	ft_treesearch(t_btree *tree, char *to_find)
+{
+	int		ret;
+	char	*str;
+
+	if (tree && tree->node)
+	{
+		ret = ft_treesearch(tree->left, to_find);
+		if (ret == 1)
+		{
+			if (ft_find_operator(tree) != 2 && ft_find_operator(tree) != 3)
+				return (0);
+			return (3);
+		}
+		else if (ret == 3)
+			return (3);
+		str = ft_create_str(tree->node->token->lex, tree->node->token->len);
+		if (tree->node->type == E_WORD
+			&& !ft_strncmp(str, to_find, ft_strlen(to_find)))
+			return (free_ret(str));
+		free(str);
+		ret = ft_treesearch(tree->right, to_find);
+		if (ret == 1)
+			return (1);
+		else if (ret == 3)
+			return (3);
+	}
+	return (0);
 }
 
 void	ft_print_tokenlist(t_tokenlist *lst)
