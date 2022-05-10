@@ -27,11 +27,9 @@ int	lexer_parser_main(char *input, char **envp, t_data **d_curr)
 	frame = *d_curr;
 	lexical_analysis(input, &frame->tokenlst);
 	frame->root = buildbtree(envp, frame->tokenlst);
-	ft_treeprint(frame->root, 0);
 	if (ft_read_flow(frame->root, &frame->strlst) < 0)
 		return (ft_free_parser_error(&frame));
 	*d_curr = frame;
-	start_expansion(d_curr);
 	return (0);
 }
 

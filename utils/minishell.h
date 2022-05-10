@@ -109,6 +109,7 @@ typedef struct s_btree
 typedef struct s_data
 {
 	char		**envp; // pas oublier a strdup le envp au debut
+	char		**var_pool;
 	t_btree		*root;
 	t_termstd	std_fd;
 	t_strlist	*strlst;
@@ -158,10 +159,12 @@ char		*free_elt_tab(char **tab);
 char		*free_str_tab(char **tab, int index);
 /* AST_H */
 /* ft_strlist.c ft_read_flow.c */
+int			lexer_parser_main(char *input, char **envp, t_data **d_curr);
 int			ft_find_operator(t_btree *tree);
 int			ft_read_flow(t_btree *tree, t_strlist **s_curr);
 int			ft_strlst_addback(\
 		t_strlist **lst_curr, void *data, enum e_token type);
+void		ft_strdelone(t_strlist *strlst, void (*del) (void *));
 void		*ft_strclear(t_strlist **s_curr, void (*del) (void *));
 char		*ft_create_str(char *lex, size_t len);
 t_strlist	*ft_strlst_new(void *data, enum e_token type);
@@ -173,8 +176,10 @@ void		ft_treeprint(t_btree *tree, int type);
 void		ft_print_tokenlist(t_tokenlist *lst);
 
 /* EXPANSION_H */
-/* expansion.c */
+/* expansion.c expansion_utils.c */
 int			start_expansion(t_data **d_curr);
+void		ft_move_node(t_data **d_curr, t_strlist **s_curr);
+size_t		ft_len_var(char *str);
 
 /* BIN_H */
 int			ft_free_err(char **old, char **new);

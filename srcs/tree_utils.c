@@ -1,10 +1,12 @@
 #include "minishell.h"
 
+/*
 static int free_ret(char *str)
 {
 	free(str);
 	return (1);
 }
+*/
 
 /* Fonction qui free tout l'arbre
  * @param: tree
@@ -64,6 +66,7 @@ void	ft_treeprint(t_btree *tree, int type)
 	}
 }
 
+/*
 void	ft_treesearch(t_btree *tree, char *to_find)
 {
 	int		ret;
@@ -93,6 +96,7 @@ void	ft_treesearch(t_btree *tree, char *to_find)
 	}
 	return (0);
 }
+*/
 
 void	ft_print_tokenlist(t_tokenlist *lst)
 {

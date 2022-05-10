@@ -52,3 +52,14 @@ void	*ft_strclear(t_strlist **s_curr, void (*del) (void *))
 	*s_curr = NULL;
 	return (NULL);
 }
+
+void	ft_strdelone(t_strlist *strlst, void (*del) (void *))
+{
+	if (!del)
+		return ;
+	if (strlst)
+	{
+		del(strlst->data);
+		free(strlst);
+	}
+}

@@ -45,6 +45,10 @@ BTREE = btreebuilder.c \
 READ = ft_read_flow.c \
 	   ft_strlist.c
 
+# File to create expansion part
+EXPAN = expansion.c \
+		expansion_utils.c
+
 GREEN   = \033[1;32m
 WHITE   = \033[0;m
 
@@ -53,11 +57,18 @@ WHITE   = \033[0;m
 # Header files
 UTILS = $(UTILS_DIR)/$(addsufix .h, $(NAME))
 
+EXPANOBJS = $(EXPAN:%.c=$(OBJS_DIR)/%.o)
 READOBJS = $(READ:%.c=$(OBJS_DIR)/%.o)
 LEXEROBJS = $(LEXER:%.c=$(OBJS_DIR)/%.o)
 BTREEOBJS = $(BTREE:%.c=$(OBJS_DIR)/%.o)
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS = $(OBJS:%.o=%.d)
+
+expan:	$(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS)
+	make -C $(LFT)
+	echo "-------------------"
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(EXPANOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) -lft -o $@
+	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
 
 read: $(READOBJS) $(OBJS)
 	make -C $(LFT)
