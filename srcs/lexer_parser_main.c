@@ -66,14 +66,13 @@ void	print_strlst(t_strlist *strlst)
 	printf("NULL\n");
 }
 
+/*
 int	main(int ac, char **av, char **envp)
 {
-	int		i;
 	t_data	*frame;
 
 	if (ac != 2)
 		return (-1);
-	i = 0;
 	frame = ft_calloc(1, sizeof(t_data));
 	frame->std_fd.stdin = dup(STDIN_FILENO);
 	frame->std_fd.stdout = dup(STDOUT_FILENO);
@@ -87,3 +86,4 @@ int	main(int ac, char **av, char **envp)
 	ft_free_parser_error(&frame);
 	return (0);
 }
+*/
