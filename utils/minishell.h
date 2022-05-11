@@ -35,7 +35,6 @@ enum e_token
 	E_INIT = 300,
 	E_WORD,
 	E_ASSIGNMENT_WORD,
-	E_EXPANSION,
 	E_AND_IF,
 	E_OR_IF,
 	E_DLESS,
@@ -168,6 +167,9 @@ t_strlist	*ft_strlst_new(void *data, enum e_token type);
 void		ft_treeclear(t_btree *tree, void (*del) (void *));
 void		ft_treeprint(t_btree *tree, int type);
 void		ft_print_tokenlist(t_tokenlist *lst);
+
+/* EXPANSION_H */
+void		expand(t_strlist *strlst, char **env);
 
 /* BIN_H */
 int			ft_free_err(char **old, char **new);

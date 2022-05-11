@@ -21,19 +21,44 @@ char	*check_var_env(char **env, char *var_name)
 	return (*env);
 }
 
-void	expand(char *to_expand)
+void	expand(t_strlist *strlst, char **env)
 {
-}
-
-int	main(int ac, char **av, char **env)
-{
-	(void)env;
-	(void)av;
-	(void)ac;
+	char	*s;
+	int		len;
+	char	*tmp;
+	int		tmplen;
 	char	*result;
-	char	*s = "$NOM ! Pseudo : $PSEUDO.";
 
-	result = varexp(s, env);
-	printf("%s\n", result);
-	return (-1);
+	while (strlst)
+	{
+		s = (char *)strlst->data;
+		while (*s && *s != '$')
+			s++;
+		if (*s == '$')
+		{
+			tmp = check_var_env(env, s + 1);
+			if (tmp)
+			{
+				while (*tmp && *tmp != '=')
+					tmp++;
+				tmp++;
+				tmplen = ft_strlen(tmp);
+				len = s - (char *)strlst->data + tmplen;
+				tmplen = len - tmplen;
+				result = ft_calloc(len + 1, sizeof(char));
+				if (!result)
+					return ;
+				while (len--)
+				{
+					if (len >= tmplen)
+						result[len] = tmp[len - tmplen];
+					else
+						result[len] = ((char *)strlst->data)[len];
+				}
+				free(strlst->data);	
+				strlst->data = result;
+			}
+		}
+		strlst = strlst->next;
+	}
 }
