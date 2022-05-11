@@ -1,57 +1,28 @@
 #include "minishell.h"
 
-char	*check_var(char **env, char *var_name, int len)
-{
-	int		i;
-
-	i = 0;
-	if (!env)
-		return (NULL);
-	while (env[i] && ft_strncmp(env[i], var_name, len))
-	{
-		i++;
-	}
-	return (env[i]);
-}
-
-int	ft_var_len(char *s)
+int	ft_varlen(char *s)
 {
 	char *tmp;
 
+	if (!s)
+		return (0);
 	tmp = s;
-	while (*s != ' ')
+	while (*s && *s != '=')
 		s++;
 	return (s - tmp);
 }
 
-char	*varexp(char *to_expand, char **env)
+char	*check_var_env(char **env, char *var_name)
 {
-	char	*tmp;
-	char	*tmp2;
-	int		len;
-
-	(void)env;
-	tmp = to_expand;
-	while (*to_expand)
-	{
-		if (*to_expand == '$')
-		{
-			len = ft_var_len(to_expand);
-			tmp2 = check_var(env, to_expand + 1, len - 1);
-			tmp = ft_strjoin(
-		}
-		to_expand++;
-	}
-	return (tmp);
+	if (!env)
+		return (NULL);
+	while (*env && ft_strncmp(*env, var_name, ft_varlen(*env)))
+		env++;
+	return (*env);
 }
 
-int	is_local_var(char **vars, char *to_find)
+void	expand(char *to_expand)
 {
-	while (*vars && ft_strncmp(*vars, to_find, ft_strlen(to_find)))
-		vars++;
-	if (!*vars)
-		return (0);
-	return (1);
 }
 
 int	main(int ac, char **av, char **env)
@@ -59,11 +30,10 @@ int	main(int ac, char **av, char **env)
 	(void)env;
 	(void)av;
 	(void)ac;
-	char *s = "Bonjour $NOM ! Comment tu vas ? Mon pseudo : $PSEUDO";
-	char *tmp;
+	char	*result;
+	char	*s = "$NOM ! Pseudo : $PSEUDO.";
 
-	tmp = varexp(s, env);
-	printf("%s\n", tmp);
-	//free(tmp);
+	result = varexp(s, env);
+	printf("%s\n", result);
 	return (-1);
 }
