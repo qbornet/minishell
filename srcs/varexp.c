@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	ft_varlen(char *s)
+size_t	ft_varlen(char *s)
 {
 	char	*tmp;
 
@@ -12,13 +12,24 @@ int	ft_varlen(char *s)
 	return (s - tmp);
 }
 
-char	*check_var_env(char **env, char *var_name)
+char	*check_intab(char **tab, char *var_name)
 {
-	if (!env)
+	size_t	len;
+	size_t	var_len;
+
+	if (!tab)
 		return (NULL);
-	while (*env && ft_strncmp(*env, var_name, ft_varlen(*env)))
-		env++;
-	return (*env);
+	var_len = ft_strlen(var_name);
+	while (*tab)
+	{
+		len = ft_varlen(*tab);
+		if (len < var_len)
+			len = var_len;
+		if (!ft_strncmp(*tab, var_name, len))
+			break ;
+		tab++;
+	}
+	return (*tab);
 }
 
 void	new_data(char *tmp, int len, t_strlist **strlst, char *result)
@@ -28,36 +39,36 @@ void	new_data(char *tmp, int len, t_strlist **strlst, char *result)
 	size = len - ft_strlen(tmp);
 	while (len--)
 	{
-		if (len >= size)
+		if (tmp && len >= size)
 			result[len] = tmp[len - size];
 		else
 			result[len] = ((char *)(*strlst)->data)[len];
 	}
 }
 
-char	*expand_var(char **s, t_strlist **strlst, char **env)
+char	*expand_var(char **s, t_strlist **strlst, char **env, t_data *frame)
 {
 	int		len;
 	char	*tmp;
 	char	*result;
 
 	result = NULL;
-	tmp = check_var_env(env, *s + 1);
-	if (tmp)
-	{
-		while (*tmp && *tmp != '=')
-			tmp++;
+	tmp = check_intab(env, *s + 1);
+	if (!tmp)
+		check_intab(frame->var_pool, *s + 1);
+	while (tmp && *tmp && *tmp != '=')
 		tmp++;
-		len = *s - (char *)(*strlst)->data + ft_strlen(tmp);
-		result = ft_calloc(len + 1, sizeof(char));
-		if (!result)
-			return (NULL);
-		new_data(tmp, len, strlst, result);
-	}
+	if (tmp)
+		tmp++;
+	len = *s - (char *)(*strlst)->data + ft_strlen(tmp);
+	result = ft_calloc(len + 1, sizeof(char));
+	if (!result)
+		return (NULL);
+	new_data(tmp, len, strlst, result);
 	return (result);
 }
 
-void	expand(t_strlist *strlst, char **env)
+void	expand(t_strlist *strlst, char **env, t_data *frame)
 {
 	char	*s;
 	char	*result;
@@ -69,7 +80,7 @@ void	expand(t_strlist *strlst, char **env)
 			s++;
 		if (*s == '$')
 		{
-			result = expand_var(&s, &strlst, env);
+			result = expand_var(&s, &strlst, env, frame);
 			free(strlst->data);
 			strlst->data = result;
 		}

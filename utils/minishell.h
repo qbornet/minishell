@@ -108,6 +108,7 @@ typedef struct s_btree
 typedef struct s_data
 {
 	char		**envp; // pas oublier a strdup le envp au debut
+	char 		**var_pool;
 	t_btree		*root;
 	t_termstd	std_fd;
 	t_strlist	*strlst;
@@ -169,7 +170,7 @@ void		ft_treeprint(t_btree *tree, int type);
 void		ft_print_tokenlist(t_tokenlist *lst);
 
 /* EXPANSION_H */
-void		expand(t_strlist *strlst, char **env);
+void		expand(t_strlist *strlst, char **env, t_data *frame);
 
 /* BIN_H */
 int			ft_free_err(char **old, char **new);
