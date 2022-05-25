@@ -41,7 +41,8 @@ BTREE = btreebuilder.c \
 	tree_utils.c \
 	check_cmd.c
 
-VAREXP = varexp.c
+VAREXP = varexp.c \
+	varexp_utils.c
 
 # File to create read parser part
 READ = ft_read_flow.c \
