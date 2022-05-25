@@ -1,89 +1,96 @@
 #include "minishell.h"
-#include <sys/types.h>
-#include <dirent.h>
 
-int	ft_strstarcmp(const char *s1, const char *s2, size_t n)
+static int	is_star(char *s)
 {
-	size_t	i;
-	size_t	j;
-	size_t	len;
-	size_t	lens2;
-	int		cmp;
-
-	i = 0;
-	while (s1[i] && s1[i] != '*')
-		i++;
-	if (i > n - 1)
+	while (*s)
 	{
-	//	printf("end 0\n");
-		return (ft_strncmp(s1, s2, n));
-	}
-	cmp = ft_strncmp(s1, s2, i);
-	if (cmp)
-	{
-	//	printf("end 1\n");
-		return (1);
-	}
-	lens2 = ft_strlen(s2);
-	j = 0;
-	while (s1[i])
-	{
-		while (s1[i] == '*')
-			i++;
-		len = 0;
-		while (s1[i + len] && s1[i + len] != '*')
-			len++;
-		cmp = ft_strncmp(s1 + i, s2 + j, len);
-		while (s2[j] && cmp && j + len < lens2)
-		{
-			j++;
-			cmp = ft_strncmp(s1 + i, s2 + j, len);
-		}
-		if (cmp)
-		{
-	//		printf("end 2 \n");
+		if (*s == '*')
 			return (1);
-		}
-		i += len;
-		j += len;
+		s++;
 	}
-	if (cmp)
-	{
-	//	printf("end 3\n");
-		return (1);
-	}
-	return (cmp);
+	return (0);
 }
 
-int	get_file(char *s)
+static char	*add_str(char ***ptr, char *s)
 {
-	size_t			len;
+	char	*stmp;
+	char	**ttmp;
+	size_t	len;
+
+	stmp = ft_strdup(s);
+	if (!stmp)
+		return (free_str_tab(*ptr, 0));
+	len = 0;
+	while ((*ptr)[len])
+		len++;
+	ttmp = malloc(sizeof(char *) * (len + 2));
+	if (!ttmp)
+	{
+		free(stmp);
+		return (free_str_tab(*ptr, 0));
+	}
+	len = -1;
+	while ((*ptr)[++len])
+		ttmp[len] = (*ptr)[len];
+	ttmp[len] = stmp;
+	ttmp[len + 1] = NULL;
+	free(*ptr);
+	(*ptr) = ttmp;
+	return (NULL);
+}
+
+int	starexp(char *s, char ***tab)
+{
 	size_t			l;
+	size_t			len;
 	DIR				*dir;
 	struct dirent	*dr;
 
 	len = ft_strlen(s);
 	dir = opendir(".");
+	if (!dir)
+		return (0);
 	dr = readdir(dir);
 	while (dr)
 	{
+		while ((dr->d_name)[0] == '.' && s[0] != '.')
+			dr = readdir(dir);
 		l = len;
 		if (ft_strlen(dr->d_name) >= len)
 			l = ft_strlen(dr->d_name);
-		if (!ft_strstarcmp(s, dr->d_name, l))
-			printf("%s\n", dr->d_name);
+		if (is_star(s) && !ft_starexp(s, dr->d_name, l))
+			add_str(tab, dr->d_name);
+		else if (!is_star(s) && !ft_strncmp(s, dr->d_name, l))
+			add_str(tab, dr->d_name);
 		dr = readdir(dir);
 	}
-	return (0);
+	return (closedir(dir));
 }
 
+/*
 int	main(int ac, char **av)
 {
+	char	**tab;
+	int		i;
+
 	if (ac != 2)
 	{
 		printf("Provide args\n");
 		return (-1);
 	}
-	get_file(av[1]);
+	tab = malloc(sizeof(char *));
+	if (!tab)
+		return (0);
+	tab[0] = NULL;
+	starexp(av[1], &tab);
+	i = 0;
+	while (tab[i])
+	{
+		printf("%s ", tab[i]);
+		i++;
+	}
+	free_str_tab(tab, 0);
+	printf("\n");
 	return (0);
 }
+*/

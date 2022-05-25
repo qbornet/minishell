@@ -11,7 +11,7 @@ UTILS_DIR = utils
 
 # Utils
 CC = clang
-CFLAGS = -MMD -Wall -Wextra -Werror -g3
+CFLAGS = -MMD -Wall -Wextra -Werror -g3 -fsanitize=address
 CPPFLAGS = -I ./$(UTILS_DIR) -I ./libft/utils
 LDFLAGS = -L ./libft
 RM = rm -rf
@@ -27,9 +27,11 @@ SRCS = ft_tokenadd_back.c \
 	ft_tokenlast.c \
 	ft_tokennew.c \
 	ft_tokensize.c \
-	free_str_utils.c \
 	env_utils.c \
 	lexer_parser_main.c
+
+# Tools
+TOOLS = free_str_utils.c
 
 # File to create lexer part
 LEXER = lexer.c \
@@ -41,7 +43,8 @@ BTREE = btreebuilder.c \
 	tree_utils.c \
 	check_cmd.c
 
-STAR = starexp.c
+STAR = starexp.c \
+	starexp_utils.c
 
 # File to create read parser part
 READ = ft_read_flow.c \
@@ -59,6 +62,7 @@ READOBJS = $(READ:%.c=$(OBJS_DIR)/%.o)
 LEXEROBJS = $(LEXER:%.c=$(OBJS_DIR)/%.o)
 BTREEOBJS = $(BTREE:%.c=$(OBJS_DIR)/%.o)
 STAROBJS = $(STAR:%.c=$(OBJS_DIR)/%.o)
+TOOLSOBJS = $(TOOLS:%.c=$(OBJS_DIR)/%.o)
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS = $(OBJS:%.o=%.d)
 
@@ -74,10 +78,10 @@ test: $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) -lft -o $@
 	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
 
-star: $(STAROBJS)
+star: $(STAROBJS) $(TOOLSOBJS)
 	make -C $(LFT)
 	echo "-------------------"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(STAROBJS) -lft -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TOOLSOBJS) $(STAROBJS) -lft -o $@
 	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
 
 

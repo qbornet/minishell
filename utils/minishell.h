@@ -3,6 +3,7 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <limits.h>
+# include <dirent.h>
 # include <fcntl.h>
 # include <stdio.h>
 # include <stddef.h>
@@ -11,6 +12,7 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <libft.h>
+# include <errno.h>
 //# include <readline/readline.h>
 //# include <readline/history.h>
 
@@ -168,6 +170,11 @@ t_strlist	*ft_strlst_new(void *data, enum e_token type);
 void		ft_treeclear(t_btree *tree, void (*del) (void *));
 void		ft_treeprint(t_btree *tree, int type);
 void		ft_print_tokenlist(t_tokenlist *lst);
+
+/* STAR_H */
+/* starexp.c starexp_utils.c */
+int			starexp(char *s, char ***tab);
+int			ft_starexp(const char *s1, const char *s2, size_t n);
 
 /* BIN_H */
 int			ft_free_err(char **old, char **new);
