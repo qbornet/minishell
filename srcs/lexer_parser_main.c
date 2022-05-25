@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-int	ft_free_parser_error(t_data **d_curr)
+static int	ft_free_parser_error(t_data **d_curr)
 {
 	int		i;
 	t_data	*frame;
@@ -32,7 +32,6 @@ int	lexer_parser_main(char *input, char **envp, t_data **d_curr)
 	*d_curr = frame;
 	return (0);
 }
-
 /*
 // Juste pour tester la struct t_data
 char	**ft_dup_envp(char **envp)

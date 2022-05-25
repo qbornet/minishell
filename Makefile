@@ -47,7 +47,9 @@ READ = ft_read_flow.c \
 
 # File to create expansion part
 EXPAN = expansion.c \
-		expansion_utils.c
+		expansion_utils.c \
+		expansion_error.c \
+		ft_braces.c
 
 GREEN   = \033[1;32m
 WHITE   = \033[0;m
@@ -63,6 +65,7 @@ LEXEROBJS = $(LEXER:%.c=$(OBJS_DIR)/%.o)
 BTREEOBJS = $(BTREE:%.c=$(OBJS_DIR)/%.o)
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS = $(OBJS:%.o=%.d)
+
 
 expan:	$(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS)
 	make -C $(LFT)
@@ -81,6 +84,10 @@ test: $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS)
 	echo "-------------------"
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) -lft -o $@
 	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
+
+eclean:	clean
+	$(RM) expan
+	printf "[$(GREEN)removed$(WHITE)] expan\n"
 
 tclean: clean
 	$(RM) test

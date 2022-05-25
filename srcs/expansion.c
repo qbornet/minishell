@@ -1,36 +1,85 @@
 #include <minishell.h>
 
+static int	ft_ret_opt(char *var_cmp, char *var_name, int index)
+{
+	free(var_cmp);
+	free(var_name);
+	return (index);
+}
+
+static int	ft_ret_index(char *str, char **var_pool)
+{
+	int		i;
+	char	*var_cmp;
+	char	*var_name;
+	size_t	len;
+
+	i = -1;
+	len = ft_len_var(str);
+	var_name = ft_substr(str, 0, len);
+	if (!var_name)
+		return (-2);
+	while (var_pool[++i])
+	{
+		var_cmp = ft_substr(var_pool[i], 0, (ft_len_var(var_pool[i]) + 1));
+		if (!var_cmp)
+		{
+			free(var_name);
+			return (-2);
+		}
+		if (!ft_strncmp(var_cmp, var_name, ft_strlen(var_name)))
+			return (ft_ret_opt(var_cmp, var_name, i));
+		free(var_cmp);
+	}
+	return (-1);
+}
+
 static int	ft_var(char *str, char **var_pool)
 {
 	int	i;
+	int	res;
 
 	i = 0;
-	while (var_pool[i])
-		i++;
-	var_pool[i] = ft_strdup(str);
-	if (!var_pool[i])
+	res = ft_ret_index(str, var_pool);
+	if (res == -2)
 		return (-1);
+	if (res >= 0)
+	{
+		free(var_pool[i]);
+		var_pool[i] = ft_strdup(str);
+		if (!var_pool[i])
+			return (-1);
+	}
+	else
+	{
+		while (var_pool[i])
+			i++;
+		var_pool[i] = ft_strdup(str);
+		if (!var_pool[i])
+			return (-1);
+	}
 	return (0);
 }
 
-static void	ft_search_expansion(t_data **d_curr)
+static int	ft_search_expansion(t_data **d_curr)
 {
 	char		*str;
 	t_data		*frame;
 	t_strlist	*s;
 
 	frame = *d_curr;
-	frame->var_pool = (char **)ft_calloc(4096, sizeof(char *));
+	if (!frame->var_pool)
+		frame->var_pool = (char **)ft_calloc(4096, sizeof(char *));
 	s = frame->strlst;
 	if (!frame->var_pool)
-		return ;
+		return (ft_free_expan_error(&frame));
 	while (s)
 	{
 		str = s->data;
-		if (str && ft_strchr(str, '=') && !s->prev)
+		if (str && ft_strchr(str, '=') && (!s->prev || !s->prev->data))
 		{
 			if (ft_var(str, frame->var_pool) < 0)
-				return ;
+				return (ft_free_expan_error(&frame));
 			else
 			{
 				free(s->data);
@@ -39,18 +88,25 @@ static void	ft_search_expansion(t_data **d_curr)
 		}
 		s = s->next;
 	}
-	ft_move_node(&frame, &frame->strlst);
+	return (0);
 }
-
 
 int	start_expansion(t_data **d_curr)
 {
 	t_data	*frame;
 
 	frame = *d_curr;
-	ft_search_expansion(d_curr);
+	frame->logiclst = ft_lstnew(0);
+	if (!frame->logiclst)
+		return (ft_free_expan_error(&frame));
+	if (ft_logic_lst(frame->root, &frame->logiclst) < 0)
+		return (ft_free_expan_error(&frame));
+	ft_search_expansion(&frame);
+	ft_braces(&frame->root);
+	ft_treeprint(frame->root, 0);
 	return (0);
 }
+
 
 char	**ft_dup_envp(char **envp)
 {
@@ -68,7 +124,13 @@ char	**ft_dup_envp(char **envp)
 	{
 		new_env[i] = ft_strdup(envp[i]);
 		if (!new_env[i])
+		{
+			i = 0;
+			while (new_env[i])
+				free(new_env[i++]);
+			free(new_env);
 			return (NULL);
+		}
 		i++;
 	}
 	return (new_env);
@@ -107,17 +169,6 @@ int	main(int ac, char **av, char **envp)
 	print_strlst(&frame->strlst);
 	start_expansion(&frame);
 	print_strlst(&frame->strlst);
-	ft_strclear(&frame->strlst, &free);
-	ft_tokenclear(&frame->tokenlst, &free);
-	ft_treeclear(frame->root, &free);
-	for (int i = 0; frame->envp[i]; i++)
-	{
-		free(frame->envp[i]);
-		if (frame->var_pool[i])
-			free(frame->var_pool[i]);
-	}
-	free(frame->envp);
-	free(frame->var_pool);
-	free(frame);
+	ft_free_expan_error(&frame);
 	return (0);
 }

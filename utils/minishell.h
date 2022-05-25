@@ -85,12 +85,10 @@ typedef struct s_strlist
 
 /* PARSER_H */
 // Node a mettre dans l'arbre binaire
-// Question de packing pas touche a braces c'est un bitfield de 1 + pad1 et pad2 sont la pour optimiser l'access
 typedef struct s_nodes
 {
-	short int		braces : 1;
-	short int		pad1;
-	int				pad2;
+	short int		braces;
+	short int		pad;
 	size_t			lentokenlist;
 	enum e_token	type;
 	t_token			*token;
@@ -110,6 +108,7 @@ typedef struct s_data
 {
 	char		**envp; // pas oublier a strdup le envp au debut
 	char		**var_pool;
+	t_list		*logiclst;
 	t_btree		*root;
 	t_termstd	std_fd;
 	t_strlist	*strlst;
@@ -170,13 +169,17 @@ char		*ft_create_str(char *lex, size_t len);
 t_strlist	*ft_strlst_new(void *data, enum e_token type);
 /* PARSER_H */
 /* parser.c tree_utils.c */
+int			ft_treeexecute(t_btree *tree);
 void		ft_treesearch(t_btree *tree, char *to_find);
 void		ft_treeclear(t_btree *tree, void (*del) (void *));
 void		ft_treeprint(t_btree *tree, int type);
 void		ft_print_tokenlist(t_tokenlist *lst);
 
 /* EXPANSION_H */
-/* expansion.c expansion_utils.c */
+/* expansion.c expansion_utils.c expansion_error.c ft_braces.c*/
+int			ft_braces(t_btree **b_curr);
+int			ft_logic_lst(t_btree *tree, t_list **l_curr);
+int			ft_free_expan_error(t_data **d_curr);
 int			start_expansion(t_data **d_curr);
 void		ft_move_node(t_data **d_curr, t_strlist **s_curr);
 size_t		ft_len_var(char *str);
