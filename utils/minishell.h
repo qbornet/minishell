@@ -35,7 +35,6 @@ enum e_token
 	E_INIT = 300,
 	E_WORD,
 	E_ASSIGNMENT_WORD,
-	E_EXPANSION,
 	E_AND_IF,
 	E_OR_IF,
 	E_DLESS,
@@ -116,6 +115,7 @@ typedef struct s_btree
 typedef struct s_data
 {
 	char		**envp; // pas oublier a strdup le envp au debut
+	char 		**var_pool;
 	t_btree		*root;
 	t_termstd	std_fd;
 	t_strlist	*strlst;
@@ -175,6 +175,12 @@ t_strlist	*ft_strlst_new(void *data, enum e_token type);
 void		ft_treeclear(t_btree *tree, void (*del) (void *));
 void		ft_treeprint(t_btree *tree, int type);
 void		ft_print_tokenlist(t_tokenlist *lst);
+
+/* EXPANSION_H */
+/* varexp.c varexp_utils.c */
+void		expand(t_strlist *strlst, char **env, t_data *frame);
+size_t		ft_len_onechar(char *s, char a);
+size_t		ft_len_twochar(char *s, char a, char b);
 
 /* BIN_H */
 int			ft_free_err(char **old, char **new);
