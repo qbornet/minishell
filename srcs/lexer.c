@@ -6,7 +6,7 @@ void	skip_separator(char **input)
 		(*input)++;
 }
 
-t_token	*tokeninit(char **input)
+t_token	*tokeninit(char **input, unsigned int qt)
 {
 	t_token	*token;
 
@@ -15,6 +15,7 @@ t_token	*tokeninit(char **input)
 		return (NULL);
 	token->lex = *input;
 	token->type = 0;
+	token->qt = qt;
 	token->len = 0;
 	return (token);
 }
@@ -29,19 +30,19 @@ t_token	*tokeninit(char **input)
  * @return: t_token *
  * - Le token malloc (penser a le free)
  * */
-t_token	*get_next_token(char **input)
+t_token	*get_next_token(char **input, unsigned int qt)
 {
 	t_token	*token;
 
 	skip_separator(input);
-	token = tokeninit(input);
+	token = tokeninit(input, qt);
 	if (!token)
 		return (NULL);
 	if (is_eoi(**input, token))
 		token->len = 0;
-	else if (is_token_2(*input, token))
+	else if (is_token_2(*input, token) && !token->qt)
 		token->len = 2;
-	else if (is_token_1(*input, token))
+	else if (is_token_1(*input, token) && !token->qt)
 		token->len = 1;
 	else
 		word_token(*input, token);
@@ -68,7 +69,7 @@ void	lexical_analysis(char *input, t_tokenlist **lst)
 	t_tokenlist	*newlst;
 
 	*lst = NULL;
-	token = get_next_token(&input);
+	token = get_next_token(&input, 0);
 	if (!token)
 		return ;
 	while (token->type != E_EOI)
@@ -77,7 +78,7 @@ void	lexical_analysis(char *input, t_tokenlist **lst)
 		if (!newlst)
 			return ;
 		ft_tokenadd_back(lst, newlst);
-		token = get_next_token(&input);
+		token = get_next_token(&input, ft_tokenlast(newlst)->token->qt);
 		if (!token)
 			return ;
 	}
@@ -99,7 +100,7 @@ int	main(int ac, char **av, char **envp)
 	(void)envp;
 	//input = "=toto tata= echo toto mo ===nmo||onnai( ssee&&ttoitco)mm|e|||ntc ava>>>>>p < lutot <<biene< ttoia;sdfjas;dfjaspdfji                   world && Hello Bob=";
 	//input = " echo>  Hello world Bob";
-	input = "=toto tata= toto=| echo toto mo ===nmo Bob====";
+	input = "echo'bonjour' 'ls -ls && echo bonjour' && echo 'ls'";
 	if (!input)
 		return (-1);
 	lexical_analysis(input, &lst);

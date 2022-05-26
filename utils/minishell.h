@@ -54,10 +54,17 @@ enum e_token
 	E_ERROR
 };
 
+enum e_quote
+{
+	E_SINGLE = 350,
+	E_DOUBLE
+};
+
 typedef struct s_token {
 	char			*lex;
 	size_t			len;
 	enum e_token	type;	
+	enum e_quote	qt;
 }	t_token;
 
 typedef struct s_tokenlist
@@ -125,7 +132,7 @@ t_tokenlist	*ft_tokennew(void *content);
 t_tokenlist	*ft_tokenlast(t_tokenlist *lst);
 
 // Lexer utils
-int			is_special_token(char c);
+int			is_special_token(char c, t_token *token);
 void		word_token(char *input, t_token *token);
 int			is_eoi(char c, t_token *token);
 int			is_token_1(char *input, t_token *token);
