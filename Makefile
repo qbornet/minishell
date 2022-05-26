@@ -11,7 +11,7 @@ UTILS_DIR = utils
 
 # Utils
 CC = clang
-CFLAGS = -MMD -Wall -Wextra -Werror -g3
+CFLAGS = -MMD -Wall -Wextra -Werror -g3 -fsanitize=address
 CPPFLAGS = -I ./$(UTILS_DIR) -I ./libft/utils
 LDFLAGS = -L ./libft
 RM = rm -rf
@@ -41,6 +41,9 @@ BTREE = btreebuilder.c \
 	tree_utils.c \
 	check_cmd.c
 
+VAREXP = varexp.c \
+	varexp_utils.c
+
 # File to create read parser part
 READ = ft_read_flow.c \
 	   ft_strlist.c
@@ -63,6 +66,7 @@ EXPANOBJS = $(EXPAN:%.c=$(OBJS_DIR)/%.o)
 READOBJS = $(READ:%.c=$(OBJS_DIR)/%.o)
 LEXEROBJS = $(LEXER:%.c=$(OBJS_DIR)/%.o)
 BTREEOBJS = $(BTREE:%.c=$(OBJS_DIR)/%.o)
+VAREXPOBJS = $(VAREXP:%.c=$(OBJS_DIR)/%.o)
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS = $(OBJS:%.o=%.d)
 
@@ -89,6 +93,12 @@ eclean:	clean
 	$(RM) expan
 	printf "[$(GREEN)removed$(WHITE)] expan\n"
 
+varexp: $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) $(VAREXPOBJS)
+	make -C $(LFT)
+	echo "-------------------"
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) $(VAREXPOBJS) -lft -o $@
+	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
+	
 tclean: clean
 	$(RM) test
 

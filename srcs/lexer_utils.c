@@ -27,8 +27,7 @@ int	is_eoi(char c, t_token *token)
  * */
 int	is_special_token(char c)
 {
-	if (c == '$'
-		|| c == '&'
+	if (c == '&'
 		|| c == '|'
 		|| c == '>'
 		|| c == '<'
@@ -106,8 +105,6 @@ int	is_token_1(char *input, t_token *token)
 		token->type = E_LBRACE;
 	else if (*input == ')')
 		token->type = E_RBRACE;
-	else if (*input == '$')
-		token->type = E_EXPANSION;
 	return (token->type);
 }
 

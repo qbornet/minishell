@@ -35,7 +35,6 @@ enum e_token
 	E_INIT = 300,
 	E_WORD,
 	E_ASSIGNMENT_WORD,
-	E_EXPANSION,
 	E_AND_IF,
 	E_OR_IF,
 	E_DLESS,
@@ -183,6 +182,11 @@ int			ft_free_expan_error(t_data **d_curr);
 int			start_expansion(t_data **d_curr);
 void		ft_move_node(t_data **d_curr, t_strlist **s_curr);
 size_t		ft_len_var(char *str);
+/* VAREXP_H */
+/* varexp.c varexp_utils.c */
+void		expand(t_strlist *strlst, char **env, t_data *frame);
+size_t		ft_len_onechar(char *s, char a);
+size_t		ft_len_twochar(char *s, char a, char b);
 
 /* BIN_H */
 int			ft_free_err(char **old, char **new);
