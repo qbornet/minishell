@@ -100,7 +100,7 @@ int	main(int ac, char **av, char **envp)
 	(void)envp;
 	//input = "=toto tata= echo toto mo ===nmo||onnai( ssee&&ttoitco)mm|e|||ntc ava>>>>>p < lutot <<biene< ttoia;sdfjas;dfjaspdfji                   world && Hello Bob=";
 	//input = " echo>  Hello world Bob";
-	input = "echo'bonjour' 'ls -ls && echo bonjour' && echo 'ls'";
+	input = "echo'bonjour' $TOTO 'ls -ls && echo bonjour' && echo 'ls'";
 	if (!input)
 		return (-1);
 	lexical_analysis(input, &lst);

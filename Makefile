@@ -33,7 +33,7 @@ SRCS = ft_tokenadd_back.c \
 
 # File to create lexer part
 LEXER = lexer.c \
-	lexer_utils.c \
+	lexer_utils.c
 
 # File to create binary tree part
 BTREE = btreebuilder.c \
@@ -91,10 +91,10 @@ rclean:
 all: $(NAME)
 
 
-lexer: $(LEXEROBJS)
+lexer: $(LEXEROBJS) $(OBJS)
 	make -C $(LFT)
 	echo "-------------------"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LEXEROBJS) -lft -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LEXEROBJS) $(OBJS) -lft -o $@
 	printf "\n[$(GREEN)OK$(WHITE)] Binary : $(NAME)\n\n"
 
 btree: $(BTREEOBJS) $(LEXEROBJS) $(OBJS)
