@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-t_token	*tokeninit(char **input, unsigned int qt)
+static t_token	*tokeninit(char **input, unsigned int qt)
 {
 	t_token	*token;
 
@@ -24,7 +24,7 @@ t_token	*tokeninit(char **input, unsigned int qt)
  * @return: t_token *
  * - Le token malloc (penser a le free)
  * */
-t_token	*get_next_token(char **input, unsigned int qt)
+static t_token	*get_next_token(char **input, unsigned int qt)
 {
 	t_token	*token;
 
@@ -50,7 +50,7 @@ t_token	*get_next_token(char **input, unsigned int qt)
 	return (token);
 }
 
-int	ft_free_handler(t_token **token, t_tokenlist **lst, int code)
+static int	ft_free_handler(t_token **token, t_tokenlist **lst, int code)
 {
 	ft_tokenclear(lst, free);
 	if (code == 2)
@@ -105,7 +105,7 @@ int	main(int ac, char **av, char **envp)
 	(void)envp;
 	//input = "=toto tata= echo toto mo ===nmo||onnai( ssee&&ttoitco)mm|e|||ntc ava>>>>>p < lutot <<biene< ttoia;sdfjas;dfjaspdfji                   world && Hello Bob=";
 	//input = " echo>  Hello world Bob";
-	input = "ech \" o'bonjour' $TOTO 'ls -ls && echo bonjour' && echo 'ls&&$TOTO'";
+	input = "ech \" '\"o'bonjo\"\"\"ur' $TOTO 'ls -ls && echo bonjour' && echo 'ls&&$TOTO'";
 	if (!input)
 		return (-1);
 	code = lexical_analysis(input, &lst);
