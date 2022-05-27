@@ -67,7 +67,6 @@ int	starexp(char *s, char ***tab)
 	return (closedir(dir));
 }
 
-/*
 int	main(int ac, char **av)
 {
 	char	**tab;
@@ -89,8 +88,16 @@ int	main(int ac, char **av)
 		printf("%s ", tab[i]);
 		i++;
 	}
+	printf("\n");
+	ft_qsort(tab, 0, i - 1);
+	printf("\n");
+	i = 0;
+	while (tab[i])
+	{
+		printf("%s ", tab[i]);
+		i++;
+	}
 	free_str_tab(tab, 0);
 	printf("\n");
 	return (0);
 }
-*/

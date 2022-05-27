@@ -31,7 +31,8 @@ SRCS = ft_tokenadd_back.c \
 	lexer_parser_main.c
 
 # Tools
-TOOLS = free_str_utils.c
+TOOLS = free_str_utils.c \
+	ft_qsort.c
 
 # File to create lexer part
 LEXER = lexer.c \
