@@ -1,11 +1,5 @@
 #include "minishell.h"
 
-void	skip_separator(char **input)
-{
-	while (**input == ' ')
-		(*input)++;
-}
-
 t_token	*tokeninit(char **input, unsigned int qt)
 {
 	t_token	*token;
@@ -34,7 +28,8 @@ t_token	*get_next_token(char **input, unsigned int qt)
 {
 	t_token	*token;
 
-	skip_separator(input);
+	while (**input == ' ')
+		(*input)++;
 	token = tokeninit(input, qt);
 	if (!token)
 		return (NULL);
@@ -55,6 +50,14 @@ t_token	*get_next_token(char **input, unsigned int qt)
 	return (token);
 }
 
+int	ft_free_handler(t_token **token, t_tokenlist **lst, int code)
+{
+	ft_tokenclear(lst, free);
+	if (code == 2)
+		free(*token);
+	return (code);
+}
+
 /* Fonction pour generer une liste chaine de token
  * @param: input
  * - La chaine de caracter a tokeniser
@@ -65,33 +68,34 @@ t_token	*get_next_token(char **input, unsigned int qt)
  * @return: void
  * - La valeur de retour sera determine plus tard pour gerer les cas d'erreurs
  * */
-void	lexical_analysis(char *input, t_tokenlist **lst)
+int	lexical_analysis(char *input, t_tokenlist **lst)
 {
 	t_token		*token;
 	t_tokenlist	*newlst;
 
 	*lst = NULL;
-	token = get_next_token(&input, 0);
-	if (!token)
-		return ;
-	while (token->type != E_EOI)
+	newlst = NULL;
+	while (1)
 	{
+		if (newlst)
+			token = get_next_token(&input, ft_tokenlast(newlst)->token->qt);
+		else
+			token = get_next_token(&input, 0);
+		if (!token)
+			return (ft_free_handler(&token, lst, 1));
 		newlst = ft_tokennew(token);
 		if (!newlst)
-			return ;
+			return (ft_free_handler(&token, lst, 2));
 		ft_tokenadd_back(lst, newlst);
-		token = get_next_token(&input, ft_tokenlast(newlst)->token->qt);
-		if (!token)
-			return ;
+		if (token->type == E_EOI)
+			break ;
 	}
-	newlst = ft_tokennew(token);
-	if (!newlst)
-		return ;
-	ft_tokenadd_back(lst, newlst);
+	return (0);
 }
 
 int	main(int ac, char **av, char **envp)
 {
+	int			code;
 	char		*input;
 	t_tokenlist	*lst;
 	t_tokenlist *tmp;
@@ -101,10 +105,14 @@ int	main(int ac, char **av, char **envp)
 	(void)envp;
 	//input = "=toto tata= echo toto mo ===nmo||onnai( ssee&&ttoitco)mm|e|||ntc ava>>>>>p < lutot <<biene< ttoia;sdfjas;dfjaspdfji                   world && Hello Bob=";
 	//input = " echo>  Hello world Bob";
-	input = "echo'bonjour' $TOTO 'ls -ls && echo bonjour' && echo 'ls&&$TOTO'";
+	input = "ech \" o'bonjour' $TOTO 'ls -ls && echo bonjour' && echo 'ls&&$TOTO'";
 	if (!input)
 		return (-1);
-	lexical_analysis(input, &lst);
+	code = lexical_analysis(input, &lst);
+	if (code == 1)
+		return (printf("some error in token creation\n"));
+	else if (code == 2)
+		return (printf("some malloc error in tokenlist node creation\n"));
 	while (lst)
 	{
 		tmp = lst;

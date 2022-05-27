@@ -140,7 +140,7 @@ int			is_token_2(char *input, t_token *token);
 //void		sep_token(char *input, t_token *token);
 
 // Lexer
-void		lexical_analysis(char *input, t_tokenlist **lst);
+int			lexical_analysis(char *input, t_tokenlist **lst);
 
 // Btree builder
 t_btree	*buildbtree(char **envp, t_tokenlist *lst);
