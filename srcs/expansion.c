@@ -31,6 +31,7 @@ static int	ft_ret_index(char *str, char **var_pool)
 			return (ft_ret_opt(var_cmp, var_name, i));
 		free(var_cmp);
 	}
+	free(var_name);
 	return (-1);
 }
 
@@ -93,17 +94,31 @@ static int	ft_search_expansion(t_data **d_curr)
 
 int	start_expansion(t_data **d_curr)
 {
-	t_data	*frame;
+	int			flag;
+	t_strlist	*strlst;
 
-	frame = *d_curr;
-	frame->logiclst = ft_lstnew(0);
-	if (!frame->logiclst)
-		return (ft_free_expan_error(&frame));
-	if (ft_logic_lst(frame->root, &frame->logiclst) < 0)
-		return (ft_free_expan_error(&frame));
-	ft_search_expansion(&frame);
-	ft_braces(&frame->root);
-	ft_treeprint(frame->root, 0);
+	strlst = (*d_curr)->strlst;
+	(*d_curr)->logiclst = ft_lstnew(0);
+	if (!(*d_curr)->logiclst)
+		return (ft_free_expan_error(d_curr));
+	if (ft_logic_lst((*d_curr)->root, (*d_curr)->logiclst) < 0)
+		return (ft_free_expan_error(d_curr));
+	ft_braces((*d_curr)->root);
+	ft_treeprint((*d_curr)->root, 0);
+	ft_search_expansion(d_curr);
+	while (strlst)
+	{
+		flag = 0;
+		if (strlst->data[0] == '"')
+			flag = 1;
+		else if (strlst->data[0] == ''')
+			flag = 2;
+		if (!flag)
+			stars_expansion(strlst);
+		if (flag == 1 || !flag)
+			expand(strlst, (*d_curr)->envp, d_curr);
+		strlst = strlst->next;
+	}
 	return (0);
 }
 
