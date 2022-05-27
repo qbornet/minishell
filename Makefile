@@ -27,8 +27,8 @@ SRCS = ft_tokenadd_back.c \
 	ft_tokenlast.c \
 	ft_tokennew.c \
 	ft_tokensize.c \
-	free_str_utils.c
-#	env_utils.c \
+	free_str_utils.c \
+	env_utils.c \
 	lexer_parser_main.c
 
 # File to create lexer part
