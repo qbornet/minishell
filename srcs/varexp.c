@@ -73,20 +73,16 @@ void	expand(t_strlist *strlst, char **env, t_data *frame)
 	char	*s;
 	char	*result;
 
-	while (strlst)
+	s = (char *)strlst->data;
+	while (*s && *s != '$')
+		s++;
+	while (*s)
 	{
+	result = expand_var(&s, &strlst, env, frame);
+			free(strlst->data);
+		strlst->data = result;
 		s = (char *)strlst->data;
 		while (*s && *s != '$')
 			s++;
-		while (*s)
-		{
-			result = expand_var(&s, &strlst, env, frame);
-			free(strlst->data);
-			strlst->data = result;
-			s = (char *)strlst->data;
-			while (*s && *s != '$')
-				s++;
-		}
-		strlst = strlst->next;
 	}
 }
