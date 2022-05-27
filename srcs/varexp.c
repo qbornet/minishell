@@ -68,7 +68,7 @@ static char	*expand_var(char **s, t_strlist **strlst, char **env, t_data *frame)
 	return (result);
 }
 
-void	expand(t_strlist *strlst, char **env, t_data *frame)
+void	expand(t_strlist *strlst, char **env, t_data **frame)
 {
 	char	*s;
 	char	*result;
@@ -78,8 +78,8 @@ void	expand(t_strlist *strlst, char **env, t_data *frame)
 		s++;
 	while (*s)
 	{
-	result = expand_var(&s, &strlst, env, frame);
-			free(strlst->data);
+		result = expand_var(&s, &strlst, env, *frame);
+		free(strlst->data);
 		strlst->data = result;
 		s = (char *)strlst->data;
 		while (*s && *s != '$')
