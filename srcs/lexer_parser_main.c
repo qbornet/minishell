@@ -22,10 +22,21 @@ static int	ft_free_parser_error(t_data **d_curr)
 
 int	lexer_parser_main(char *input, char **envp, t_data **d_curr)
 {
+	int		code;
 	t_data	*frame;
 
 	frame = *d_curr;
-	lexical_analysis(input, &frame->tokenlst);
+	code = lexical_analysis(input, &frame->tokenlst);
+	if (code == 1)
+	{
+		printf("something went wrong in token creation: make sure your quotes are closed\n");
+		return (-1);
+	}
+	else if (code == 2)
+	{
+		printf("something went wrong in token creation: do you ran out of allocable memory ?\n");
+		return (-2);
+	}
 	frame->root = buildbtree(envp, frame->tokenlst);
 	if (ft_read_flow(frame->root, &frame->strlst) < 0)
 		return (ft_free_parser_error(&frame));
