@@ -47,10 +47,12 @@ t_token	*get_next_token(char **input, unsigned int qt)
 	else
 		word_token(*input, token);
 	*input += token->len;
-	if (token->type)
-		return (token);
-	free(token);
-	return (NULL);
+	if ((token->qt && token->type == E_EOI) || !token->type)
+	{
+		free(token);
+		return (NULL);
+	}
+	return (token);
 }
 
 /* Fonction pour generer une liste chaine de token
@@ -88,7 +90,6 @@ void	lexical_analysis(char *input, t_tokenlist **lst)
 	ft_tokenadd_back(lst, newlst);
 }
 
-/*
 int	main(int ac, char **av, char **envp)
 {
 	char		*input;
@@ -100,7 +101,7 @@ int	main(int ac, char **av, char **envp)
 	(void)envp;
 	//input = "=toto tata= echo toto mo ===nmo||onnai( ssee&&ttoitco)mm|e|||ntc ava>>>>>p < lutot <<biene< ttoia;sdfjas;dfjaspdfji                   world && Hello Bob=";
 	//input = " echo>  Hello world Bob";
-	input = "echo'bonjour' $TOTO 'ls -ls && echo bonjour' && echo 'ls'";
+	input = "echo'bonjour' $TOTO 'ls -ls && echo bonjour' && echo 'ls&&$TOTO'";
 	if (!input)
 		return (-1);
 	lexical_analysis(input, &lst);
@@ -114,4 +115,3 @@ int	main(int ac, char **av, char **envp)
 	}
 	return (0);
 }
-*/
