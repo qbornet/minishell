@@ -7,7 +7,7 @@ static char	*check_intab(char **tab, char *var_name)
 
 	if (!tab)
 		return (NULL);
-	var_len = ft_len_twochar(var_name, '=', '$');
+	var_len = ft_len_metachar(var_name);
 	while (*tab)
 	{
 		len = ft_len_onechar(*tab, '=');
@@ -31,8 +31,8 @@ static void	new_data(char *tmp, t_strlist **strlst, char *result)
 	i = -1;
 	l_exp = ft_strlen(tmp);
 	l_before_exp = ft_len_onechar((char *)(*strlst)->data, '$');
-	l_varname = ft_len_twochar((char *)(*strlst)->data
-			+ l_before_exp + 1, '$', '=') + 1;
+	l_varname = ft_len_metachar((char *)(*strlst)->data
+			+ l_before_exp + 1) + 1;
 	l_after_exp = ft_strlen((char *)(*strlst)->data + l_before_exp + l_varname);
 	while (++i < l_before_exp)
 		result[i] = ((char *)(*strlst)->data)[i];
@@ -60,7 +60,7 @@ static char	*expand_var(char **s, t_strlist **strlst, char **env, t_data *frame)
 	if (tmp)
 		tmp++;
 	len = ft_strlen(tmp) + ft_strlen((char *)(*strlst)->data)
-		- ft_len_twochar(*s, '=', '$');
+		- ft_len_metachar(*s);
 	result = ft_calloc(len + 1, sizeof(char));
 	if (!result)
 		return (NULL);
