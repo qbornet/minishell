@@ -25,10 +25,11 @@ int	is_eoi(char c, t_token *token)
  * @return: char
  * - Le char detecte, 0 sinon
  * */
-int	is_special_token(char c)
+int	is_special_token(char c, t_token *token)
 {
-	if (c == '$'
-		|| c == '&'
+	if (token->qt)
+		return (0);
+	if (c == '&'
 		|| c == '|'
 		|| c == '>'
 		|| c == '<'
@@ -54,8 +55,18 @@ void	word_token(char *input, t_token *token)
 	char	*tmp;
 
 	tmp = input;
-	while (*input && *input != ' ' && !is_special_token(*input))
+	while (*input && (*input != ' ' || token->qt) && !is_special_token(*input, token))
+	{
+		if (*input == '\"' && !token->qt)
+			token->qt = E_DOUBLE;
+		else if (*input == '\"' && token->qt == E_DOUBLE)
+			token->qt = 0;
+		if (*input == '\'' && !token->qt)
+			token->qt = E_SINGLE;
+		else if (*input == '\'' && token->qt == E_SINGLE)
+			token->qt = 0;
 		input++;
+	}
 	token->len = input - tmp;
 	token->type = E_WORD;
 }
@@ -106,8 +117,6 @@ int	is_token_1(char *input, t_token *token)
 		token->type = E_LBRACE;
 	else if (*input == ')')
 		token->type = E_RBRACE;
-	else if (*input == '$')
-		token->type = E_EXPANSION;
 	return (token->type);
 }
 

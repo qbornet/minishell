@@ -46,6 +46,9 @@ BTREE = btreebuilder.c \
 STAR = starexp.c \
 	starexp_utils.c
 
+VAREXP = varexp.c \
+	varexp_utils.c
+
 # File to create read parser part
 READ = ft_read_flow.c \
 	   ft_strlist.c
@@ -63,6 +66,7 @@ LEXEROBJS = $(LEXER:%.c=$(OBJS_DIR)/%.o)
 BTREEOBJS = $(BTREE:%.c=$(OBJS_DIR)/%.o)
 STAROBJS = $(STAR:%.c=$(OBJS_DIR)/%.o)
 TOOLSOBJS = $(TOOLS:%.c=$(OBJS_DIR)/%.o)
+VAREXPOBJS = $(VAREXP:%.c=$(OBJS_DIR)/%.o)
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS = $(OBJS:%.o=%.d)
 
@@ -84,7 +88,12 @@ star: $(STAROBJS) $(TOOLSOBJS)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TOOLSOBJS) $(STAROBJS) -lft -o $@
 	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
 
-
+varexp: $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) $(VAREXPOBJS)
+	make -C $(LFT)
+	echo "-------------------"
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) $(VAREXPOBJS) -lft -o $@
+	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
+	
 tclean: clean
 	$(RM) test
 
