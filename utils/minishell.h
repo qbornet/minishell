@@ -183,10 +183,10 @@ void		ft_print_tokenlist(t_tokenlist *lst);
 /* EXPANSION_H */
 /* expansion.c expansion_utils.c expansion_error.c ft_braces.c*/
 int			ft_braces(t_btree **b_curr);
-int			ft_logic_lst(t_btree *tree, t_list **l_curr);
 int			ft_free_expan_error(t_data **d_curr);
 int			start_expansion(t_data **d_curr);
 void		ft_move_node(t_data **d_curr, t_strlist **s_curr);
+void		ft_do_varexp(t_data **d_curr);
 size_t		ft_len_var(char *str);
 /* VAREXP_H */
 /* varexp.c varexp_utils.c */

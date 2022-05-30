@@ -102,17 +102,16 @@ int	start_expansion(t_data **d_curr)
 	ft_braces((*d_curr)->root);
 	ft_treeprint((*d_curr)->root, 0);
 	ft_search_expansion(d_curr);
+	ft_do_varexp(d_curr);
 	while (strlst)
 	{
 		flag = 0;
-		if (strlst->data[0] == '"')
+		if (strlst->data[0] == '\"')
 			flag = 1;
-		else if (strlst->data[0] == ''')
+		else if (strlst->data[0] == '\'')
 			flag = 2;
 		if (!flag)
-			//starexp(strlst->data, ft_strlen(strlst->data), &tab, NULL);
-		if (flag == 1 || !flag)
-			expand(strlst, (*d_curr)->envp, d_curr);
+			starexp(strlst->data, ft_strlen(strlst->data), &tab, NULL);
 		strlst = strlst->next;
 	}
 	return (0);
