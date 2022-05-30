@@ -95,14 +95,10 @@ static int	ft_search_expansion(t_data **d_curr)
 int	start_expansion(t_data **d_curr)
 {
 	int			flag;
+	char		**tab;
 	t_strlist	*strlst;
 
 	strlst = (*d_curr)->strlst;
-	(*d_curr)->logiclst = ft_lstnew(0);
-	if (!(*d_curr)->logiclst)
-		return (ft_free_expan_error(d_curr));
-	if (ft_logic_lst((*d_curr)->root, (*d_curr)->logiclst) < 0)
-		return (ft_free_expan_error(d_curr));
 	ft_braces((*d_curr)->root);
 	ft_treeprint((*d_curr)->root, 0);
 	ft_search_expansion(d_curr);
@@ -114,7 +110,7 @@ int	start_expansion(t_data **d_curr)
 		else if (strlst->data[0] == ''')
 			flag = 2;
 		if (!flag)
-			stars_expansion(strlst);
+			//starexp(strlst->data, ft_strlen(strlst->data), &tab, NULL);
 		if (flag == 1 || !flag)
 			expand(strlst, (*d_curr)->envp, d_curr);
 		strlst = strlst->next;

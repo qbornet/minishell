@@ -12,7 +12,6 @@ int	ft_free_expan_error(t_data **d_curr)
 	ft_strclear(&frame->strlst, &free);
 	ft_tokenclear(&frame->tokenlst, &free);
 	ft_treeclear(frame->root, &free);
-	ft_lstclear(&frame->logiclst, &free);
 	i = -1;
 	while (frame->envp[++i])
 		free(frame->envp[i]);

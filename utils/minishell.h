@@ -93,8 +93,8 @@ typedef struct s_strlist
 // Node a mettre dans l'arbre binaire
 typedef struct s_nodes
 {
-	short int		braces;
-	short int		pad;
+	int				braces;
+	int				pad;
 	size_t			lentokenlist;
 	enum e_token	type;
 	t_token			*token;
@@ -114,7 +114,6 @@ typedef struct s_data
 {
 	char		**envp; // pas oublier a strdup le envp au debut
 	char		**var_pool;
-	t_list		*logiclst;
 	t_btree		*root;
 	t_termstd	std_fd;
 	t_strlist	*strlst;
