@@ -27,9 +27,12 @@ SRCS = ft_tokenadd_back.c \
 	ft_tokenlast.c \
 	ft_tokennew.c \
 	ft_tokensize.c \
-	free_str_utils.c \
 	env_utils.c \
 	lexer_parser_main.c
+
+# Tools
+TOOLS = free_str_utils.c \
+	ft_qsort.c
 
 # File to create lexer part
 LEXER = lexer.c \
@@ -40,6 +43,9 @@ BTREE = btreebuilder.c \
 	btreebuilder_utils.c \
 	tree_utils.c \
 	check_cmd.c
+
+STAR = starexp.c \
+	starexp_utils.c
 
 VAREXP = varexp.c \
 	varexp_utils.c
@@ -66,6 +72,8 @@ EXPANOBJS = $(EXPAN:%.c=$(OBJS_DIR)/%.o)
 READOBJS = $(READ:%.c=$(OBJS_DIR)/%.o)
 LEXEROBJS = $(LEXER:%.c=$(OBJS_DIR)/%.o)
 BTREEOBJS = $(BTREE:%.c=$(OBJS_DIR)/%.o)
+STAROBJS = $(STAR:%.c=$(OBJS_DIR)/%.o)
+TOOLSOBJS = $(TOOLS:%.c=$(OBJS_DIR)/%.o)
 VAREXPOBJS = $(VAREXP:%.c=$(OBJS_DIR)/%.o)
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS = $(OBJS:%.o=%.d)
@@ -92,6 +100,12 @@ test: $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS)
 eclean:	clean
 	$(RM) expan
 	printf "[$(GREEN)removed$(WHITE)] expan\n"
+
+star: $(STAROBJS) $(TOOLSOBJS)
+	make -C $(LFT)
+	echo "-------------------"
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TOOLSOBJS) $(STAROBJS) -lft -o $@
+	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
 
 varexp: $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) $(VAREXPOBJS)
 	make -C $(LFT)

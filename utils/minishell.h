@@ -3,6 +3,7 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <limits.h>
+# include <dirent.h>
 # include <fcntl.h>
 # include <stdio.h>
 # include <stddef.h>
@@ -11,6 +12,7 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <libft.h>
+# include <errno.h>
 //# include <readline/readline.h>
 //# include <readline/history.h>
 
@@ -120,6 +122,10 @@ typedef struct s_data
 	t_tokenlist	*tokenlst;
 }	t_data;
 
+/* SORT_H */
+/* ft_qsort.c */
+void	ft_qsort(char **tab, int start, int end);
+
 // Token list utils
 int			ft_tokentsize(t_tokenlist *lst);
 void		ft_tokenadd_front(t_tokenlist **alst, t_tokenlist *new);
@@ -172,6 +178,7 @@ void		ft_strdelone(t_strlist *strlst, void (*del) (void *));
 void		*ft_strclear(t_strlist **s_curr, void (*del) (void *));
 char		*ft_create_str(char *lex, size_t len);
 t_strlist	*ft_strlst_new(void *data, enum e_token type);
+
 /* PARSER_H */
 /* parser.c tree_utils.c */
 int			ft_treeexecute(t_btree *tree);
@@ -188,11 +195,16 @@ int			start_expansion(t_data **d_curr);
 void		ft_move_node(t_data **d_curr, t_strlist **s_curr);
 void		ft_do_varexp(t_data **d_curr);
 size_t		ft_len_var(char *str);
+/* STAREXP_H */
+/* starexp.c starexp_utils.c */
+int			starexp(char *s, char ***tab);
+int			ft_starexp(const char *s1, const char *s2, size_t n);
 /* VAREXP_H */
 /* varexp.c varexp_utils.c */
 void		expand(t_strlist *strlst, char **env, t_data **frame);
 size_t		ft_len_onechar(char *s, char a);
 size_t		ft_len_metachar(char *s);
+
 
 /* BIN_H */
 int			ft_free_err(char **old, char **new);
