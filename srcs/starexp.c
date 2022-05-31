@@ -36,21 +36,37 @@ static char	*add_str(char ***ptr, char *s)
 	ttmp[len + 1] = NULL;
 	free(*ptr);
 	(*ptr) = ttmp;
-	return (NULL);
+	return (ttmp[len]);
 }
 
-int	starexp(char *s, char ***tab)
+static int	init_starexp(char ***tab, DIR **dir, struct dirent **dr)
+{
+	*tab = malloc(sizeof(char *));
+	(*tab)[0] = NULL;
+	if (!*tab)
+		return (0);
+	*dir = opendir(".");
+	if (!dir)
+	{
+		free(*tab);
+		return (0);
+	}
+	*dr = readdir(*dir);
+	if (!*dr)
+	{
+		closedir(*dir);
+		return (0);
+	}
+	return (1);
+}
+
+static int	s_exp(char *s, size_t len, char ***tab, DIR *dir)
 {
 	size_t			l;
-	size_t			len;
-	DIR				*dir;
 	struct dirent	*dr;
 
-	len = ft_strlen(s);
-	dir = opendir(".");
-	if (!dir)
-		return (0);
-	dr = readdir(dir);
+	if (!init_starexp(tab, &dir, &dr))
+		return (-1);
 	while (dr)
 	{
 		while ((dr->d_name)[0] == '.' && s[0] != '.')
@@ -59,38 +75,45 @@ int	starexp(char *s, char ***tab)
 		if (ft_strlen(dr->d_name) >= len)
 			l = ft_strlen(dr->d_name);
 		if (is_star(s) && !ft_starexp(s, dr->d_name, l))
-			add_str(tab, dr->d_name);
+		{
+			if (!add_str(tab, dr->d_name))
+				return (closedir(dir));
+		}
 		else if (!is_star(s) && !ft_strncmp(s, dr->d_name, l))
-			add_str(tab, dr->d_name);
+		{
+			if (add_str(tab, dr->d_name))
+				return (closedir(dir));
+		}
 		dr = readdir(dir);
 	}
 	return (closedir(dir));
 }
 
-/*
-int	main(int ac, char **av)
+int	starexp(t_strlist **strlst)
 {
-	char	**tab;
-	int		i;
+	int			len;
+	char		**tab;
+	t_strlist	*head;
 
-	if (ac != 2)
-	{
-		printf("Provide args\n");
+	if (s_exp((char *)(*strlst)->data, ft_strlen((*strlst)->data), &tab, NULL))
 		return (-1);
-	}
-	tab = malloc(sizeof(char *));
-	if (!tab)
-		return (0);
-	tab[0] = NULL;
-	starexp(av[1], &tab);
-	i = 0;
-	while (tab[i])
+	len = 0;
+	while (tab[len])
+		len++;
+	ft_qsort(tab, 0, len - 1);
+	len = 0;
+	head = NULL;
+	while (tab[len])
 	{
-		printf("%s ", tab[i]);
-		i++;
+		if (ft_strlst_addback(&head, tab[len], 0) == -1)
+		{
+			ft_strclear(&head, free);
+			free(tab);
+			return (-1);
+		}
+		len++;
 	}
-	free_str_tab(tab, 0);
-	printf("\n");
-	return (0);
+	insert_strlst(strlst, &head);
+	free(tab);
+	return (-1);
 }
-*/

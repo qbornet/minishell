@@ -93,7 +93,8 @@ int	main(int ac, char **av, char **envp)
 	if (lexer_parser_main(av[1], frame->envp, &frame) < 0)
 		return (-1);
 	print_strlst(frame->strlst);
-	expand(frame->strlst, envp, &frame);
+//	expand(frame->strlst, envp, &frame);
+	starexp(&(frame->strlst));
 	print_strlst(frame->strlst);
 	ft_free_parser_error(&frame);
 	return (0);

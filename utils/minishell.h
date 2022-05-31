@@ -124,6 +124,10 @@ typedef struct s_data
 	t_tokenlist	*tokenlst;
 }	t_data;
 
+/* SORT_H */
+/* ft_qsort.c */
+void	ft_qsort(char **tab, int start, int end);
+
 // Token list utils
 int			ft_tokentsize(t_tokenlist *lst);
 void		ft_tokenadd_front(t_tokenlist **alst, t_tokenlist *new);
@@ -181,14 +185,16 @@ void		ft_print_tokenlist(t_tokenlist *lst);
 
 /* STAREXP_H */
 /* starexp.c starexp_utils.c */
-int			starexp(char *s, char ***tab);
+int			starexp(t_strlist **strlst);
 int			ft_starexp(const char *s1, const char *s2, size_t n);
+int			insert_strlst(t_strlist **strlst, t_strlist **head);
 
 /* VAREXP_H */
 /* varexp.c varexp_utils.c */
 void		expand(t_strlist *strlst, char **env, t_data **frame);
 size_t		ft_len_onechar(char *s, char a);
 size_t		ft_len_metachar(char *s);
+
 
 /* BIN_H */
 int			ft_free_err(char **old, char **new);
