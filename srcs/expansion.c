@@ -83,11 +83,8 @@ static int	ft_search_expansion(t_data **d_curr)
 		{
 			if (ft_var(str, frame->var_pool) < 0)
 				return (ft_free_expan_error(&frame));
-			else
-			{
-				free(s->data);
-				s->data = NULL;
-			}
+			free(s->data);
+			s->data = NULL;
 		}
 		s = s->next;
 	}
@@ -113,11 +110,10 @@ int	start_expansion(t_data **d_curr)
 			flag = 1;
 		else if (str[0] == '\'')
 			flag = 2;
-		if (!flag)
+		if (!flag && strlst->data)
 			starexp(&strlst);
 		strlst = strlst->next;
 	}
-	print_strlst(&(*d_curr)->strlst);
 	return (0);
 }
 
