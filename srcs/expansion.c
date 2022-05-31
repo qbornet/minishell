@@ -1,7 +1,5 @@
 #include <minishell.h>
 
-void	print_strlst(t_strlist **s_curr);
-
 static int	ft_ret_opt(char *var_cmp, char *var_name, int index)
 {
 	free(var_cmp);
@@ -93,8 +91,6 @@ static int	ft_search_expansion(t_data **d_curr)
 
 int	start_expansion(t_data **d_curr)
 {
-	int			flag;
-	char		*str;
 	t_strlist	*strlst;
 
 	strlst = (*d_curr)->strlst;
@@ -102,18 +98,7 @@ int	start_expansion(t_data **d_curr)
 	ft_treeprint((*d_curr)->root, 0);
 	ft_search_expansion(d_curr);
 	ft_do_varexp(d_curr);
-	while (strlst)
-	{
-		flag = 0;
-		str = strlst->data;
-		if (str[0] == '\"')
-			flag = 1;
-		else if (str[0] == '\'')
-			flag = 2;
-		if (!flag && strlst->data)
-			starexp(&strlst);
-		strlst = strlst->next;
-	}
+	ft_do_starexp(d_curr);
 	return (0);
 }
 
@@ -179,6 +164,6 @@ int	main(int ac, char **av, char **envp)
 	print_strlst(&frame->strlst);
 	start_expansion(&frame);
 	print_strlst(&frame->strlst);
-	ft_free_expan_error(&frame);
+	//ft_free_expan_error(&frame);
 	return (0);
 }
