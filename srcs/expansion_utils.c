@@ -1,18 +1,5 @@
 #include <minishell.h>
 
-static int	ft_listnew_back(t_list **alist)
-{
-	t_list	*head;
-
-	head = *alist;
-	while (head->next)
-		head = head->next;
-	head->next = ft_lstnew(0);
-	if (!head->next)
-		return (-1);
-	return (0);
-}
-
 static void	ft_change_node(t_strlist **s_curr, t_strlist **head_curr)
 {
 	t_strlist	*tmp;
@@ -42,6 +29,7 @@ static void	ft_change_node(t_strlist **s_curr, t_strlist **head_curr)
 void	ft_do_varexp(t_data **d_curr)
 {
 	int			flag;
+	char		*str;
 	t_data		*frame;
 	t_strlist	*strlst;
 
@@ -50,9 +38,10 @@ void	ft_do_varexp(t_data **d_curr)
 	while (strlst)
 	{
 		flag = 0;
-		if (strlst->data[0] == '\"')
+		str = strlst->data;
+		if (str[0] == '\"')
 			flag = 1;
-		else if (strlst->data[0] == '\'')
+		else if (str[0] == '\'')
 			flag = 2;
 		if (flag == 1 || !flag)
 			expand(strlst, frame->envp, &frame);

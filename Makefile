@@ -44,9 +44,11 @@ BTREE = btreebuilder.c \
 	tree_utils.c \
 	check_cmd.c
 
+# File to create star expansion part
 STAR = starexp.c \
 	starexp_utils.c
 
+# File to create var ($) expansion part
 VAREXP = varexp.c \
 	varexp_utils.c
 
@@ -79,10 +81,10 @@ OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS = $(OBJS:%.o=%.d)
 
 
-expan:	$(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS)
+expan:	$(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(OBJS)
 	make -C $(LFT)
 	echo "-------------------"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(EXPANOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) -lft -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(EXPANOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(OBJS) -lft -o $@
 	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
 
 read: $(READOBJS) $(OBJS)

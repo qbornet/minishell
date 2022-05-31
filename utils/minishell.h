@@ -199,11 +199,7 @@ size_t		ft_len_var(char *str);
 /* starexp.c starexp_utils.c */
 int			starexp(t_strlist **strlst);
 int			ft_starexp(const char *s1, const char *s2, size_t n);
-<<<<<<< HEAD
-=======
 int			insert_strlst(t_strlist **strlst, t_strlist **head);
-
->>>>>>> star
 /* VAREXP_H */
 /* varexp.c varexp_utils.c */
 void		expand(t_strlist *strlst, char **env, t_data **frame);
