@@ -65,6 +65,8 @@ int	insert_strlst(t_strlist **strlst, t_strlist **head)
 	t_strlist	*tmp;
 	t_strlist	*lst;
 
+	if (!*head)
+		return (-1);
 	lst = *strlst;
 	tmp = lst->next;
 	lst->next = *head;
