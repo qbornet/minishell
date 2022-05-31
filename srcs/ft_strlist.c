@@ -26,6 +26,7 @@ int	ft_strlst_addback(t_strlist **lst_curr, void *data, enum e_token type)
 		*lst_curr = ft_strlst_new(data, type);
 		if (!*lst_curr)
 			return (-1);
+		return (0);
 	}
 	while (head->next)
 		head = head->next;

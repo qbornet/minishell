@@ -101,10 +101,10 @@ eclean:	clean
 	$(RM) expan
 	printf "[$(GREEN)removed$(WHITE)] expan\n"
 
-star: $(STAROBJS) $(TOOLSOBJS)
+star: $(READOBJS) $(BTREEOBJS) $(STAROBJS) $(TOOLSOBJS) $(OBJS) $(LEXEROBJS) $(VAREXPOBJS)
 	make -C $(LFT)
 	echo "-------------------"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TOOLSOBJS) $(STAROBJS) -lft -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(OBJS) $(READOBJS) $(VAREXPOBJS) $(BTREEOBJS) $(TOOLSOBJS) $(LEXEROBJS) $(STAROBJS) -lft -o $@
 	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
 
 varexp: $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) $(VAREXPOBJS)

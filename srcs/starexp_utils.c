@@ -59,3 +59,23 @@ int	ft_starexp(const char *s1, const char *s2, size_t n)
 		return (cmp);
 	return (loop(i, s1, s2, ft_strlen(s2)));
 }
+
+int	insert_strlst(t_strlist **strlst, t_strlist **head)
+{
+	t_strlist	*tmp;
+	t_strlist	*lst;
+
+	lst = *strlst;
+	tmp = lst->next;
+	lst->next = *head;
+	(*head)->prev = lst->prev;
+	while (lst->next)
+		lst = lst->next;
+	lst->next = tmp;
+	if (tmp)
+		tmp->prev = lst;
+	free((*strlst)->data);
+	free((*strlst));
+	*strlst = *head;
+	return (0);
+}
