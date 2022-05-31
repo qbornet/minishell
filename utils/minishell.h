@@ -185,8 +185,9 @@ void		ft_print_tokenlist(t_tokenlist *lst);
 
 /* STAREXP_H */
 /* starexp.c starexp_utils.c */
-int			starexp(char *s, char ***tab);
+int			starexp(t_strlist **strlst);
 int			ft_starexp(const char *s1, const char *s2, size_t n);
+int			insert_strlst(t_strlist **strlst, t_strlist **head);
 
 /* VAREXP_H */
 /* varexp.c varexp_utils.c */
