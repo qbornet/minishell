@@ -16,7 +16,7 @@ static char	downchar(char c)
 	return (c);
 }
 
-static int	ft_strcmp(const char *s1, const char *s2)
+static int	ft_qstrcmp(const char *s1, const char *s2)
 {
 	size_t	i;
 	char	c1;
@@ -43,7 +43,7 @@ static int	partition(char **tab, int start, int end)
 	j = start;
 	while (j < end)
 	{
-		if (ft_strcmp(tab[j], tab[end]) < 0)
+		if (ft_qstrcmp(tab[j], tab[end]) < 0)
 		{
 			swap(tab + i, tab + j);
 			i++;
