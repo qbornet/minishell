@@ -46,27 +46,23 @@ static int	loop(size_t i, const char *s1, const char *s2, size_t lens2)
 	return (1);
 }
 
-int	ft_starexp(const char *s1, const char *s2, size_t n)
+int	ft_starcmp(const char *s1, const char *s2)
 {
 	size_t	i;
-	int		cmp;
 
 	i = get_next_star(s1, 0);
-	if (i > n - 1)
-		return (ft_strncmp(s1, s2, n));
-	cmp = ft_strncmp(s1, s2, i);
-	if (cmp)
-		return (cmp);
+	if (ft_strncmp(s1, s2, i))
+		return (-1);
 	return (loop(i, s1, s2, ft_strlen(s2)));
 }
 
-int	insert_strlst(t_strlist **strlst, t_strlist **head)
+t_strlist	*insert_strlst(t_strlist **strlst, t_strlist **head)
 {
 	t_strlist	*tmp;
 	t_strlist	*lst;
 
 	if (!*head)
-		return (-1);
+		return (NULL);
 	lst = *strlst;
 	tmp = lst->next;
 	lst->next = *head;
@@ -79,5 +75,5 @@ int	insert_strlst(t_strlist **strlst, t_strlist **head)
 	free((*strlst)->data);
 	free((*strlst));
 	*strlst = *head;
-	return (0);
+	return (lst);
 }

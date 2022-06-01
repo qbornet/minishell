@@ -68,6 +68,7 @@ char	**ft_dup_envp(char **envp)
 
 void	print_strlst(t_strlist *strlst)
 {
+
 	printf("strlst: ");
 	while (strlst)
 	{
