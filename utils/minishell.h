@@ -13,9 +13,10 @@
 # include <stdbool.h>
 # include <libft.h>
 # include <errno.h>
-//# include <readline/readline.h>
-//# include <readline/history.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
+# define HEREDOC_PROMPT "here_doc?> "
 # define DEFAULT_PATH "PATH=/usr/local/bin:/usr/bin:/bin"
 # define PROMPT "$> "
 # define ERR_PARSER "Error: Syntax error\n"
@@ -116,6 +117,7 @@ typedef struct s_data
 {
 	char		**envp; // pas oublier a strdup le envp au debut
 	char		**var_pool;
+	char		*str; // variable temporaire juste pour tester le here_doc
 	t_btree		*root;
 	t_termstd	std_fd;
 	t_strlist	*strlst;
@@ -205,7 +207,12 @@ int			insert_strlst(t_strlist **strlst, t_strlist **head);
 void		expand(t_strlist *strlst, char **env, t_data **frame);
 size_t		ft_len_onechar(char *s, char a);
 size_t		ft_len_metachar(char *s);
-
+/* HERE_DOC_H */
+/* heredoc_utils.c here_doc.c */
+int		here_doc(t_data **d_curr, char *word);
+int		ft_strcmp_here(char *s1, char *s2);
+size_t	ft_null(char *str);
+size_t	ft_strjoin_len(char *str);
 
 /* BIN_H */
 int			ft_free_err(char **old, char **new);
@@ -216,4 +223,5 @@ int			ft_export(char *var, char ***env_curr);
 int			ft_unset(char *var, char ***env_curr);
 int			ft_env(char **envp);
 int			print_error(t_error code);
+
 #endif

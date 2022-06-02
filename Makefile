@@ -61,6 +61,8 @@ EXPAN = expansion.c \
 		expansion_utils.c \
 		expansion_error.c \
 		ft_braces.c
+HEREDOC = heredoc_utils.c \
+		  here_doc.c
 
 GREEN   = \033[1;32m
 WHITE   = \033[0;m
@@ -77,9 +79,16 @@ BTREEOBJS = $(BTREE:%.c=$(OBJS_DIR)/%.o)
 STAROBJS = $(STAR:%.c=$(OBJS_DIR)/%.o)
 TOOLSOBJS = $(TOOLS:%.c=$(OBJS_DIR)/%.o)
 VAREXPOBJS = $(VAREXP:%.c=$(OBJS_DIR)/%.o)
+HEREOBJS = $(HEREDOC:%.c=$(OBJS_DIR)/%.o)
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS = $(OBJS:%.o=%.d)
 
+
+here:	$(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS)
+	make -C $(LFT)
+	echo "-------------------"
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(EXPANOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS) -lft -lreadline -o $@
+	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
 
 expan:	$(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(OBJS)
 	make -C $(LFT)

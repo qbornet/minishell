@@ -96,16 +96,15 @@ static int	ft_search_expansion(t_data **d_curr)
 
 int	start_expansion(t_data **d_curr)
 {
-	int			flag;
-	char		*str;
-	t_strlist	*strlst;
+	//int			flag;
+	//char		*str;
+	//t_strlist	*strlst;
 
-	strlst = (*d_curr)->strlst;
 	ft_braces(&(*d_curr)->root);
 	ft_treeprint((*d_curr)->root, 0);
 	ft_search_expansion(d_curr);
 	ft_do_varexp(d_curr);
-	while (strlst)
+	/*while (strlst)
 	{
 		flag = 0;
 		str = strlst->data;
@@ -118,6 +117,7 @@ int	start_expansion(t_data **d_curr)
 		strlst = strlst->next;
 	}
 	print_strlst(&(*d_curr)->strlst);
+	*/
 	return (0);
 }
 
@@ -163,6 +163,17 @@ void	print_strlst(t_strlist **s_curr)
 	printf("NULL\n");
 }
 
+void	ft_get_word(t_data **d_curr, t_btree *root)
+{
+	if (root && root->node)
+	{
+		ft_get_word(d_curr, root->left);
+		if (root->node->type == E_FD)
+			(*d_curr)->str = ft_create_str(root->node->token->lex, root->node->token->len);
+		ft_get_word(d_curr, root->right);
+	}
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	int		i;
@@ -183,6 +194,8 @@ int	main(int ac, char **av, char **envp)
 	print_strlst(&frame->strlst);
 	start_expansion(&frame);
 	print_strlst(&frame->strlst);
+	ft_get_word(&frame, frame->root);
+	here_doc(&frame, frame->str);
 	ft_free_expan_error(&frame);
 	return (0);
 }
