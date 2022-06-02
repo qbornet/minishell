@@ -25,7 +25,8 @@ static int	ret_res(t_termstd *fd, char *res)
 	free(str);
 	if (fd_val == -1)
 		return (-1);
-	return (dup2(fd_val, fd->stdin));
+	dup2(fd_val, fd->stdin);
+	return (close(fd_val));
 }
 
 static char *ft_strjoin_here(char *s1, char *s2)
