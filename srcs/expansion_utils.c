@@ -33,17 +33,19 @@ void	ft_do_varexp(t_data **d_curr)
 	t_data		*frame;
 	t_strlist	*strlst;
 
+	str = "";
 	frame = *d_curr;
 	strlst = frame->strlst;
 	while (strlst)
 	{
 		flag = 0;
-		str = strlst->data;
+		if (strlst->data)
+			str = strlst->data;
 		if (str[0] == '\"')
 			flag = 1;
 		else if (str[0] == '\'')
 			flag = 2;
-		if (flag == 1 || !flag)
+		if ((flag == 1 || !flag) && strlst->data)
 			expand(strlst, frame->envp, &frame);
 		strlst = strlst->next;
 	}

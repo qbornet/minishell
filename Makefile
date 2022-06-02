@@ -61,7 +61,11 @@ EXPAN = expansion.c \
 		expansion_utils.c \
 		expansion_error.c \
 		ft_braces.c
+
+# File to create here_doc part
 HEREDOC = heredoc_utils.c \
+		  heredoc_error.c \
+		  heredoc_str.c \
 		  here_doc.c
 
 GREEN   = \033[1;32m

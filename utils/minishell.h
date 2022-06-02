@@ -208,9 +208,12 @@ void		expand(t_strlist *strlst, char **env, t_data **frame);
 size_t		ft_len_onechar(char *s, char a);
 size_t		ft_len_metachar(char *s);
 /* HERE_DOC_H */
-/* heredoc_utils.c here_doc.c */
+/* heredoc_str.c heredoc_utils.c heredoc_error.c here_doc.c */
 int		here_doc(t_data **d_curr, char *word);
 int		ft_strcmp_here(char *s1, char *s2);
+char	*do_expand(t_data **d_curr, char *str);
+char	*ft_error_ret(char *s1);
+char	*ft_random_str(char *pathname, int bytes);
 size_t	ft_null(char *str);
 size_t	ft_strjoin_len(char *str);
 
