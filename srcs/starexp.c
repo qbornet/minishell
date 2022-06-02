@@ -66,6 +66,8 @@ static int	s_exp(char *s, char ***tab, DIR *dir)
 
 	if (!init_starexp(tab, &dir, &dr))
 		return (-1);
+	if (!is_star(s))
+		return (closedir(dir));
 	while (dr)
 	{
 		while ((dr->d_name)[0] == '.' && s[0] != '.')
@@ -75,8 +77,6 @@ static int	s_exp(char *s, char ***tab, DIR *dir)
 			if (!add_str(tab, dr->d_name))
 				return (closedir(dir));
 		}
-		else if (!is_star(s) && !ft_strcmp(s, dr->d_name))
-			return (closedir(dir));
 		dr = readdir(dir);
 	}
 	return (closedir(dir));
