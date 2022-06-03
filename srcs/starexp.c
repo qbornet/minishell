@@ -42,9 +42,9 @@ static char	*add_str(char ***ptr, char *s)
 static int	init_starexp(char ***tab, DIR **dir, struct dirent **dr)
 {
 	*tab = malloc(sizeof(char *));
-	(*tab)[0] = NULL;
 	if (!*tab)
 		return (0);
+	(*tab)[0] = NULL;
 	*dir = opendir(".");
 	if (!dir)
 	{
@@ -60,28 +60,21 @@ static int	init_starexp(char ***tab, DIR **dir, struct dirent **dr)
 	return (1);
 }
 
-static int	s_exp(char *s, size_t len, char ***tab, DIR *dir)
+static int	s_exp(char *s, char ***tab, DIR *dir)
 {
-	size_t			l;
 	struct dirent	*dr;
 
 	if (!init_starexp(tab, &dir, &dr))
 		return (-1);
+	if (!is_star(s))
+		return (closedir(dir));
 	while (dr)
 	{
 		while ((dr->d_name)[0] == '.' && s[0] != '.')
 			dr = readdir(dir);
-		l = len;
-		if (ft_strlen(dr->d_name) >= len)
-			l = ft_strlen(dr->d_name);
-		if (is_star(s) && !ft_starexp(s, dr->d_name, l))
+		if (is_star(s) && !ft_starcmp(s, dr->d_name))
 		{
 			if (!add_str(tab, dr->d_name))
-				return (closedir(dir));
-		}
-		else if (!is_star(s) && !ft_strncmp(s, dr->d_name, l))
-		{
-			if (add_str(tab, dr->d_name))
 				return (closedir(dir));
 		}
 		dr = readdir(dir);
@@ -89,14 +82,14 @@ static int	s_exp(char *s, size_t len, char ***tab, DIR *dir)
 	return (closedir(dir));
 }
 
-int	starexp(t_strlist **strlst)
+t_strlist	*starexp(t_strlist **strlst, t_data *frame)
 {
 	int			len;
 	char		**tab;
 	t_strlist	*head;
 
-	if (s_exp((char *)(*strlst)->data, ft_strlen((*strlst)->data), &tab, NULL))
-		return (-1);
+	if (s_exp((char *)(*strlst)->data, &tab, NULL))
+		return (NULL);
 	len = 0;
 	while (tab[len])
 		len++;
@@ -109,11 +102,10 @@ int	starexp(t_strlist **strlst)
 		{
 			ft_strclear(&head, free);
 			free(tab);
-			return (-1);
+			return (NULL);
 		}
 		len++;
 	}
-	insert_strlst(strlst, &head);
 	free(tab);
-	return (-1);
+	return (insert_strlst(strlst, &head, frame));
 }
