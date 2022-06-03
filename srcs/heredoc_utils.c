@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-static char	*ft_varexp(char *var, char **envp, char **var_pool)
+char	*ft_varexp(char *var, char **envp, char **var_pool)
 {
 	char	*str;
 	size_t	i;
@@ -27,34 +27,6 @@ static char	*ft_varexp(char *var, char **envp, char **var_pool)
 		i++;
 	}
 	return (str);
-}
-
-char	*do_expand(t_data **d_curr, char *str)
-{
-	size_t	i;
-	size_t	len;
-	char	*var;
-	char	*new_str;
-	char	*content;
-
-	i = 0;
-	len = ft_null(str);
-	while (str[i] && str[i] != '$')
-		i++;
-	if (i == len)
-		return (str);
-	var = ft_substr(str, (i + 1), (len - i));
-	if (!var)
-		return (NULL);
-	var = ft_varexp(var, (*d_curr)->envp, (*d_curr)->var_pool);
-	content = ft_substr(str, 0, i);
-	if (!content)
-		return (ft_error_ret(var));
-	new_str = ft_strjoin(content, var);
-	if (!new_str)
-		return (ft_error_ret(content));
-	ft_error_ret(content);
-	return (new_str);
 }
 
 int	ft_strcmp_here(char *s1, char *s2)

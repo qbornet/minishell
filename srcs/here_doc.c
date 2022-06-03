@@ -8,7 +8,6 @@ static int	ret_res(t_termstd *fd, char *res)
 	str = ft_random_str("/tmp/heredoc-", 8);
 	if (!str)
 		return (-1);
-	printf("|%s|\n", str);
 	fd_val = open(str, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (fd_val == -1)
 	{
@@ -29,7 +28,7 @@ static int	ret_res(t_termstd *fd, char *res)
 	return (close(fd_val));
 }
 
-static char *ft_strjoin_here(char *s1, char *s2)
+static char	*ft_strjoin_here(char *s1, char *s2)
 {
 	char	*str;
 	char	*tmp;
@@ -80,6 +79,23 @@ static char	*ft_strendl(char *str)
 	return (new_str);
 }
 
+static char	*opt_here_doc(t_data **d_curr, char *str, int flag)
+{
+	int	to_do;
+
+	if (flag)
+	{
+		to_do = ft_num_expand(str);
+		while (to_do--)
+		{
+			str = do_expand(d_curr, str);
+			if (!str)
+				return (ft_error_malloc(((char *[]){str, NULL})));
+		}
+	}
+	return (str);
+}
+
 int	here_doc(t_data **d_curr, char *word)
 {
 	int		flag;
@@ -87,7 +103,6 @@ int	here_doc(t_data **d_curr, char *word)
 	char	*str;
 
 	res = NULL;
-	str = "";
 	if (word[0] != '\"' || word[0] != '\'')
 		flag = 1;
 	while (1)
@@ -95,14 +110,12 @@ int	here_doc(t_data **d_curr, char *word)
 		str = readline(HEREDOC_PROMPT);
 		if (!ft_strcmp_here(str, word))
 			break ;
-		if (flag)
-			str = do_expand(d_curr, str);
+		str = opt_here_doc(d_curr, str, flag);
+		if (!str)
+			return (ft_error_here(word));
 		str = ft_strendl(str);
 		if (!str)
-		{
-			free(word);
-			return (-1);
-		}
+			return (ft_error_here(word));
 		res = ft_strjoin_here(res, str);
 		free(str);
 		str = NULL;
