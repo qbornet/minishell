@@ -46,7 +46,7 @@ void	ft_do_starexp(t_data **d_curr)
 		else if (str[0] == '\'')
 			flag = 2;
 		if (!flag && strlst->data)
-			starexp(&strlst);
+			strlst = starexp(&strlst, frame);
 		strlst = strlst->next;
 	}
 }

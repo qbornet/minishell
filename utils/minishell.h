@@ -198,9 +198,10 @@ void		ft_do_varexp(t_data **d_curr);
 size_t		ft_len_var(char *str);
 /* STAREXP_H */
 /* starexp.c starexp_utils.c */
-int			starexp(t_strlist **strlst);
-int			ft_starexp(const char *s1, const char *s2, size_t n);
-int			insert_strlst(t_strlist **strlst, t_strlist **head);
+t_strlist	*starexp(t_strlist **strlst, t_data *frame);
+t_strlist	*insert_strlst(t_strlist **slst, t_strlist **head, t_data *frame);
+int			ft_starcmp(const char *s1, const char *s2);
+
 /* VAREXP_H */
 /* varexp.c varexp_utils.c */
 void		expand(t_strlist *strlst, char **env, t_data **frame);

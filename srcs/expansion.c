@@ -91,11 +91,7 @@ static int	ft_search_expansion(t_data **d_curr)
 
 int	start_expansion(t_data **d_curr)
 {
-	t_strlist	*strlst;
-
-	strlst = (*d_curr)->strlst;
 	ft_braces(&(*d_curr)->root);
-	ft_treeprint((*d_curr)->root, 0);
 	ft_search_expansion(d_curr);
 	ft_do_varexp(d_curr);
 	ft_do_starexp(d_curr);
@@ -164,6 +160,6 @@ int	main(int ac, char **av, char **envp)
 	print_strlst(&frame->strlst);
 	start_expansion(&frame);
 	print_strlst(&frame->strlst);
-	//ft_free_expan_error(&frame);
+	ft_free_expan_error(&frame);
 	return (0);
 }

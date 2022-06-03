@@ -56,6 +56,7 @@ SRCS = ft_isalpha.c \
 	ft_lstclear.c \
 	ft_lstiter.c \
 	ft_lstmap.c \
+	ft_strcmp.c \
 	ft_lstlast.c 
 
 
