@@ -10,7 +10,7 @@ OBJS_DIR = objs
 UTILS_DIR = utils
 
 # Utils
-CC = gcc
+CC = clang
 CFLAGS = -MMD -Wall -Wextra -Werror -g3 -fsanitize=address
 CPPFLAGS = -I ./$(UTILS_DIR) -I ./libft/utils
 LDFLAGS = -L ./libft

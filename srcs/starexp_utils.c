@@ -56,24 +56,27 @@ int	ft_starcmp(const char *s1, const char *s2)
 	return (loop(i, s1, s2, ft_strlen(s2)));
 }
 
-t_strlist	*insert_strlst(t_strlist **strlst, t_strlist **head)
+t_strlist	*insert_strlst(t_strlist **slst, t_strlist **head, t_data *frame)
 {
 	t_strlist	*tmp;
 	t_strlist	*lst;
 
 	if (!*head)
-		return (NULL);
-	lst = *strlst;
+		return (*slst);
+	lst = *slst;
 	tmp = lst->next;
-	lst->next = *head;
 	(*head)->prev = lst->prev;
+	if (lst->prev)
+		(lst->prev)->next = *head;
+	else
+		frame->strlst = *head;
+	free(lst->data);
+	free(lst);
+	lst = *head;
 	while (lst->next)
 		lst = lst->next;
 	lst->next = tmp;
 	if (tmp)
 		tmp->prev = lst;
-	free((*strlst)->data);
-	free((*strlst));
-	*strlst = *head;
 	return (lst);
 }

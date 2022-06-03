@@ -82,7 +82,7 @@ static int	s_exp(char *s, char ***tab, DIR *dir)
 	return (closedir(dir));
 }
 
-t_strlist	*starexp(t_strlist **strlst)
+t_strlist	*starexp(t_strlist **strlst, t_data *frame)
 {
 	int			len;
 	char		**tab;
@@ -107,5 +107,5 @@ t_strlist	*starexp(t_strlist **strlst)
 		len++;
 	}
 	free(tab);
-	return (insert_strlst(strlst, &head));
+	return (insert_strlst(strlst, &head, frame));
 }
