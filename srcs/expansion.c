@@ -140,7 +140,6 @@ void	print_strlst(t_strlist **s_curr)
 	printf("NULL\n");
 }
 
-/*
 int	main(int ac, char **av, char **envp)
 {
 	int		i;
@@ -164,4 +163,3 @@ int	main(int ac, char **av, char **envp)
 	ft_free_expan_error(&frame);
 	return (0);
 }
-*/
