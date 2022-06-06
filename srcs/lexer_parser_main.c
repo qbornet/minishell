@@ -38,13 +38,13 @@ int	lexer_parser_main(char *input, char **envp, t_data **d_curr)
 		return (-2);
 	}
 	frame->root = buildbtree(envp, frame->tokenlst);
-	ft_treeprint(frame->root, 0);
 	if (ft_read_flow(frame->root, &frame->strlst) < 0)
 		return (ft_free_parser_error(&frame));
 	*d_curr = frame;
 	return (0);
 }
 
+/*
 // Juste pour tester la struct t_data
 char	**ft_dup_envp(char **envp)
 {
@@ -122,3 +122,4 @@ int	main(int ac, char **av, char **envp)
 	ft_free_parser_error(&frame);
 	return (0);
 }
+*/

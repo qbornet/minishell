@@ -1,6 +1,9 @@
 #include "bin.h"
 #include "libft/utils/libft.h"
 
+/* TODO:
+ * - Doit unset toute les variables qui ont le meme nom dans var_pool et envp */
+
 static long	ft_len(char **envp)
 {
 	long	i;

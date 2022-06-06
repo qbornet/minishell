@@ -11,7 +11,7 @@ UTILS_DIR = utils
 
 # Utils
 CC = clang
-CFLAGS = -MMD -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -MMD -Wall -Wextra -Werror -g3 #-fsanitize=address
 CPPFLAGS = -I ./$(UTILS_DIR) -I ./libft/utils
 LDFLAGS = -L ./libft
 RM = rm -rf
@@ -20,18 +20,18 @@ RM = rm -rf
 LFT = ./libft/
 
 # Sources files
-SRCS = ft_tokenadd_back.c \
+SRCS = 	env_utils.c \
+	lexer_parser_main.c
+
+# Tools
+TOOLS = ft_tokenadd_back.c \
 	ft_tokenadd_front.c \
 	ft_tokenclear.c \
 	ft_tokendelone.c \
 	ft_tokenlast.c \
 	ft_tokennew.c \
 	ft_tokensize.c \
-	env_utils.c \
-	lexer_parser_main.c
-
-# Tools
-TOOLS = free_str_utils.c \
+	free_str_utils.c \
 	ft_qsort.c
 
 # File to create lexer part
@@ -44,15 +44,23 @@ BTREE = btreebuilder.c \
 	tree_utils.c \
 	check_cmd.c
 
+# File to create star expansion part
 STAR = starexp.c \
 	starexp_utils.c
 
+# File to create var ($) expansion part
 VAREXP = varexp.c \
 	varexp_utils.c
 
 # File to create read parser part
 READ = ft_read_flow.c \
 	   ft_strlist.c
+
+# File to create expansion part
+EXPAN = expansion.c \
+		expansion_utils.c \
+		expansion_error.c \
+		ft_braces.c
 
 GREEN   = \033[1;32m
 WHITE   = \033[0;m
@@ -62,6 +70,7 @@ WHITE   = \033[0;m
 # Header files
 UTILS = $(UTILS_DIR)/$(addsufix .h, $(NAME))
 
+EXPANOBJS = $(EXPAN:%.c=$(OBJS_DIR)/%.o)
 READOBJS = $(READ:%.c=$(OBJS_DIR)/%.o)
 LEXEROBJS = $(LEXER:%.c=$(OBJS_DIR)/%.o)
 BTREEOBJS = $(BTREE:%.c=$(OBJS_DIR)/%.o)
@@ -70,6 +79,13 @@ TOOLSOBJS = $(TOOLS:%.c=$(OBJS_DIR)/%.o)
 VAREXPOBJS = $(VAREXP:%.c=$(OBJS_DIR)/%.o)
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS = $(OBJS:%.o=%.d)
+
+
+expan:	$(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(OBJS)
+	make -C $(LFT)
+	echo "-------------------"
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(EXPANOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(OBJS) -lft -o $@
+	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
 
 read: $(READOBJS) $(OBJS)
 	make -C $(LFT)
@@ -82,6 +98,10 @@ test: $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS)
 	echo "-------------------"
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) -lft -o $@
 	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
+
+eclean:	clean
+	$(RM) expan
+	printf "[$(GREEN)removed$(WHITE)] expan\n"
 
 star: $(READOBJS) $(BTREEOBJS) $(STAROBJS) $(TOOLSOBJS) $(OBJS) $(LEXEROBJS) $(VAREXPOBJS)
 	make -C $(LFT)
@@ -105,10 +125,10 @@ rclean:
 all: $(NAME)
 
 
-lexer: $(LEXEROBJS) $(OBJS)
+lexer: $(LEXEROBJS) $(TOOLSOBJS)
 	make -C $(LFT)
 	echo "-------------------"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LEXEROBJS) $(OBJS) -lft -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LEXEROBJS) $(TOOLSOBJS) -lft -o $@
 	printf "\n[$(GREEN)OK$(WHITE)] Binary : $(NAME)\n\n"
 
 btree: $(BTREEOBJS) $(LEXEROBJS) $(OBJS)

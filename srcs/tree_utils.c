@@ -37,20 +37,11 @@ void	ft_treeclear(t_btree *tree, void (*del) (void *))
 void	ft_treeprint(t_btree *tree, int type)
 {
 	static int	node_pos;
-	static int	lst_pos;
-	t_tokenlist	*lst;
 
 	if (tree && !type)
 	{
 		ft_treeprint(tree->left, type);
-		printf("node %p[%d]:\n\e[20G-	type: %d\n\e[20G-	token: %p\n\n", tree, node_pos++, tree->node->type, tree->node->token);
-		lst = tree->node->tokenlst;
-		lst_pos = 0;
-		while (lst)
-		{
-			printf("\e[20G-elt tokenlist %p[%d]: %s\n\e[20G-elt len : %zu, elt type : %d\n", lst, lst_pos++, lst->token->lex, lst->token->len, lst->token->type);
-			lst = lst->next;
-		}
+		printf("node %p[%d]:\n\e[20G-	type: %d\n\e[20G-	token: %p\n\e[20G-	braces: %x\n", tree, node_pos++, tree->node->type, tree->node->token, tree->node->braces);
 		ft_treeprint(tree->right, type);
 	}
 	else if (tree && type == 1)
@@ -82,7 +73,6 @@ void	ft_print_tokenlist(t_tokenlist *lst)
 }
 
 /*
-
 int	main(void)
 {
 	t_btree	*tree;

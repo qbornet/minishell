@@ -1,21 +1,6 @@
 #include <minishell.h>
 
-char	*ft_create_str(char *lex, size_t len)
-{
-	size_t	i;
-	char	*str;
-
-	i = 0;
-	str = (char *)malloc(sizeof(char) * (len + 1));
-	if (!str)
-		return (NULL);
-	while (i < len)
-		str[i++] = *lex++;
-	str[i] = '\0';
-	return (str);
-}
-
-t_strlist	*ft_create_lst(t_tokenlist *tokenlst, t_strlist **s_curr)
+static t_strlist	*ft_create_lst(t_tokenlist *tokenlst, t_strlist **s_curr)
 {
 	char		*str;
 	t_strlist	*strlst;
@@ -41,6 +26,22 @@ t_strlist	*ft_create_lst(t_tokenlist *tokenlst, t_strlist **s_curr)
 	ft_create_lst(tokenlst->next, &strlst);
 	return (strlst);
 }
+
+char	*ft_create_str(char *lex, size_t len)
+{
+	size_t	i;
+	char	*str;
+
+	i = 0;
+	str = (char *)malloc(sizeof(char) * (len + 1));
+	if (!str)
+		return (NULL);
+	while (i < len)
+		str[i++] = *lex++;
+	str[i] = '\0';
+	return (str);
+}
+
 
 int	ft_find_operator(t_btree *tree)
 {

@@ -114,18 +114,18 @@ int	is_token_1(char *input, t_token *token)
 	else if (*input == '|')
 		token->type = E_PIPE;
 	else if (*input == '(')
-		token->type = E_LBRACE;
+		token->type = E_ERROR;
 	else if (*input == ')')
-		token->type = E_RBRACE;
+		token->type = E_ERROR;
 	return (token->type);
 }
 
 int	is_token_2(char *input, t_token *token)
 {
 	if (!ft_strncmp("&&", input, 2))
-		token->type = E_AND_IF;
+		token->type = E_ERROR;
 	else if (!ft_strncmp("||", input, 2))
-		token->type = E_OR_IF;
+		token->type = E_ERROR;
 	else if (!ft_strncmp("<<", input, 2))
 		token->type = E_DLESS;
 	else if (!ft_strncmp(">>", input, 2))
