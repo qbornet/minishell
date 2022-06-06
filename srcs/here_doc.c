@@ -8,7 +8,7 @@ static int	ret_res(t_termstd *fd, char *res)
 	str = ft_random_str("/tmp/heredoc-", 8);
 	if (!str)
 		return (-1);
-	fd_val = open(str, O_CREAT | O_TRUNC | O_RDWR, 0644);
+	fd_val = open(str, O_CREAT | O_EXCL | O_TRUNC | O_RDWR , 0644);
 	if (fd_val == -1)
 	{
 		free(res);
