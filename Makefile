@@ -32,6 +32,7 @@ TOOLS = ft_tokenadd_back.c \
 	ft_tokennew.c \
 	ft_tokensize.c \
 	free_str_utils.c \
+	free_int_utils.c \
 	ft_qsort.c
 
 # File to create lexer part
@@ -69,6 +70,15 @@ HEREDOC = heredoc_utils.c \
 		  opt_heredoc.c \
 		  here_doc.c
 
+# File to create pipe part
+PIPE = main.c \
+	pipex.c \
+	pipex_utils.c \
+	pipe.c \
+	error_tools.c \
+	pipe_utils.c
+
+
 GREEN   = \033[1;32m
 WHITE   = \033[0;m
 
@@ -77,6 +87,7 @@ WHITE   = \033[0;m
 # Header files
 UTILS = $(UTILS_DIR)/$(addsufix .h, $(NAME))
 
+PIPEOBJS = $(PIPE:%.c=$(OBJS_DIR)/%.o)
 EXPANOBJS = $(EXPAN:%.c=$(OBJS_DIR)/%.o)
 READOBJS = $(READ:%.c=$(OBJS_DIR)/%.o)
 LEXEROBJS = $(LEXER:%.c=$(OBJS_DIR)/%.o)
@@ -88,6 +99,11 @@ HEREOBJS = $(HEREDOC:%.c=$(OBJS_DIR)/%.o)
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS = $(OBJS:%.o=%.d)
 
+pipe: $(PIPEOBJS) $(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS)
+	make -C $(LFT)
+	echo "-------------------"
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(EXPANOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS) -lft -lreadline -o $@
+	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
 
 here:	$(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS)
 	make -C $(LFT)

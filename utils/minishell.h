@@ -2,6 +2,7 @@
 # define MINISHELL_H
 # include <sys/stat.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <limits.h>
 # include <dirent.h>
 # include <fcntl.h>
@@ -235,5 +236,43 @@ int			ft_export(char *var, char ***env_curr);
 int			ft_unset(char *var, char ***env_curr);
 int			ft_env(char **envp);
 int			print_error(t_error code);
+
+/* PIPE_H */
+/* Pipex */
+int		get_cmd_tab(char *cmd_string, char **env, char ***cmd);
+int		exec_cmd(char **cmd, char **env);
+int		pipex(int **pipes, int *pids, char **envp, char *raw_cmd);
+
+/* Pipex tools */
+char	*get_path(char **env, char *pg);
+int		dup_inout(int new_in, int new_out);
+int		close_pipe(int *pd);
+
+/* Pipes */
+int		pipe_in(char *infile, int *pd);
+int		pipe_mid(int *pd_in, int *pd_out);
+int		pipe_out(int *pd, char *outfile);
+int		open_fd(int **pipes, char **avector, int pipes_len, int i);
+
+/* Pipe utils */
+int		close_pipes(int **pipes, int pipes_len, int *pids, int i);
+int		alloc_pipes_pids(int ***pipes, int **pids, int pipes_len);
+int		**malloc_and_open_pipes(int len);
+
+/* Free tools */
+char	*free_str(char *str);
+char	*free_tab(char **tab);
+char	*free_elt_tab(char **tab);
+char	*free_str_tab(char **tab, int index);
+void	*free_int_tab(int **tab, int i);
+void	*free_int(int *tab);
+int		free_and_return(int **tab1, int *tab2, int index, int return_val);
+int		free_and_msg(int **tab1, int *tab2, int index, char *msg);
+
+/* Error tools */
+int		standard_error(char *str);
+int		main_error(char *str);
+int		error(char *str);
+int		pipex_status(int pipes_len, int **pipes, int *pids);
 
 #endif
