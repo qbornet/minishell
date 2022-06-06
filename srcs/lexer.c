@@ -42,7 +42,9 @@ static t_token	*get_next_token(char **input, unsigned int qt)
 	else
 		word_token(*input, token);
 	*input += token->len;
-	if ((token->qt && token->type == E_EOI) || !token->type)
+	if (token->type == E_ERROR
+		|| (token->qt && token->type == E_EOI)
+		|| !token->type)
 	{
 		free(token);
 		return (NULL);
@@ -99,14 +101,14 @@ int	main(int ac, char **av, char **envp)
 	int			code;
 	char		*input;
 	t_tokenlist	*lst;
-	t_tokenlist *tmp;
+	t_tokenlist	*tmp;
 
 	(void)ac;
 	(void)av;
 	(void)envp;
 	//input = "=toto tata= echo toto mo ===nmo||onnai( ssee&&ttoitco)mm|e|||ntc ava>>>>>p < lutot <<biene< ttoia;sdfjas;dfjaspdfji                   world && Hello Bob=";
 	//input = " echo>  Hello world Bob";
-	input = "ech \" '\"o'bonjo\"\"\"ur' $TOTO 'ls -ls && echo bonjour' && echo 'ls&&$TOTO'";
+	input = "ech \" '\"o'bonjo\"\"\"ur' $TOTO 'ls -ls echo bonjour' echo 'ls$TOTO'";
 	if (!input)
 		return (-1);
 	code = lexical_analysis(input, &lst);

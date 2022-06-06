@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-static int	ft_free_parser_error(t_data **d_curr)
+int	ft_free_parser_error(t_data **d_curr)
 {
 	int		i;
 	t_data	*frame;
@@ -43,6 +43,7 @@ int	lexer_parser_main(char *input, char **envp, t_data **d_curr)
 	*d_curr = frame;
 	return (0);
 }
+
 /*
 // Juste pour tester la struct t_data
 char	**ft_dup_envp(char **envp)
@@ -67,6 +68,7 @@ char	**ft_dup_envp(char **envp)
 
 void	print_strlst(t_strlist *strlst)
 {
+
 	printf("strlst: ");
 	while (strlst)
 	{
@@ -79,6 +81,7 @@ void	print_strlst(t_strlist *strlst)
 int	main(int ac, char **av, char **envp)
 {
 	t_data	*frame;
+	t_strlist *lst;
 
 	if (ac != 2)
 		return (-1);
@@ -92,8 +95,29 @@ int	main(int ac, char **av, char **envp)
 	if (lexer_parser_main(av[1], frame->envp, &frame) < 0)
 		return (-1);
 	print_strlst(frame->strlst);
-	expand(frame->strlst, envp, &frame);
-	starexp(&(frame->strlst));
+	lst = frame->strlst;
+	while (lst)
+	{
+		lst = starexp(&lst, frame);
+		lst = lst->next;
+	}
+	lst = frame->strlst;
+	printf("\n");
+	printf("\n");
+	while (lst->next)
+	{
+		printf("%s ", (char *)(lst->data));
+		lst = lst->next;
+	}
+	printf("%s ", (char *)(lst->data));
+	printf("\n");
+	while (lst)
+	{
+		printf("%s ", (char *)(lst->data));
+		lst = lst->prev;
+	}
+	printf("\n");
+	printf("\n");
 	print_strlst(frame->strlst);
 	ft_free_parser_error(&frame);
 	return (0);

@@ -26,6 +26,30 @@ static void	ft_change_node(t_strlist **s_curr, t_strlist **head_curr)
 	*s_curr = strlst;
 }
 
+void	ft_do_starexp(t_data **d_curr)
+{
+	int			flag;
+	char		*str;
+	t_data		*frame;
+	t_strlist	*strlst;
+
+	str = "";
+	frame = *d_curr;
+	strlst = frame->strlst;
+	while (strlst)
+	{
+		flag = 0;
+		if (strlst->data)
+			str = strlst->data;
+		if (str[0] == '\"')
+			flag = 1;
+		else if (str[0] == '\'')
+			flag = 2;
+		if (!flag && strlst->data)
+			strlst = starexp(&strlst, frame);
+		strlst = strlst->next;
+	}
+}
 void	ft_do_varexp(t_data **d_curr)
 {
 	int			flag;
