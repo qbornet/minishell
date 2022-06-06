@@ -20,7 +20,7 @@ size_t	ft_num_expand(char *str)
 	i = -1;
 	count = 0;
 	while (str[++i])
-		if (str[i] == '$')
+		if (str[i] == '$' && str[i - 1] != '\\')
 			count++;
 	return (count);
 }
@@ -90,8 +90,7 @@ char	*do_expand(t_data **d_curr, char *str)
 	size_t	i;
 
 	i = 0;
-	while (str[i] && str[i] != '$')
-		i++;
+	opt_find_dollars(&str, &i);
 	begin_str = ft_substr(str, 0, i);
 	if (!begin_str)
 		return (NULL);
@@ -104,8 +103,6 @@ char	*do_expand(t_data **d_curr, char *str)
 	new_str = ft_strjoin(begin_str, end_str);
 	if (!new_str)
 		return (ft_error_malloc(((char *[]){begin_str, end_str, NULL})));
-	free(str);
-	free(begin_str);
-	free(end_str);
+	opt_free_doexpand(str, begin_str, end_str);
 	return (new_str);
 }

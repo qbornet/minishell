@@ -81,7 +81,7 @@ static char	*ft_strendl(char *str)
 
 static char	*opt_here_doc(t_data **d_curr, char *str, int flag)
 {
-	int	to_do;
+	int		to_do;
 
 	if (flag)
 	{
@@ -103,8 +103,9 @@ int	here_doc(t_data **d_curr, char *word)
 	char	*str;
 
 	res = NULL;
-	if (word[0] != '\"' || word[0] != '\'')
-		flag = 1;
+	flag = opt_word(&word);
+	if (flag < 0)
+		return (-1);
 	while (1)
 	{
 		str = readline(HEREDOC_PROMPT);

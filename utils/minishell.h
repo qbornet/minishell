@@ -210,6 +210,7 @@ size_t		ft_len_metachar(char *s);
 /* HERE_DOC_H */
 /* heredoc_str.c heredoc_utils.c heredoc_error.c here_doc.c */
 int		here_doc(t_data **d_curr, char *word);
+int		opt_word(char **w_curr);
 int		ft_error_here(char *word);
 int		ft_strcmp_here(char *s1, char *s2);
 char	*do_expand(t_data **d_curr, char *str);
@@ -217,6 +218,8 @@ char	*ft_varexp(char *var, char **envp, char **var_pool);
 char	*ft_error_ret(char *s1);
 char	*ft_error_malloc(char **arr);
 char	*ft_random_str(char *pathname, int bytes);
+void	opt_free_doexpand(char *str, char *begin_str, char *end_str);
+void	opt_find_dollars(char **s_curr, size_t *i);
 size_t	ft_num_expand(char *str);
 size_t	ft_null(char *str);
 size_t	ft_strjoin_len(char *str);

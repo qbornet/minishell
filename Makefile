@@ -66,6 +66,7 @@ EXPAN = expansion.c \
 HEREDOC = heredoc_utils.c \
 		  heredoc_error.c \
 		  heredoc_str.c \
+		  opt_heredoc.c \
 		  here_doc.c
 
 GREEN   = \033[1;32m
