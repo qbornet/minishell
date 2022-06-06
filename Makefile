@@ -20,18 +20,18 @@ RM = rm -rf
 LFT = ./libft/
 
 # Sources files
-SRCS = ft_tokenadd_back.c \
+SRCS = 	env_utils.c \
+	lexer_parser_main.c
+
+# Tools
+TOOLS = ft_tokenadd_back.c \
 	ft_tokenadd_front.c \
 	ft_tokenclear.c \
 	ft_tokendelone.c \
 	ft_tokenlast.c \
 	ft_tokennew.c \
 	ft_tokensize.c \
-	env_utils.c \
-	lexer_parser_main.c
-
-# Tools
-TOOLS = free_str_utils.c \
+	free_str_utils.c \
 	ft_qsort.c
 
 # File to create lexer part
@@ -125,10 +125,10 @@ rclean:
 all: $(NAME)
 
 
-lexer: $(LEXEROBJS) $(OBJS)
+lexer: $(LEXEROBJS) $(TOOLSOBJS)
 	make -C $(LFT)
 	echo "-------------------"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LEXEROBJS) $(OBJS) -lft -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LEXEROBJS) $(TOOLSOBJS) -lft -o $@
 	printf "\n[$(GREEN)OK$(WHITE)] Binary : $(NAME)\n\n"
 
 btree: $(BTREEOBJS) $(LEXEROBJS) $(OBJS)
