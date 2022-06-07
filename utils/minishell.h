@@ -111,14 +111,22 @@ typedef struct s_btree
 	struct s_btree	*right;
 }	t_btree;
 
+typedef struct s_lenlist
+{
+	int					length;
+	struct s_lenlist	*next;
+}	t_lenlist;
+
 // Notre struct "foure tout"
 typedef struct s_data
 {
 	char		**envp; // pas oublier a strdup le envp au debut
 	char		**var_pool;
+	char		**join;
 	t_btree		*root;
 	t_termstd	std_fd;
 	t_strlist	*strlst;
+	t_lenlist	*lenlst;
 	t_tokenlist	*tokenlst;
 }	t_data;
 
@@ -189,13 +197,19 @@ void		ft_print_tokenlist(t_tokenlist *lst);
 
 /* EXPANSION_H */
 /* expansion.c expansion_utils.c expansion_error.c expansion_check.c */
+/* ft_create_join.c ft_create_cmd.c ft_lenlst.c */
+int			ft_create_cmd(t_data **d_curr, int total_cmd);
+int			ft_create_join(t_data **d_curr);
 int			start_expansion(t_data **d_curr);
 int			ft_check_pool(char  *str, char **pool, int res);
 int			ft_free_expan_error(t_data **d_curr);
-void		ft_move_node(t_data **d_curr, t_strlist **s_curr);
-void		ft_do_starexp(t_data **d_curr);
+int			ft_do_starexp(t_data **d_curr);
+void		ft_lenclear(t_lenlist **len_curr);
+void		ft_lenadd_back(t_lenlist **len_curr, int data);
 void		ft_do_varexp(t_data **d_curr);
+void		ft_move_node(t_data **d_curr, t_strlist **s_curr);
 size_t		ft_len_var(char *str);
+t_lenlist	*ft_lennew(int data);
 /* STAREXP_H */
 /* starexp.c starexp_utils.c */
 t_strlist	*starexp(t_strlist **strlst, t_data *frame);

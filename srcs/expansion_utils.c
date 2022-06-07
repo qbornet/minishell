@@ -26,7 +26,7 @@ static void	ft_change_node(t_strlist **s_curr, t_strlist **head_curr)
 	*s_curr = strlst;
 }
 
-void	ft_do_starexp(t_data **d_curr)
+int	ft_do_starexp(t_data **d_curr)
 {
 	int			flag;
 	char		*str;
@@ -47,9 +47,13 @@ void	ft_do_starexp(t_data **d_curr)
 			flag = 2;
 		if (!flag && strlst->data)
 			strlst = starexp(&strlst, frame);
+		if (!strlst)
+			return (-1);
 		strlst = strlst->next;
 	}
+	return (0);
 }
+
 void	ft_do_varexp(t_data **d_curr)
 {
 	int			flag;

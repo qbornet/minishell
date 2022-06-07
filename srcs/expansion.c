@@ -60,7 +60,7 @@ static int	ft_search_expansion(t_data **d_curr)
 
 	frame = *d_curr;
 	if (!frame->var_pool)
-		frame->var_pool = (char **)ft_calloc(4096, sizeof(char *));
+		frame->var_pool = ft_calloc(4096, sizeof(char *));
 	s = frame->strlst;
 	if (!frame->var_pool)
 		return (ft_free_expan_error(&frame));
@@ -84,7 +84,10 @@ int	start_expansion(t_data **d_curr)
 	if (ft_search_expansion(d_curr) < 0)
 		return (-1);
 	ft_do_varexp(d_curr);
-	ft_do_starexp(d_curr);
+	if (ft_do_starexp(d_curr) < 0)
+		return (ft_free_expan_error(d_curr));
+	if (ft_create_join(d_curr) < 0)
+		return (ft_free_expan_error(d_curr));
 	return (0);
 }
 
@@ -97,7 +100,7 @@ char	**ft_dup_envp(char **envp)
 	i = 0;
 	while (envp[i])
 		i++;
-	new_env = (char **)ft_calloc(i + 1, sizeof(char *));
+	new_env = ft_calloc((i + 2), sizeof(char *));
 	if (!new_env)
 		return (NULL);
 	i = 0;
@@ -114,6 +117,7 @@ char	**ft_dup_envp(char **envp)
 		}
 		i++;
 	}
+	new_env[i] = NULL;
 	return (new_env);
 }
 
@@ -150,6 +154,8 @@ int	main(int ac, char **av, char **envp)
 	print_strlst(&frame->strlst);
 	start_expansion(&frame);
 	print_strlst(&frame->strlst);
+	for (int i = 0; frame->join[i]; i++)
+		printf("%s\n", frame->join[i]);
 	ft_free_expan_error(&frame);
 	return (0);
 }
