@@ -60,7 +60,7 @@ READ = ft_read_flow.c \
 EXPAN = expansion.c \
 		expansion_utils.c \
 		expansion_error.c \
-		ft_braces.c
+		expansion_check.c
 
 GREEN   = \033[1;32m
 WHITE   = \033[0;m

@@ -188,10 +188,10 @@ void		ft_treeprint(t_btree *tree, int type);
 void		ft_print_tokenlist(t_tokenlist *lst);
 
 /* EXPANSION_H */
-/* expansion.c expansion_utils.c expansion_error.c ft_braces.c*/
-int			ft_braces(t_btree **b_curr);
-int			ft_free_expan_error(t_data **d_curr);
+/* expansion.c expansion_utils.c expansion_error.c expansion_check.c */
 int			start_expansion(t_data **d_curr);
+int			ft_check_pool(char  *str, char **pool, int res);
+int			ft_free_expan_error(t_data **d_curr);
 void		ft_move_node(t_data **d_curr, t_strlist **s_curr);
 void		ft_do_starexp(t_data **d_curr);
 void		ft_do_varexp(t_data **d_curr);

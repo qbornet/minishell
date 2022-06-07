@@ -35,30 +35,20 @@ static int	ft_ret_index(char *str, char **var_pool)
 	return (-1);
 }
 
-static int	ft_var(char *str, char **var_pool)
+static int	ft_var(char *str, t_data **d_curr)
 {
-	int	i;
 	int	res;
 
-	i = 0;
-	res = ft_ret_index(str, var_pool);
+	res = ft_ret_index(str, (*d_curr)->envp);
 	if (res == -2)
 		return (-1);
-	if (res >= 0)
-	{
-		free(var_pool[i]);
-		var_pool[i] = ft_strdup(str);
-		if (!var_pool[i])
-			return (-1);
-	}
-	else
-	{
-		while (var_pool[i])
-			i++;
-		var_pool[i] = ft_strdup(str);
-		if (!var_pool[i])
-			return (-1);
-	}
+	if (ft_check_pool(str, (*d_curr)->envp, res))
+		return (1);
+	res = ft_ret_index(str, (*d_curr)->var_pool);
+	if (res == -2)
+		return (-1);
+	if (ft_check_pool(str, (*d_curr)->var_pool, res))
+		return (1);
 	return (0);
 }
 
@@ -79,7 +69,7 @@ static int	ft_search_expansion(t_data **d_curr)
 		str = s->data;
 		if (str && ft_strchr(str, '=') && (!s->prev || !s->prev->data))
 		{
-			if (ft_var(str, frame->var_pool) < 0)
+			if (ft_var(str, &frame) < 0)
 				return (ft_free_expan_error(&frame));
 			free(s->data);
 			s->data = NULL;
@@ -91,8 +81,8 @@ static int	ft_search_expansion(t_data **d_curr)
 
 int	start_expansion(t_data **d_curr)
 {
-	ft_braces(&(*d_curr)->root);
-	ft_search_expansion(d_curr);
+	if (ft_search_expansion(d_curr) < 0)
+		return (-1);
 	ft_do_varexp(d_curr);
 	ft_do_starexp(d_curr);
 	return (0);
