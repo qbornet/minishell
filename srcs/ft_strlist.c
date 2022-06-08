@@ -9,6 +9,7 @@ t_strlist	*ft_strlst_new(void *data, enum e_token type)
 	new = ft_calloc(1, sizeof(t_strlist));
 	if (!new)
 		return (NULL);
+	new->s_id = 0;
 	new->data = data;
 	new->type = type;
 	return (new);

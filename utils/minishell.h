@@ -52,6 +52,7 @@ enum e_token
 	E_VALID_FILE,
 	E_FD,
 	E_CONTINUE,
+	E_STAR,
 	E_ERROR
 };
 
@@ -86,6 +87,7 @@ typedef struct s_termstd
 typedef struct s_strlist
 {
 	void				*data;
+	unsigned int		s_id;
 	enum e_token		type;
 	struct s_strlist	*next;
 	struct s_strlist	*prev;
@@ -185,8 +187,8 @@ void		ft_print_tokenlist(t_tokenlist *lst);
 
 /* STAREXP_H */
 /* starexp.c starexp_utils.c */
-t_strlist	*starexp(t_strlist **strlst, t_data *frame);
-t_strlist	*insert_strlst(t_strlist **slst, t_strlist **head, t_data *frame);
+t_strlist	*starexp(t_strlist **strlst, t_data *frame, unsigned int s_id);
+t_strlist	*insert_strlst(t_strlist **slst, t_strlist **head, t_data *frame, unsigned int s_id);
 int			ft_starcmp(const char *s1, const char *s2);
 
 /* VAREXP_H */

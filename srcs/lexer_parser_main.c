@@ -72,7 +72,7 @@ void	print_strlst(t_strlist *strlst)
 	printf("strlst: ");
 	while (strlst)
 	{
-		printf("%s:%p->", (char *)strlst->data, strlst);
+		printf("%s%p[type:%d][s_id:%d]->", (char *)strlst->data, strlst, strlst->type, strlst->s_id);
 		strlst = strlst->next;
 	}
 	printf("NULL\n");
@@ -98,7 +98,7 @@ int	main(int ac, char **av, char **envp)
 	lst = frame->strlst;
 	while (lst)
 	{
-		lst = starexp(&lst, frame);
+		lst = starexp(&lst, frame, 1);
 		lst = lst->next;
 	}
 	lst = frame->strlst;
