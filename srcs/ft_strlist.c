@@ -38,6 +38,7 @@ int	ft_strlst_addback(t_strlist **lst_curr, void *data, enum e_token type)
 	return (0);
 }
 
+
 void	*ft_strclear(t_strlist **s_curr, void (*del) (void *))
 {
 	t_strlist	*tmp;
@@ -53,4 +54,28 @@ void	*ft_strclear(t_strlist **s_curr, void (*del) (void *))
 	}
 	*s_curr = NULL;
 	return (NULL);
+}
+
+void	ft_strdelone(t_strlist *strlst, void (*del) (void *))
+{
+	if (!del)
+		return ;
+	if (strlst)
+	{
+		del(strlst->data);
+		free(strlst);
+	}
+}
+
+size_t	ft_strsize(t_strlist *strlst)
+{
+	size_t	i;
+
+	i = 0;
+	while (strlst->next)
+	{
+		strlst = strlst->next;
+		i++;
+	}
+	return (i);
 }

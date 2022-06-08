@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include "../libft/includes/libft.h"
 
+/* TODO:
+ * - Doit ajouter les variables deja presente dans var_pool si jamais = n'est pas present dans la l'input */
+
 static long	ft_len(char **envp)
 {
 	long	i;

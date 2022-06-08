@@ -52,7 +52,7 @@ static char	*expand_var(char **s, t_strlist **strlst, char **env, t_data *frame)
 	char	*result;
 
 	result = NULL;
-	tmp = check_intab(env, *s + 1);
+		tmp = check_intab(env, *s + 1);
 	if (!tmp)
 		tmp = check_intab(frame->var_pool, *s + 1);
 	while (tmp && *tmp && *tmp != '=')
