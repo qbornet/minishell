@@ -121,17 +121,26 @@ char	**ft_dup_envp(char **envp)
 	return (new_env);
 }
 
-void	print_strlst(t_strlist **s_curr)
+void	print_strlst(t_strlist *strlst)
 {
-	t_strlist	*strlst;
 
-	strlst = *s_curr;
+	printf("strlst: ");
 	while (strlst)
 	{
-		printf("%s:%p->", (char *)strlst->data, strlst);
+		printf("  %s:%p[type:%d][s_id:%d]->", (char *)strlst->data, strlst, strlst->type, strlst->s_id);
 		strlst = strlst->next;
 	}
 	printf("NULL\n");
+}
+void	ft_get_word(t_data **d_curr, t_btree *root)
+{
+	if (root && root->node)
+	{
+		ft_get_word(d_curr, root->left);
+		if (root->node->type == E_FD)
+			(*d_curr)->str = ft_create_str(root->node->token->lex, root->node->token->len);
+		ft_get_word(d_curr, root->right);
+	}
 }
 
 int	main(int ac, char **av, char **envp)
@@ -151,7 +160,7 @@ int	main(int ac, char **av, char **envp)
 		return (-1);
 	if (lexer_parser_main(av[1], frame->envp, &frame) < 0)
 		return (-1);
-	print_strlst(&frame->strlst);
+	print_strlst(frame->strlst);
 	start_expansion(&frame);
 	print_strlst(&frame->strlst);
 	for (int i = 0; frame->join[i]; i++)

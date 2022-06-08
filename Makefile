@@ -20,18 +20,18 @@ RM = rm -rf
 LFT = ./libft/
 
 # Sources files
-SRCS = ft_tokenadd_back.c \
+SRCS = 	env_utils.c \
+	lexer_parser_main.c
+
+# Tools
+TOOLS = ft_tokenadd_back.c \
 	ft_tokenadd_front.c \
 	ft_tokenclear.c \
 	ft_tokendelone.c \
 	ft_tokenlast.c \
 	ft_tokennew.c \
 	ft_tokensize.c \
-	env_utils.c \
-	lexer_parser_main.c
-
-# Tools
-TOOLS = free_str_utils.c \
+	free_str_utils.c \
 	ft_qsort.c
 
 # File to create lexer part
@@ -65,6 +65,13 @@ EXPAN = expansion.c \
 		ft_create_join.c \
 		ft_lenlst.c
 
+# File to create here_doc part
+HEREDOC = heredoc_utils.c \
+		  heredoc_error.c \
+		  heredoc_str.c \
+		  opt_heredoc.c \
+		  here_doc.c
+
 GREEN   = \033[1;32m
 WHITE   = \033[0;m
 
@@ -80,9 +87,16 @@ BTREEOBJS = $(BTREE:%.c=$(OBJS_DIR)/%.o)
 STAROBJS = $(STAR:%.c=$(OBJS_DIR)/%.o)
 TOOLSOBJS = $(TOOLS:%.c=$(OBJS_DIR)/%.o)
 VAREXPOBJS = $(VAREXP:%.c=$(OBJS_DIR)/%.o)
+HEREOBJS = $(HEREDOC:%.c=$(OBJS_DIR)/%.o)
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS = $(OBJS:%.o=%.d)
 
+
+here:	$(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS)
+	make -C $(LFT)
+	echo "-------------------"
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(EXPANOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS) -lft -lreadline -o $@
+	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
 
 expan:	$(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(OBJS)
 	make -C $(LFT)
@@ -128,10 +142,10 @@ rclean:
 all: $(NAME)
 
 
-lexer: $(LEXEROBJS) $(OBJS)
+lexer: $(LEXEROBJS) $(TOOLSOBJS)
 	make -C $(LFT)
 	echo "-------------------"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LEXEROBJS) $(OBJS) -lft -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LEXEROBJS) $(TOOLSOBJS) -lft -o $@
 	printf "\n[$(GREEN)OK$(WHITE)] Binary : $(NAME)\n\n"
 
 btree: $(BTREEOBJS) $(LEXEROBJS) $(OBJS)
