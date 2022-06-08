@@ -123,13 +123,10 @@ typedef struct s_lenlist
 // Notre struct "foure tout"
 typedef struct s_data
 {
+	char		*str; // variable temporaire juste pour tester le here_doc
 	char		**envp; // pas oublier a strdup le envp au debut
 	char		**var_pool;
-<<<<<<< HEAD
-	char		**join;
-=======
-	char		*str; // variable temporaire juste pour tester le here_doc
->>>>>>> star
+	char		***cmd_pool;
 	t_btree		*root;
 	t_termstd	std_fd;
 	t_strlist	*strlst;

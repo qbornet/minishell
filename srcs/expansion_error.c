@@ -10,14 +10,14 @@ static void	ft_free_envp(char **envp)
 	free(envp);
 }
 
-static void ft_free_join(char **join)
+static void ft_free_cpool(char ***cpool)
 {
-	int	i;
+	size_t	i;
 
-	i = -1;
-	while (join[++i])
-		free(join[i]);
-	free(join);
+	i = 0;
+	while (cpool[i])
+		free(cpool[i++]);
+	free(cpool);
 }
 
 static void	ft_free_vpool(char **var_pool)
@@ -42,7 +42,7 @@ int	ft_free_expan_error(t_data **d_curr)
 	ft_strclear(&frame->strlst, &free);
 	ft_tokenclear(&frame->tokenlst, &free);
 	ft_treeclear(frame->root, &free);
-	ft_free_join(frame->join);
+	ft_free_cpool(frame->cmd_pool);
 	ft_free_vpool(frame->var_pool);
 	ft_free_envp(frame->envp);
 	free(frame);

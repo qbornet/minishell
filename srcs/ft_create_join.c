@@ -77,8 +77,8 @@ int	ft_create_join(t_data **d_curr)
 	int		total_cmd;
 	
 	total_cmd = ft_cmd_node((*d_curr)->root);
-	(*d_curr)->join = ft_calloc((total_cmd + 1), sizeof(char *));
-	if (!(*d_curr)->join)
+	(*d_curr)->cmd_pool = ft_calloc((total_cmd + 1), sizeof(char **));
+	if (!(*d_curr)->cmd_pool)
 		return (-1);
 	if (ft_strlst_len((*d_curr)->root, &(*d_curr)->lenlst) < 0)
 		return (-1);

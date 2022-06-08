@@ -1,101 +1,80 @@
 #include <minishell.h>
-
-static char	*opt_first(t_strlist **strlst)
+static int	ft_isstar(int to_do, t_strlist *tmp)
 {
-	char	*tmp;
-	char	*res;
-
-
-	if (!(*strlst)->data)
+	while (to_do && tmp && !tmp->s_id)
 	{
-		res = ft_strjoin("", "");
-		return (res);
+		tmp = tmp->next;
+		to_do--;
 	}
-	if (!(*strlst)->next)
-	{
-		res = ft_strjoin((*strlst)->data, "");
-		return (res);
-	}
-	res = ft_strjoin((*strlst)->data, " ");
-	if (!res)
-		return (NULL);
-	tmp = res;
-	res = ft_strjoin(res, (*strlst)->next->data);
-	free(tmp);
-	if (!res)
-		return (NULL);
-	*strlst = (*strlst)->next;
-	return (res);
+	if (!tmp || !tmp->s_id)
+		return (1);
+	return (0);
 }
 
-static char	*opt_second(char **r_curr, t_strlist **strlst)
+static size_t	ft_check_isstar(int to_do, t_strlist **s_curr)
 {
-	char	*tmp;
-	char	*res;
+	size_t			i;
+	t_strlist		*strlst;
 
-	res = *r_curr;
-	tmp = res;
-	res = ft_strjoin(res, " ");
-	free(tmp);
-	if (!res)
-		return (NULL);
-	tmp = res;
-	res = ft_strjoin(res, (*strlst)->data);
-	free(tmp);
-	if (!res)
-		return (NULL);
-	return (res);
+	i = 0;
+	strlst = *s_curr;
+	if (ft_isstar(to_do, strlst))
+		return (to_do);
+	while (to_do && strlst)
+	{
+		while (strlst && strlst->s_id)
+		{
+			i++;
+			strlst = strlst->next;
+		}
+		to_do--;
+		if (to_do && strlst && !strlst->s_id)
+		{
+			i++;
+			strlst = strlst->next;
+		}
+	}
+	return (i);
 }
 
-static char	*ft_cmd_str(int to_do, t_strlist **strlst)
+static int	ft_cmd_str(int to_do, size_t index, t_strlist **strlst, t_data **d_curr)
 {
-	char	*res;
-	size_t	flag;
+	size_t	i;
+	size_t	len;
 
-	flag = 0;
-	while (to_do > 0 && *strlst)
+	i = 0;
+	len = ft_check_isstar(to_do, strlst);
+	printf("len: %zu\n", len);
+	(*d_curr)->cmd_pool[index] = ft_calloc(len + 1, sizeof(char *));
+	if (!(*d_curr)->cmd_pool[index])
+		return (-1);
+	while (len > 0 && (*strlst))
 	{
-		if (!flag++)
-		{
-			res = opt_first(&(*strlst));
-			if (!res)
-				return (NULL);
-			to_do -= 2;
-		}
-		else
-		{
-			res = opt_second(&res, &(*strlst));
-			if (!res)
-				return (NULL);
-			to_do -= 1;
-		}
+		(*d_curr)->cmd_pool[index][i] = (*strlst)->data;
+		len--;
+		i++;
 		*strlst = (*strlst)->next;
 	}
-	return (res);
+	return (0);
 }
 
 int	ft_create_cmd(t_data **d_curr, int total_cmd)
 {
-	int			i;
 	int			to_do;
-	char		*res;
+	size_t		index;
 	t_lenlist	*lengthlst;
 	t_strlist	*strlst;
 
-	i = 0;
+	index = 0;
 	strlst = (*d_curr)->strlst;
 	lengthlst = (*d_curr)->lenlst;
 	while (total_cmd)
 	{
 		to_do = lengthlst->length;
-		res = ft_cmd_str(to_do, &strlst);
-		if (!res)
-			return (-1);
-		(*d_curr)->join[i] = ft_strdup(res);
-		free(res);
-		if (!(*d_curr)->join[i++])
+		if (ft_cmd_str(to_do, index, &strlst, d_curr) < 0)
 			return (-1);
 		total_cmd--;
+		index++;
 	}
 	return (0);
 }

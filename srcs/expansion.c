@@ -127,11 +127,12 @@ void	print_strlst(t_strlist *strlst)
 	printf("strlst: ");
 	while (strlst)
 	{
-		printf("  %s:%p[type:%d][s_id:%d]->", (char *)strlst->data, strlst, strlst->type, strlst->s_id);
+		printf("%s:%d->", (char *)strlst->data, strlst->s_id);
 		strlst = strlst->next;
 	}
 	printf("NULL\n");
 }
+
 void	ft_get_word(t_data **d_curr, t_btree *root)
 {
 	if (root && root->node)
@@ -162,9 +163,13 @@ int	main(int ac, char **av, char **envp)
 		return (-1);
 	print_strlst(frame->strlst);
 	start_expansion(&frame);
-	print_strlst(&frame->strlst);
-	for (int i = 0; frame->join[i]; i++)
-		printf("%s\n", frame->join[i]);
+	print_strlst(frame->strlst);
+	for (int i = 0; frame->cmd_pool[i]; i++)
+	{
+		for (int j = 0; frame->cmd_pool[i][j]; j++)
+			printf("[%d][%d]: %s\n", i, j, frame->cmd_pool[i][j]);
+		printf("\n");
+	}
 	ft_free_expan_error(&frame);
 	return (0);
 }
