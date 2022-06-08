@@ -47,7 +47,7 @@ int	ft_do_starexp(t_data **d_curr)
 			flag = 2;
 		if (!flag && strlst->data)
 		{
-			strlst = starexp(&strlst, (*d_curr), ++i);
+			strlst = starexp(&strlst, (*d_curr), &i);
 			if (!strlst)
 				return (-1);
 		}
