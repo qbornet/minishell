@@ -6,11 +6,11 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 19:19:55 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/03/01 11:12:22 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/08 21:45:01 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 int	pipe_in(char *infile, int *pd)
 {

@@ -6,11 +6,11 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 16:46:50 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/02/28 12:07:20 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/08 21:44:44 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 char	**get_env_paths(char **env)
 {

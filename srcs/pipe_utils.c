@@ -6,11 +6,11 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:04:52 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/03/01 11:07:34 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/08 21:43:27 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 int	close_pipes(int **pipes, int pipes_len, int *pids, int i)
 {

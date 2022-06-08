@@ -6,11 +6,11 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 11:44:07 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/08 19:45:14 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/08 21:43:05 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 /*
 int	main(int argc, char **argv, char **envp)

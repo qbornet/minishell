@@ -6,11 +6,11 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 19:31:57 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/03/01 11:12:44 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/08 21:42:47 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 int	get_cmd_tab(char *cmd_string, char **env, char ***cmd)
 {

@@ -6,11 +6,11 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 21:21:18 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/03/01 10:57:24 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/08 21:45:22 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 int	pipex_status(int pipes_len, int **pipes, int *pids)
 {
