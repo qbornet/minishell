@@ -6,12 +6,13 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 11:44:07 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/06 19:07:08 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/08 19:45:14 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+/*
 int	main(int argc, char **argv, char **envp)
 {	
 	int		**pipes;
@@ -40,3 +41,4 @@ int	main(int argc, char **argv, char **envp)
 	}
 	return (pipex_status(argc - 4, pipes, pids));
 }
+*/

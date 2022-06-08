@@ -6,11 +6,11 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 12:52:49 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/03/01 10:34:51 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/08 19:45:45 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 void	*free_int(int *tab)
 {
