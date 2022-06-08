@@ -82,7 +82,7 @@ static int	s_exp(char *s, char ***tab, DIR *dir)
 	return (closedir(dir));
 }
 
-t_strlist	*starexp(t_strlist **strlst, t_data *frame)
+t_strlist	*starexp(t_strlist **strlst, t_data *frame, unsigned int s_id)
 {
 	int			len;
 	char		**tab;
@@ -98,7 +98,7 @@ t_strlist	*starexp(t_strlist **strlst, t_data *frame)
 	head = NULL;
 	while (tab[len])
 	{
-		if (ft_strlst_addback(&head, tab[len], 0) == -1)
+		if (ft_strlst_addback(&head, tab[len], E_STAR) == -1)
 		{
 			ft_strclear(&head, free);
 			free(tab);
@@ -107,5 +107,5 @@ t_strlist	*starexp(t_strlist **strlst, t_data *frame)
 		len++;
 	}
 	free(tab);
-	return (insert_strlst(strlst, &head, frame));
+	return (insert_strlst(strlst, &head, frame, s_id));
 }

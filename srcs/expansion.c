@@ -35,30 +35,20 @@ static int	ft_ret_index(char *str, char **var_pool)
 	return (-1);
 }
 
-static int	ft_var(char *str, char **var_pool)
+static int	ft_var(char *str, t_data **d_curr)
 {
-	int	i;
 	int	res;
 
-	i = 0;
-	res = ft_ret_index(str, var_pool);
+	res = ft_ret_index(str, (*d_curr)->envp);
 	if (res == -2)
 		return (-1);
-	if (res >= 0)
-	{
-		free(var_pool[i]);
-		var_pool[i] = ft_strdup(str);
-		if (!var_pool[i])
-			return (-1);
-	}
-	else
-	{
-		while (var_pool[i])
-			i++;
-		var_pool[i] = ft_strdup(str);
-		if (!var_pool[i])
-			return (-1);
-	}
+	if (ft_check_pool(str, (*d_curr)->envp, res))
+		return (1);
+	res = ft_ret_index(str, (*d_curr)->var_pool);
+	if (res == -2)
+		return (-1);
+	if (ft_check_pool(str, (*d_curr)->var_pool, res))
+		return (1);
 	return (0);
 }
 
@@ -70,7 +60,7 @@ static int	ft_search_expansion(t_data **d_curr)
 
 	frame = *d_curr;
 	if (!frame->var_pool)
-		frame->var_pool = (char **)ft_calloc(4096, sizeof(char *));
+		frame->var_pool = ft_calloc(4096, sizeof(char *));
 	s = frame->strlst;
 	if (!frame->var_pool)
 		return (ft_free_expan_error(&frame));
@@ -79,7 +69,7 @@ static int	ft_search_expansion(t_data **d_curr)
 		str = s->data;
 		if (str && ft_strchr(str, '=') && (!s->prev || !s->prev->data))
 		{
-			if (ft_var(str, frame->var_pool) < 0)
+			if (ft_var(str, &frame) < 0)
 				return (ft_free_expan_error(&frame));
 			free(s->data);
 			s->data = NULL;
@@ -91,10 +81,13 @@ static int	ft_search_expansion(t_data **d_curr)
 
 int	start_expansion(t_data **d_curr)
 {
-	ft_braces(&(*d_curr)->root);
-	ft_search_expansion(d_curr);
+	if (ft_search_expansion(d_curr) < 0)
+		return (-1);
 	ft_do_varexp(d_curr);
-	ft_do_starexp(d_curr);
+	if (ft_do_starexp(d_curr) < 0)
+		return (ft_free_expan_error(d_curr));
+	if (ft_create_join(d_curr) < 0)
+		return (ft_free_expan_error(d_curr));
 	return (0);
 }
 
@@ -107,7 +100,7 @@ char	**ft_dup_envp(char **envp)
 	i = 0;
 	while (envp[i])
 		i++;
-	new_env = (char **)ft_calloc(i + 1, sizeof(char *));
+	new_env = ft_calloc((i + 2), sizeof(char *));
 	if (!new_env)
 		return (NULL);
 	i = 0;
@@ -124,17 +117,17 @@ char	**ft_dup_envp(char **envp)
 		}
 		i++;
 	}
+	new_env[i] = NULL;
 	return (new_env);
 }
 
-void	print_strlst(t_strlist **s_curr)
+void	print_strlst(t_strlist *strlst)
 {
-	t_strlist	*strlst;
 
-	strlst = *s_curr;
+	printf("strlst: ");
 	while (strlst)
 	{
-		printf("%s:%p->", (char *)strlst->data, strlst);
+		printf("%s:%d->", (char *)strlst->data, strlst->s_id);
 		strlst = strlst->next;
 	}
 	printf("NULL\n");
@@ -168,11 +161,15 @@ int	main(int ac, char **av, char **envp)
 		return (-1);
 	if (lexer_parser_main(av[1], frame->envp, &frame) < 0)
 		return (-1);
-	print_strlst(&frame->strlst);
+	print_strlst(frame->strlst);
 	start_expansion(&frame);
-	print_strlst(&frame->strlst);
-	ft_get_word(&frame, frame->root);
-	here_doc(&frame, frame->str);
+	print_strlst(frame->strlst);
+	for (int i = 0; frame->cmd_pool[i]; i++)
+	{
+		for (int j = 0; frame->cmd_pool[i][j]; j++)
+			printf("[%d][%d]: %s\n", i, j, frame->cmd_pool[i][j]);
+		printf("\n");
+	}
 	ft_free_expan_error(&frame);
 	return (0);
 }

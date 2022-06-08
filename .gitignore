@@ -1,4 +1,5 @@
 *.[oad]
+*.sh
 *.out
 *.sw*
 .DS_Store

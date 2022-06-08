@@ -1,5 +1,6 @@
 # Configuration
 #---------------------------------------------------
+# main is in expansion.c
 
 # Output 
 NAME = minishell
@@ -61,7 +62,10 @@ READ = ft_read_flow.c \
 EXPAN = expansion.c \
 		expansion_utils.c \
 		expansion_error.c \
-		ft_braces.c
+		expansion_check.c \
+		ft_create_cmd.c \
+		ft_create_join.c \
+		ft_lenlst.c
 
 # File to create here_doc part
 HEREDOC = heredoc_utils.c \
