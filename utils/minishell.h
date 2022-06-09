@@ -238,8 +238,8 @@ size_t		ft_len_var(char *str);
 t_lenlist	*ft_lennew(int data);
 /* STAREXP_H */
 /* starexp.c starexp_utils.c */
-t_strlist	*starexp(t_strlist **strlst, t_data *frame, unsigned int s_id);
-t_strlist	*insert_strlst(t_strlist **slst, t_strlist **head, t_data *frame, unsigned int s_id);
+t_strlist	*starexp(t_strlist **strlst, t_data *frame, unsigned int *s_id);
+t_strlist	*insert_strlst(t_strlist **slst, t_strlist **head, t_data *frame, unsigned int *s_id);
 int			ft_starcmp(const char *s1, const char *s2);
 
 /* VAREXP_H */

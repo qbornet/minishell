@@ -148,14 +148,12 @@ void	ft_get_word(t_data **d_curr, t_btree *root)
 
 int	main(int ac, char **av, char **envp)
 {
-	int		i;
 	t_data	*frame;
 	t_cmdblock	*cmdblk;
 	t_redirlist	*redir;
 
 	if (ac != 2)
 		return (-1);
-	i = 0;
 	frame = ft_calloc(1, sizeof(t_data));
 	frame->std_fd.stdin = dup(STDIN_FILENO);
 	frame->std_fd.stdout = dup(STDOUT_FILENO);
