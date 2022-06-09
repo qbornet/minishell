@@ -120,6 +120,21 @@ typedef struct s_lenlist
 	struct s_lenlist	*next;
 }	t_lenlist;
 
+typedef struct s_redirlist
+{
+	char				*str;
+	enum e_token		type;
+	struct s_redirlist	*next;
+}	t_redirlist;
+
+typedef	struct s_cmdblock
+{
+	char				**cmd;
+	t_redirlist			*infile;
+	t_redirlist			*outfile;
+	struct s_cmdblock	*next;
+}	t_cmdblock;
+
 // Notre struct "foure tout"
 typedef struct s_data
 {
@@ -131,6 +146,7 @@ typedef struct s_data
 	t_termstd	std_fd;
 	t_strlist	*strlst;
 	t_lenlist	*lenlst;
+	t_cmdblock	*cmdblk;
 	t_tokenlist	*tokenlst;
 }	t_data;
 
@@ -202,16 +218,22 @@ void		ft_print_tokenlist(t_tokenlist *lst);
 /* EXPANSION_H */
 /* expansion.c expansion_utils.c expansion_error.c expansion_check.c */
 /* ft_create_join.c ft_create_cmd.c ft_lenlst.c */
+/* command_block.c ft_cmdblock.c */
+int			command_block(t_data **d_curr);
+int			start_expansion(t_data **d_curr);
 int			ft_create_cmd(t_data **d_curr, int total_cmd);
 int			ft_create_join(t_data **d_curr);
-int			start_expansion(t_data **d_curr);
 int			ft_check_pool(char  *str, char **pool, int res);
 int			ft_free_expan_error(t_data **d_curr);
 int			ft_do_starexp(t_data **d_curr);
+int			ft_blockadd_back(t_cmdblock **cmd_curr, char **cmd);
+int			ft_rediradd_back(t_redirlist **r_curr, char *str, enum e_token type);
+void		ft_redirclear(t_redirlist **r_curr, void (*del) (void *));
 void		ft_lenclear(t_lenlist **len_curr);
 void		ft_lenadd_back(t_lenlist **len_curr, int data);
 void		ft_do_varexp(t_data **d_curr);
 void		ft_move_node(t_data **d_curr, t_strlist **s_curr);
+void		ft_cmdclear(t_cmdblock **cmd_curr);
 size_t		ft_len_var(char *str);
 t_lenlist	*ft_lennew(int data);
 /* STAREXP_H */

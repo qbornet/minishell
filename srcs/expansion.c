@@ -88,6 +88,8 @@ int	start_expansion(t_data **d_curr)
 		return (ft_free_expan_error(d_curr));
 	if (ft_create_join(d_curr) < 0)
 		return (ft_free_expan_error(d_curr));
+	if (command_block(d_curr) < 0)
+		return (ft_free_expan_error(d_curr));
 	return (0);
 }
 
@@ -148,6 +150,8 @@ int	main(int ac, char **av, char **envp)
 {
 	int		i;
 	t_data	*frame;
+	t_cmdblock	*cmdblk;
+	t_redirlist	*redir;
 
 	if (ac != 2)
 		return (-1);
@@ -161,14 +165,31 @@ int	main(int ac, char **av, char **envp)
 		return (-1);
 	if (lexer_parser_main(av[1], frame->envp, &frame) < 0)
 		return (-1);
+	//ft_treeprint(frame->root, 0);
 	print_strlst(frame->strlst);
 	start_expansion(&frame);
 	print_strlst(frame->strlst);
-	for (int i = 0; frame->cmd_pool[i]; i++)
+	cmdblk = frame->cmdblk;
+	while (cmdblk)
 	{
-		for (int j = 0; frame->cmd_pool[i][j]; j++)
-			printf("[%d][%d]: %s\n", i, j, frame->cmd_pool[i][j]);
+		for (int i = 0; cmdblk->cmd[i]; i++)
+			printf("[%d]: %s\n", i, cmdblk->cmd[i]);
+		printf("outfile: ");
+		redir = cmdblk->outfile;
+		while (redir)
+		{
+			printf("\e[20G	-[type: %d]:%s\n", redir->type, redir->str);
+			redir = redir->next;
+		}
+		printf("\ninfile: ");
+		redir = cmdblk->infile;
+		while (redir)
+		{
+			printf("\e[20G	-[type: %d]:%s\n", redir->type, redir->str);
+			redir = redir->next;
+		}
 		printf("\n");
+		cmdblk = cmdblk->next;
 	}
 	ft_free_expan_error(&frame);
 	return (0);
