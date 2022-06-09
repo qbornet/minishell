@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pipe.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/26 19:19:55 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/09 09:22:19 by jfrancai         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 int	pipe_in(char *infile, int *pd)
@@ -57,16 +45,26 @@ int	pipe_out(int *pd, char *outfile)
 	return (0);
 }
 
-int	open_fd(int **pipes, char **avector, int pipes_len, int i)
+t_cmdblock	*ft_lastcmdblock(t_cmdblock *cmdblock)
 {
+	while (cmdblock->next)
+		cmdblock = cmdblock->next;
+	return (cmdblock);
+}
+
+int	open_fd(int **pipes, t_cmdblock **avector, int pipes_len, int i)
+{
+	t_cmdblock	*cmdblock;
+
+	cmdblock = *avector;
 	if (i == 0)
 	{
-		if (pipe_in(avector[1], pipes[i]) == -1)
+		if (pipe_in(cmdblock->infile, pipes[i]) == -1)
 			return (-1);
 	}
 	else if (i == pipes_len)
 	{
-		if (pipe_out(pipes[i - 1], avector[pipes_len + 3]) == -1)
+		if (pipe_out(pipes[i - 1], ft_lastcmdblock(cmdblock)->outfile) == -1)
 			return (-1);
 	}
 	else

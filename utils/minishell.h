@@ -276,7 +276,6 @@ int		open_fd(int **pipes, char **avector, int pipes_len, int i);
 /* Pipe utils 1 */
 int		close_pipes(int **pipes, int pipes_len, int *pids, int i);
 int		alloc_pipes_pids(int ***pipes, int **pids, int pipes_len);
-int		**malloc_and_open_pipes(int len);
 
 /* Free tools */
 char	*free_str(char *str);

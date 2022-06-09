@@ -6,20 +6,21 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 19:31:57 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/08 21:42:47 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/09 11:49:32 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	get_cmd_tab(char *cmd_string, char **env, char ***cmd)
+int	get_cmd_tab(t_cmdblock *cmdblock, char **env)
 {
 	char	*path;
+	char	**cmd;
 
-	*cmd = ft_split(cmd_string, ' ');
+	cmd = cmdblock->cmd;
 	if (!*cmd)
 		return (-1);
-	path = get_path(env, (*cmd)[0]);
+	path = get_path(env, cmd[0]);
 	if (!path)
 	{
 		ft_putstr_fd(cmd_string, 2);
@@ -27,34 +28,31 @@ int	get_cmd_tab(char *cmd_string, char **env, char ***cmd)
 		free_str_tab(*cmd, 0);
 		return (-1);
 	}
-	free_str((*cmd)[0]);
-	(*cmd)[0] = path;
+	free_str(cmd[0]);
+	cmd[0] = path;
 	return (0);
 }
 
-int	exec_cmd(char **cmd, char **env)
+int	exec_cmd(t_cmdblock *cmdblock, char **env)
 {
-	if (access(cmd[0], X_OK) == -1)
+	if (access((cmdblock->cmd)[0], X_OK) == -1)
 	{
-		perror(cmd[0]);
-		free_str_tab(cmd, 0);
+		perror((cmdblock->cmd)[0]);
+		free_str_tab(cmdblock->cmd, 0);
 		return (-1);
 	}
-	execve(cmd[0], cmd, env);
+	execve((cmdblock->cmd)[0], cmdblock->cmd, env);
 	return (0);
 }
 
-int	pipex(int **pipes, int *pids, char **envp, char *raw_cmd)
+int	pipex(int **pipes, int *pids, char **envp, t_cmblock *cmdblock)
 {
-	char	**cmd_tab;
-
-	cmd_tab = NULL;
-	if (get_cmd_tab(raw_cmd, envp, &cmd_tab) == -1)
+	if (get_cmd_tab(cmdblock, envp) == -1)
 	{
 		errno = free_and_return(pipes, pids, 0, 127);
 		return (-1);
 	}
-	if (exec_cmd(cmd_tab, envp) == -1)
+	if (exec_cmd(cmdblock, envp) == -1)
 	{
 		errno = free_and_return(pipes, pids, 0, 126);
 		return (-1);
