@@ -68,13 +68,14 @@ int	ft_create_cmd(t_data **d_curr, int total_cmd)
 	index = 0;
 	strlst = (*d_curr)->strlst;
 	lengthlst = (*d_curr)->lenlst;
-	while (total_cmd)
+	while (total_cmd && lengthlst)
 	{
 		to_do = lengthlst->length;
 		if (ft_cmd_str(to_do, index, &strlst, d_curr) < 0)
 			return (-1);
 		total_cmd--;
 		index++;
+		lengthlst = lengthlst->next;
 	}
 	return (0);
 }
