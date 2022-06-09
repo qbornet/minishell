@@ -1,5 +1,6 @@
 # Configuration
 #---------------------------------------------------
+# main is in expansion.c
 
 # Output 
 NAME = minishell
