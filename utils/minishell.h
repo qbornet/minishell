@@ -265,12 +265,15 @@ int		dup_inout(int new_in, int new_out);
 int		close_pipe(int *pd);
 
 /* Pipes */
+int		ft_pipe(int argc, char **argv, char **envp);
+
+/* Pipe utils 0 */
 int		pipe_in(char *infile, int *pd);
 int		pipe_mid(int *pd_in, int *pd_out);
 int		pipe_out(int *pd, char *outfile);
 int		open_fd(int **pipes, char **avector, int pipes_len, int i);
 
-/* Pipe utils */
+/* Pipe utils 1 */
 int		close_pipes(int **pipes, int pipes_len, int *pids, int i);
 int		alloc_pipes_pids(int ***pipes, int **pids, int pipes_len);
 int		**malloc_and_open_pipes(int len);

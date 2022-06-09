@@ -75,12 +75,12 @@ HEREDOC = heredoc_utils.c \
 		  here_doc.c
 
 # File to create pipe part
-PIPE = main.c \
+PIPE = pipe.c \
+	pipe_utils_0.c \
+	pipe_utils_1.c \
 	pipex.c \
 	pipex_utils.c \
-	pipe.c \
 	error_tools.c \
-	pipe_utils.c
 
 
 GREEN   = \033[1;32m
