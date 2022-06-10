@@ -27,8 +27,8 @@ static int	insert_outfile(t_btree *root, t_cmdblock **cmd_curr)
 		{
 			if (root->right && root->right->node->type == E_FD)
 				token = root->right->node->token;
-			if (root->left && root->left->node->type == E_FD)
-				token = root->left->node->token;
+			if (root->right->left && root->right->left->node->type == E_FD)
+				token = root->right->left->node->token;
 			str = ft_create_str(token->lex, token->len);
 			if (!str)
 				return (-1);
@@ -54,8 +54,10 @@ static int	insert_infile(t_btree *root, t_cmdblock **cmd_curr)
 			return (-1);
 		if (root->node->type == E_LESS || root->node->type == E_DLESS)
 		{
-			token = root->right->node->token;
-			printf("left: %s\n", root->left->node->token->lex);
+			if (root->right && root->right->node->type == E_FD)
+				token = root->right->node->token;
+			if (root->right->left && root->right->left->node->type == E_FD)
+				token = root->right->left->node->token;
 			str = ft_create_str(token->lex, token->len);
 			if (!str)
 				return (-1);
