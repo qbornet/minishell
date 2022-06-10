@@ -40,6 +40,7 @@ int	ft_free_expan_error(t_data **d_curr)
 	close(frame->std_fd.stderr);
 	ft_lenclear(&frame->lenlst);
 	ft_strclear(&frame->strlst, &free);
+	ft_cmdclear(&frame->cmdblk);
 	ft_tokenclear(&frame->tokenlst, &free);
 	ft_treeclear(frame->root, &free);
 	ft_free_cpool(frame->cmd_pool);

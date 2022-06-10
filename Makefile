@@ -65,7 +65,10 @@ EXPAN = expansion.c \
 		expansion_check.c \
 		ft_create_cmd.c \
 		ft_create_join.c \
-		ft_lenlst.c
+		ft_lenlist.c \
+		ft_cmdblock.c \
+		ft_redirlst.c \
+		command_block.c
 
 # File to create here_doc part
 HEREDOC = heredoc_utils.c \
