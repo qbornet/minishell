@@ -37,7 +37,7 @@ int	ft_pipe(t_cmdblock **cmdblock, char **envp)
 				return (1);
 			if (open_fd(pipes, cmdblock, len_cmdb, i) == -1)
 				return (free_and_return(pipes, pids, 0, 1));
-			if (pipex(pipes, pids, envp, cmdblock) == -1)
+			if (pipex(pipes, pids, envp, *cmdblock) == -1)
 				return (errno);
 			cmdblock = &(*cmdblock)->next;
 		}

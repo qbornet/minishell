@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	**get_env_paths(char **env)
+static char	**get_env_paths(char **env)
 {
 	int		i;
 	char	**paths;
@@ -17,7 +17,7 @@ char	**get_env_paths(char **env)
 	return (paths);
 }
 
-char	*get_program_path(char **paths, char *pg_name)
+static char	*get_program_path(char **paths, char *pg_name)
 {
 	int		i;
 	char	*tmp;

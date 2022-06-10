@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 19:31:57 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/09 11:49:32 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/10 13:06:58 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int	get_cmd_tab(t_cmdblock *cmdblock, char **env)
 	path = get_path(env, cmd[0]);
 	if (!path)
 	{
-		ft_putstr_fd(cmd_string, 2);
+		ft_putstr_fd(cmd[0], 2);
 		ft_putendl_fd(": command not found", 2);
-		free_str_tab(*cmd, 0);
+		free_str_tab(cmd, 0);
 		return (-1);
 	}
 	free_str(cmd[0]);
@@ -45,7 +45,7 @@ int	exec_cmd(t_cmdblock *cmdblock, char **env)
 	return (0);
 }
 
-int	pipex(int **pipes, int *pids, char **envp, t_cmblock *cmdblock)
+int	pipex(int **pipes, int *pids, char **envp, t_cmdblock *cmdblock)
 {
 	if (get_cmd_tab(cmdblock, envp) == -1)
 	{

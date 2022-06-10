@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	pipe_in(char *infile, int *pd)
+int	ft_redirection_less(char *infile, int *pd)
 {
 	int		fd;
 
@@ -16,7 +16,7 @@ int	pipe_in(char *infile, int *pd)
 	return (0);
 }
 
-int	pipe_mid(int *pd_in, int *pd_out)
+int	ft_redirection_pipe(int *pd_in, int *pd_out)
 {
 	if (dup_inout(pd_in[0], pd_out[1]) == -1)
 		return (standard_error("pipe_mid dup_inout"));
@@ -27,13 +27,13 @@ int	pipe_mid(int *pd_in, int *pd_out)
 	return (0);
 }
 
-int	pipe_out(int *pd, char *outfile)
+int	ft_redicrection_great(int *pd, char *outfile)
 {
 	int		fd;
 
 	if (unlink(outfile) == -1)
 		errno = 0;
-	fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 		return (standard_error(outfile));
 	if (dup_inout(pd[0], fd) == -1)
@@ -45,11 +45,20 @@ int	pipe_out(int *pd, char *outfile)
 	return (0);
 }
 
-t_cmdblock	*ft_lastcmdblock(t_cmdblock *cmdblock)
+int	ft_redicrection_dgreat(int *pd, char *outfile)
 {
-	while (cmdblock->next)
-		cmdblock = cmdblock->next;
-	return (cmdblock);
+	int		fd;
+
+	fd = open(outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd == -1)
+		return (standard_error(outfile));
+	if (dup_inout(pd[0], fd) == -1)
+		return (-1);
+	if (close(fd) == -1)
+		return (standard_error("pipe_out fd"));
+	if (close_pipe(pd) == -1)
+		return (standard_error("pipe_out close pd"));
+	return (0);
 }
 
 int	open_fd(int **pipes, t_cmdblock **avector, int pipes_len, int i)
@@ -59,17 +68,19 @@ int	open_fd(int **pipes, t_cmdblock **avector, int pipes_len, int i)
 	cmdblock = *avector;
 	if (i == 0)
 	{
-		if (pipe_in(cmdblock->infile, pipes[i]) == -1)
+		if (ft_redirection_less(cmdblock->infile->str, pipes[i]) == -1)
 			return (-1);
 	}
 	else if (i == pipes_len)
 	{
-		if (pipe_out(pipes[i - 1], ft_lastcmdblock(cmdblock)->outfile) == -1)
+		while (cmdblock->next)
+			cmdblock = cmdblock->next;
+		if (ft_redicrection_great(pipes[i - 1], cmdblock->outfile->str) == -1)
 			return (-1);
 	}
 	else
 	{
-		if (pipe_mid(pipes[i - 1], pipes[i]) == -1)
+		if (ft_redirection_pipe(pipes[i - 1], pipes[i]) == -1)
 			return (-1);
 	}
 	return (0);

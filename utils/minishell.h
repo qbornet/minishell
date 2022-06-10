@@ -277,23 +277,23 @@ int			print_error(t_error code);
 
 /* PIPE_H */
 /* Pipex */
-int		get_cmd_tab(char *cmd_string, char **env, char ***cmd);
-int		exec_cmd(char **cmd, char **env);
-int		pipex(int **pipes, int *pids, char **envp, char *raw_cmd);
+int		get_cmd_tab(t_cmdblock *cmdblock, char **env);
+int		exec_cmd(t_cmdblock *cmdblock, char **env);
+int		pipex(int **pipes, int *pids, char **envp, t_cmdblock *cmdblock);
 
 /* Pipex tools */
-char	*get_path(char **env, char *pg);
 int		dup_inout(int new_in, int new_out);
 int		close_pipe(int *pd);
 
 /* Pipes */
-int		ft_pipe(int argc, char **argv, char **envp);
+int		ft_pipe(t_cmdblock **cmdblock, char **envp);
 
 /* Pipe utils 0 */
-int		pipe_in(char *infile, int *pd);
-int		pipe_mid(int *pd_in, int *pd_out);
-int		pipe_out(int *pd, char *outfile);
-int		open_fd(int **pipes, char **avector, int pipes_len, int i);
+int		ft_redirection_less(char *infile, int *pd);
+int		ft_redirection_pipe(int *pd_in, int *pd_out);
+int		ft_redicrection_great(int *pd, char *outfile);
+int		ft_redicrection_dgreat(int *pd, char *outfile);
+int		open_fd(int **pipes, t_cmdblock **avector, int pipes_len, int i);
 
 /* Pipe utils 1 */
 int		close_pipes(int **pipes, int pipes_len, int *pids, int i);

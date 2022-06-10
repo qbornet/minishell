@@ -150,6 +150,7 @@ int	main(int ac, char **av, char **envp)
 {
 	t_data	*frame;
 	t_cmdblock	*cmdblk;
+	t_cmdblock	*cpy;
 	t_redirlist	*redir;
 
 	if (ac != 2)
@@ -168,6 +169,7 @@ int	main(int ac, char **av, char **envp)
 	start_expansion(&frame);
 	print_strlst(frame->strlst);
 	cmdblk = frame->cmdblk;
+	cpy = cmdblk;
 	while (cmdblk)
 	{
 		for (int i = 0; cmdblk->cmd[i]; i++)
@@ -189,6 +191,7 @@ int	main(int ac, char **av, char **envp)
 		printf("\n");
 		cmdblk = cmdblk->next;
 	}
+	ft_pipe(&cpy, envp);
 	ft_free_expan_error(&frame);
 	return (0);
 }

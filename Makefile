@@ -83,7 +83,7 @@ PIPE = pipe.c \
 	pipe_utils_1.c \
 	pipex.c \
 	pipex_utils.c \
-	error_tools.c \
+	error_tools.c
 
 
 GREEN   = \033[1;32m
@@ -109,7 +109,7 @@ DEPS = $(OBJS:%.o=%.d)
 pipe: $(PIPEOBJS) $(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS)
 	make -C $(LFT)
 	echo "-------------------"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(EXPANOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS) -lft -lreadline -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(EXPANOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(PIPEOBJS) $(OBJS) -lft -lreadline -o $@
 	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
 
 here:	$(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS)
