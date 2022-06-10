@@ -70,9 +70,9 @@ static int	s_exp(char *s, char ***tab, DIR *dir)
 		return (closedir(dir));
 	while (dr)
 	{
-		while ((dr->d_name)[0] == '.' && s[0] != '.')
+		while (dr && (dr->d_name)[0] == '.' && s[0] != '.')
 			dr = readdir(dir);
-		if (is_star(s) && !ft_starcmp(s, dr->d_name))
+		if (dr && is_star(s) && !ft_starcmp(s, dr->d_name))
 		{
 			if (!add_str(tab, dr->d_name))
 				return (closedir(dir));
