@@ -1,11 +1,15 @@
-/* clang -Wall -Werror -Wextra -g3 start_prompt.c -lreadline */
-
-#include "prompt.h"
+#include <minishell.h>
 
 void	ft_history(char *str)
 {
 	if (str && *str)
 		add_history(str);
+}
+
+int	ret_perror(char *str)
+{
+	perror(str);
+	return (-1);
 }
 
 int	ft_check_tty(void)
@@ -16,35 +20,31 @@ int	ft_check_tty(void)
 	return (0);
 }
 
-/* J'ai ajouter des check tty pour pouvoir rentrer et utiliser,
- * les fonction genre readline a besoin d'avoir un tty,
- * j'ai aussi enlever le ft_endl car c'est de la merde et en plus,
- * c'est un enfer a essaye de comprendre le line_buffer de mort */
-
 int	start_prompt(void)
 {
-	char	*temp;
-	char	*str;
+	char				*str;
+	struct termios		term;
+	struct sigaction	act_int;
+	struct sigaction	act_quit;
 
-	temp = ttyname(STDOUT_FILENO);
-	str = temp;
-	if (temp)
-		printf("tty %s\n\n", temp);
+	str = "";
+	if (set_sig(&act_int, &act_quit) < 0)
+		return (ret_perror("sigaction, sigemptyset, sigaddset: Error "));
+	if (tcgetattr(STDIN_FILENO, &term) < 0)
+		return (ret_perror("termios tcgetattr: Error "));
+	term.c_lflag &= ~ECHOCTL;
+	if (tcsetattr(STDIN_FILENO, TCSANOW, &term) < 0)
+		return (ret_perror("termios tcsetattr: Error "));
 	while (str)
 	{
-		if (ft_check_tty())
+		if (ft_check_tty() && term_isig(&term))
 		{
 			str = readline(PROMPT);
 			ft_history(str);
 		}
 		else
-		{
-			perror("Error tty");
-			return (1);
-		}
+			return (perror("tty: Error"));
 	}
-	if (!temp)
-		perror("Error tty");
 	return (0);
 }
 
