@@ -82,7 +82,6 @@ typedef struct s_termstd
 {
 	int	stdout;
 	int	stdin;
-	int	stderr;
 }	t_termstd;
 
 typedef struct s_strlist
@@ -132,6 +131,7 @@ typedef	struct s_cmdblock
 	char				**cmd;
 	t_redirlist			*infile;
 	t_redirlist			*outfile;
+	t_termstd			*std_fd;
 	struct s_cmdblock	*next;
 }	t_cmdblock;
 
@@ -143,7 +143,7 @@ typedef struct s_data
 	char		**var_pool;
 	char		***cmd_pool;
 	t_btree		*root;
-	t_termstd	std_fd;
+	t_termstd	*std_fd;
 	t_strlist	*strlst;
 	t_lenlist	*lenlst;
 	t_cmdblock	*cmdblk;
@@ -226,7 +226,7 @@ int			ft_create_join(t_data **d_curr);
 int			ft_check_pool(char  *str, char **pool, int res);
 int			ft_free_expan_error(t_data **d_curr);
 int			ft_do_starexp(t_data **d_curr);
-int			ft_blockadd_back(t_cmdblock **cmd_curr, char **cmd);
+int			ft_blockadd_back(t_cmdblock **cmd_curr, t_termstd *fd, char **cmd);
 int			ft_rediradd_back(t_redirlist **r_curr, char *str, enum e_token type);
 void		ft_redirclear(t_redirlist **r_curr, void (*del) (void *));
 void		ft_lenclear(t_lenlist **len_curr);

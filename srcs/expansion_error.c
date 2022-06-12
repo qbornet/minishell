@@ -35,9 +35,8 @@ int	ft_free_expan_error(t_data **d_curr)
 	t_data	*frame;
 
 	frame = *d_curr;
-	close(frame->std_fd.stdin);
-	close(frame->std_fd.stdout);
-	close(frame->std_fd.stderr);
+	close(frame->std_fd->stdin);
+	close(frame->std_fd->stdout);
 	ft_lenclear(&frame->lenlst);
 	ft_strclear(&frame->strlst, &free);
 	ft_cmdclear(&frame->cmdblk);
