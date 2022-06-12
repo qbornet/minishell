@@ -156,9 +156,9 @@ int	main(int ac, char **av, char **envp)
 	if (ac != 2)
 		return (-1);
 	frame = ft_calloc(1, sizeof(t_data));
-	frame->std_fd.stdin = dup(STDIN_FILENO);
-	frame->std_fd.stdout = dup(STDOUT_FILENO);
-	frame->std_fd.stderr = dup(STDERR_FILENO);
+	frame->std_fd = ft_calloc(1, sizeof(t_termstd));
+	frame->std_fd->stdin = dup(STDIN_FILENO);
+	frame->std_fd->stdout = dup(STDOUT_FILENO);
 	frame->envp = ft_dup_envp(envp);
 	if (!frame->envp)
 		return (-1);
@@ -174,6 +174,7 @@ int	main(int ac, char **av, char **envp)
 	{
 		for (int i = 0; cmdblk->cmd[i]; i++)
 			printf("[%d]: %s\n", i, cmdblk->cmd[i]);
+		printf("std_fd:\e[20G	- stdin:%d\n\e[20G	- stdout:%d\n", cmdblk->std_fd->stdin, cmdblk->std_fd->stdout);
 		printf("outfile: ");
 		redir = cmdblk->outfile;
 		while (redir)

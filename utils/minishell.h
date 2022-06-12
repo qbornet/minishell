@@ -83,7 +83,6 @@ typedef struct s_termstd
 {
 	int	stdout;
 	int	stdin;
-	int	stderr;
 }	t_termstd;
 
 typedef struct s_strlist
@@ -133,6 +132,7 @@ typedef	struct s_cmdblock
 	char				**cmd;
 	t_redirlist			*infile;
 	t_redirlist			*outfile;
+	t_termstd			*std_fd;
 	struct s_cmdblock	*next;
 }	t_cmdblock;
 
@@ -144,7 +144,7 @@ typedef struct s_data
 	char		**var_pool;
 	char		***cmd_pool;
 	t_btree		*root;
-	t_termstd	std_fd;
+	t_termstd	*std_fd;
 	t_strlist	*strlst;
 	t_lenlist	*lenlst;
 	t_cmdblock	*cmdblk;
@@ -227,7 +227,7 @@ int			ft_create_join(t_data **d_curr);
 int			ft_check_pool(char  *str, char **pool, int res);
 int			ft_free_expan_error(t_data **d_curr);
 int			ft_do_starexp(t_data **d_curr);
-int			ft_blockadd_back(t_cmdblock **cmd_curr, char **cmd);
+int			ft_blockadd_back(t_cmdblock **cmd_curr, t_termstd *fd, char **cmd);
 int			ft_rediradd_back(t_redirlist **r_curr, char *str, enum e_token type);
 void		ft_redirclear(t_redirlist **r_curr, void (*del) (void *));
 void		ft_lenclear(t_lenlist **len_curr);
@@ -237,6 +237,7 @@ void		ft_move_node(t_data **d_curr, t_strlist **s_curr);
 void		ft_cmdclear(t_cmdblock **cmd_curr);
 size_t		ft_len_var(char *str);
 t_lenlist	*ft_lennew(int data);
+
 /* STAREXP_H */
 /* starexp.c starexp_utils.c */
 t_strlist	*starexp(t_strlist **strlst, t_data *frame, unsigned int *s_id);
@@ -248,6 +249,7 @@ int			ft_starcmp(const char *s1, const char *s2);
 void		expand(t_strlist *strlst, char **env, t_data **frame);
 size_t		ft_len_onechar(char *s, char a);
 size_t		ft_len_metachar(char *s);
+
 /* HERE_DOC_H */
 /* heredoc_str.c heredoc_utils.c heredoc_error.c here_doc.c */
 int		here_doc(t_data **d_curr, char *word);
@@ -264,6 +266,13 @@ void	opt_find_dollars(char **s_curr, size_t *i);
 size_t	ft_num_expand(char *str);
 size_t	ft_null(char *str);
 size_t	ft_strjoin_len(char *str);
+
+/* SIG_H */
+/* sig.c */
+int		set_sig(struct sigaction *act_int, struct sigaction *act_quit);
+int		term_isig(struct termios *term);
+void	sigint_handler(int signum);
+void	sigquit_handler(int signum);
 
 /* BIN_H */
 int			ft_free_err(char **old, char **new);

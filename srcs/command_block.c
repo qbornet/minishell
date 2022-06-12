@@ -8,65 +8,65 @@ static int	insert_cmd(t_data **d_curr)
 	i = -1;
 	cpool = (*d_curr)->cmd_pool;
 	while (cpool[++i])
-		if (ft_blockadd_back(&(*d_curr)->cmdblk, cpool[i]) < 0)
+		if (ft_blockadd_back(\
+					&(*d_curr)->cmdblk, (*d_curr)->std_fd, cpool[i]) < 0)
 			return (-1);
 	return (0);
 }
 
-
-static int	insert_outfile(t_btree *root, t_cmdblock **cmd_curr)
+static int	insert_outfile(t_btree *r, t_cmdblock **cmd_curr)
 {
 	char			*str;
 	t_token			*token;
 
-	if (root && root->node)
+	if (r && r->node)
 	{
-		if (insert_outfile(root->left, cmd_curr) < 0)
+		if (insert_outfile(r->left, cmd_curr) < 0)
 			return (-1);
-		if (root->node->type == E_GREAT || root->node->type == E_DGREAT)
+		if (r->node->type == E_GREAT || r->node->type == E_DGREAT)
 		{
-			if (root->right && root->right->node->type == E_FD)
-				token = root->right->node->token;
-			if (root->right->left && root->right->left->node->type == E_FD)
-				token = root->right->left->node->token;
+			if (r->right && r->right->node->type == E_FD)
+				token = r->right->node->token;
+			if (r->right->left && r->right->left->node->type == E_FD)
+				token = r->right->left->node->token;
 			str = ft_create_str(token->lex, token->len);
 			if (!str)
 				return (-1);
-			if (ft_rediradd_back(&(*cmd_curr)->outfile, str, root->node->type) < 0)
+			if (ft_rediradd_back(&(*cmd_curr)->outfile, str, r->node->type) < 0)
 				return (-1);
 		}
-		if (root->node->type == E_PIPE)
+		if (r->node->type == E_PIPE)
 			*cmd_curr = (*cmd_curr)->next;
-		if (insert_outfile(root->right, cmd_curr) < 0)
+		if (insert_outfile(r->right, cmd_curr) < 0)
 			return (-1);
 	}
 	return (0);
 }
 
-static int	insert_infile(t_btree *root, t_cmdblock **cmd_curr)
+static int	insert_infile(t_btree *r, t_cmdblock **cmd_curr)
 {
 	char		*str;
 	t_token		*token;
 
-	if (root && root->node)
+	if (r && r->node)
 	{
-		if (insert_infile(root->left, cmd_curr) < 0)
+		if (insert_infile(r->left, cmd_curr) < 0)
 			return (-1);
-		if (root->node->type == E_LESS || root->node->type == E_DLESS)
+		if (r->node->type == E_LESS || r->node->type == E_DLESS)
 		{
-			if (root->right && root->right->node->type == E_FD)
-				token = root->right->node->token;
-			if (root->right->left && root->right->left->node->type == E_FD)
-				token = root->right->left->node->token;
+			if (r->right && r->right->node->type == E_FD)
+				token = r->right->node->token;
+			if (r->right->left && r->right->left->node->type == E_FD)
+				token = r->right->left->node->token;
 			str = ft_create_str(token->lex, token->len);
 			if (!str)
 				return (-1);
-			if (ft_rediradd_back(&(*cmd_curr)->infile, str, root->node->type) < 0)
+			if (ft_rediradd_back(&(*cmd_curr)->infile, str, r->node->type) < 0)
 				return (-1);
 		}
-		if (root->node->type == E_PIPE)
+		if (r->node->type == E_PIPE)
 			*cmd_curr = (*cmd_curr)->next;
-		if (insert_infile(root->right, cmd_curr) < 0)
+		if (insert_infile(r->right, cmd_curr) < 0)
 			return (-1);
 	}
 	return (0);

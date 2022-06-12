@@ -1,5 +1,6 @@
 #include <minishell.h>
-static t_cmdblock	*ft_newblock(char **cmd)
+
+static t_cmdblock	*ft_newblock(t_termstd *fd, char **cmd)
 {
 	t_cmdblock	*cmdblk;
 
@@ -7,6 +8,7 @@ static t_cmdblock	*ft_newblock(char **cmd)
 	if (!cmdblk)
 		return (NULL);
 	cmdblk->cmd = cmd;
+	cmdblk->std_fd = fd;
 	return (cmdblk);
 }
 
@@ -24,14 +26,14 @@ void	ft_cmdclear(t_cmdblock **cmd_curr)
 	}
 }
 
-int	ft_blockadd_back(t_cmdblock **cmd_curr, char **cmd)
+int	ft_blockadd_back(t_cmdblock **cmd_curr, t_termstd *fd, char **cmd)
 {
 	t_cmdblock	*cmdblk;
 
 	cmdblk = *cmd_curr;
 	if (!cmdblk)
 	{
-		cmdblk = ft_newblock(cmd);
+		cmdblk = ft_newblock(fd, cmd);
 		if (!cmdblk)
 			return (-1);
 		*cmd_curr = cmdblk;
@@ -39,7 +41,7 @@ int	ft_blockadd_back(t_cmdblock **cmd_curr, char **cmd)
 	}
 	while (cmdblk->next)
 		cmdblk = cmdblk->next;
-	cmdblk->next = ft_newblock(cmd);
+	cmdblk->next = ft_newblock(fd, cmd);
 	if (!cmdblk->next)
 		return (-1);
 	return (0);

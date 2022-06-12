@@ -7,9 +7,8 @@ int	ft_free_parser_error(t_data **d_curr)
 
 	i = 0;
 	frame = *d_curr;
-	close(frame->std_fd.stdin);
-	close(frame->std_fd.stdout);
-	close(frame->std_fd.stderr);
+	close(frame->std_fd->stdin);
+	close(frame->std_fd->stdout);
 	ft_strclear(&frame->strlst, &free);
 	ft_treeclear(frame->root, &free);
 	ft_tokenclear(&frame->tokenlst, &free);
