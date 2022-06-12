@@ -1,5 +1,6 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# include <termios.h>
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -270,7 +271,7 @@ size_t	ft_strjoin_len(char *str);
 /* SIG_H */
 /* sig.c */
 int		set_sig(struct sigaction *act_int, struct sigaction *act_quit);
-int		term_isig(struct termios *term);
+int		term_isig(const struct termios *term);
 void	sigint_handler(int signum);
 void	sigquit_handler(int signum);
 

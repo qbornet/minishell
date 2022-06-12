@@ -12,7 +12,7 @@ void	sigquit_handler(int signum)
 		return ;
 }
 
-int	term_isig(struct termios *term)
+int	term_isig(const struct termios *term)
 {
 	if (term->c_lflag & ISIG)
 		return (1);
