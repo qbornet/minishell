@@ -285,15 +285,20 @@ int		pipex(int **pipes, int *pids, char **envp, t_cmdblock *cmdblock);
 int		dup_in(int new_in);
 int		dup_out(int new_out);
 int		close_pipe(int *pd);
+int		set_outfile(t_redirlist *outfile);
+int		set_infile(t_redirlist *infile);
 
 /* Pipes */
 int		ft_pipe(t_cmdblock **cmdblock, char **envp);
 
 /* Pipe utils 0 */
+int		open_fd(int **pipes, t_cmdblock **avector, int pipes_len, int i);
+
+/* Redirection */
 int		ft_redirection_less(char *infile);
 int		ft_redicrection_great(char *outfile);
 int		ft_redicrection_dgreat(char *outfile);
-int		open_fd(int **pipes, t_cmdblock **avector, int pipes_len, int i);
+int		ft_redirection_pipe(int *pd, int pid);
 
 /* Pipe utils 1 */
 int		close_pipes(int **pipes, int pipes_len, int *pids, int i);

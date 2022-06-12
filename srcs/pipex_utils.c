@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 16:46:50 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/12 09:03:13 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/12 12:28:07 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,27 @@ int	close_pipe(int *pd)
 		return (standard_error("close_pipe pid[0]"));
 	if (close(pd[1]) == -1)
 		return (standard_error("close_pipe pid[1]"));
+	return (0);
+}
+
+int	set_infile(t_redirlist *infile)
+{
+	while (infile)
+	{
+		if (ft_redirection_less(infile->str) == -1)
+			return (-1);
+		infile = infile->next;
+	}
+	return (0);
+}
+
+int	set_outfile(t_redirlist *outfile)
+{
+	while (outfile)
+	{
+		if (ft_redicrection_great(outfile->str) == -1)
+			return (-1);
+		outfile = outfile->next;
+	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:04:52 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/09 10:57:22 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/12 12:46:27 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,3 @@ int	alloc_pipes_pids(int ***pipes, int **pids, int pipes_len)
 	}
 	return (0);
 }
-
