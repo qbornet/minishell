@@ -121,5 +121,5 @@ int	here_doc(t_data **d_curr, char *word)
 		free(str);
 		str = NULL;
 	}
-	return (ret_res(&(*d_curr)->std_fd, res));
+	return (ret_res((*d_curr)->std_fd, res));
 }
