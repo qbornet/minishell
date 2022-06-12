@@ -282,16 +282,17 @@ int		exec_cmd(t_cmdblock *cmdblock, char **env);
 int		pipex(int **pipes, int *pids, char **envp, t_cmdblock *cmdblock);
 
 /* Pipex tools */
-int		dup_inout(int new_in, int new_out);
+int		dup_in(int new_in);
+int		dup_out(int new_out);
 int		close_pipe(int *pd);
 
 /* Pipes */
 int		ft_pipe(t_cmdblock **cmdblock, char **envp);
 
 /* Pipe utils 0 */
-int		ft_redirection_less(char *infile, int *pd);
+int		ft_redirection_less(char *infile);
 int		ft_redirection_pipe(int *pd_in, int *pd_out);
-int		ft_redicrection_great(int *pd, char *outfile);
+int		ft_redicrection_great(char *outfile);
 int		ft_redicrection_dgreat(int *pd, char *outfile);
 int		open_fd(int **pipes, t_cmdblock **avector, int pipes_len, int i);
 
