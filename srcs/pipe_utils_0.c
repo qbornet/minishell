@@ -14,19 +14,6 @@ int	ft_redirection_less(char *infile)
 	return (0);
 }
 
-int	ft_redirection_pipe(int *pd_in, int *pd_out)
-{
-	if (dup_in(pd_in[0]) == -1)
-		return (-1);
-	if (close_pipe(pd_in) == -1)
-		return (standard_error("pipe_mid close pd_in"));
-	if (dup_out(pd_out[1]) == -1)
-		return (-1);
-	if (close_pipe(pd_out) == -1)
-		return (standard_error("pipe_mid close pd_out"));
-	return (0);
-}
-
 int	ft_redicrection_great(char *outfile)
 {
 	int		fd;
@@ -43,17 +30,13 @@ int	ft_redicrection_great(char *outfile)
 	return (0);
 }
 
-int	ft_redicrection_dgreat(int *pd, char *outfile)
+int	ft_redicrection_dgreat(char *outfile)
 {
 	int		fd;
 
 	fd = open(outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
 		return (standard_error(outfile));
-	if (dup_in(pd[0]) == -1)
-		return (-1);
-	if (close_pipe(pd) == -1)
-		return (standard_error("pipe_out close pd"));
 	if (dup_out(fd) == -1)
 		return (-1);
 	if (close(fd) == -1)
@@ -78,10 +61,12 @@ int	open_fd(int **pipes, t_cmdblock **avector, int pipes_len, int i)
 				return (-1);
 			infile = infile->next;
 		}
+
 		if (dup_out(pipes[i][1]) == -1)
 			return (-1);
 		if (close_pipe(pipes[i]) == -1)
 			return (standard_error("pipe_in close pd"));
+
 		outfile = cmdblock->outfile;
 		while (outfile)
 		{
@@ -94,10 +79,12 @@ int	open_fd(int **pipes, t_cmdblock **avector, int pipes_len, int i)
 	{
 		while (cmdblock->next)
 			cmdblock = cmdblock->next;
+
 		if (dup_in(pipes[i - 1][0]) == -1)
 			return (-1);
 		if (close_pipe(pipes[i - 1]) == -1)
 			return (standard_error("pipe_out close pd"));
+
 		infile = cmdblock->infile;
 		while (infile)
 		{
@@ -105,6 +92,7 @@ int	open_fd(int **pipes, t_cmdblock **avector, int pipes_len, int i)
 				return (-1);
 			infile = infile->next;
 		}
+
 		outfile = cmdblock->outfile;
 		while (outfile)
 		{

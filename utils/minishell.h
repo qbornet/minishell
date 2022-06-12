@@ -291,9 +291,8 @@ int		ft_pipe(t_cmdblock **cmdblock, char **envp);
 
 /* Pipe utils 0 */
 int		ft_redirection_less(char *infile);
-int		ft_redirection_pipe(int *pd_in, int *pd_out);
 int		ft_redicrection_great(char *outfile);
-int		ft_redicrection_dgreat(int *pd, char *outfile);
+int		ft_redicrection_dgreat(char *outfile);
 int		open_fd(int **pipes, t_cmdblock **avector, int pipes_len, int i);
 
 /* Pipe utils 1 */
