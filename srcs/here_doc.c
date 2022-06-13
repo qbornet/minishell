@@ -16,15 +16,14 @@ static int	ret_res(t_termstd *fd, char *res)
 	}
 	write(fd_val, res, ft_null(res));
 	close(fd_val);
-	printf("res: %s\n", res);
 	free(res);
-	res = NULL;
 	fd_val = open(str, O_RDONLY);
 	unlink(str);
 	free(str);
 	if (fd_val == -1)
 		return (-1);
-	dup2(fd_val, fd->stdin);
+	(void)fd;
+	dup2(fd_val, STDIN_FILENO);
 	return (close(fd_val));
 }
 
