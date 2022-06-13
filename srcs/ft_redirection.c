@@ -44,9 +44,18 @@ int	ft_redicrection_dgreat(char *outfile)
 	return (0);
 }
 
-int	ft_redirection_pipe(int *pd, int pid)
+int	ft_redirection_pipe_out(int *pd, int pid)
 {
 	if (dup_out(pd[pid]) == -1)
+		return (-1);
+	if (close_pipe(pd) == -1)
+		return (standard_error("pipe_out close pd"));
+	return (0);
+}
+
+int	ft_redirection_pipe_in(int *pd, int pid)
+{
+	if (dup_in(pd[pid]) == -1)
 		return (-1);
 	if (close_pipe(pd) == -1)
 		return (standard_error("pipe_in close pd"));

@@ -298,7 +298,8 @@ int		open_fd(int **pipes, t_cmdblock **avector, int pipes_len, int i);
 int		ft_redirection_less(char *infile);
 int		ft_redicrection_great(char *outfile);
 int		ft_redicrection_dgreat(char *outfile);
-int		ft_redirection_pipe(int *pd, int pid);
+int		ft_redirection_pipe_in(int *pd, int pid);
+int		ft_redirection_pipe_out(int *pd, int pid);
 
 /* Pipe utils 1 */
 int		close_pipes(int **pipes, int pipes_len, int *pids, int i);
