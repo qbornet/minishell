@@ -51,6 +51,8 @@ int	start_prompt(t_data **d_curr)
 	while (str && ft_check_tty() && term_isig(&term))
 	{
 		str = readline(PROMPT);
+		if (!str)
+			return (write(1, "exit\n", 5) && exit_group(d_curr));
 		ft_history(str);
 		if (lexer_parser_main(str, (*d_curr)->envp, d_curr) < 0)
 			return (exit_group(d_curr));
