@@ -306,8 +306,8 @@ int		open_fd(int **pipes, t_data **frame, int pipes_len, int i);
 
 /* Redirection */
 int		ft_redirection_less(char *infile);
-int		ft_redicrection_great(char *outfile);
-int		ft_redicrection_dgreat(char *outfile);
+int		ft_redirection_great(char *outfile);
+int		ft_redirection_dgreat(char *outfile);
 int		ft_redirection_pipe_in(int *pd, int pid);
 int		ft_redirection_pipe_out(int *pd, int pid);
 
