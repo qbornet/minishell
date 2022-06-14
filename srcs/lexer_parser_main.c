@@ -1,24 +1,5 @@
 #include <minishell.h>
 
-int	ft_free_parser_error(t_data **d_curr)
-{
-	int		i;
-	t_data	*frame;
-
-	i = 0;
-	frame = *d_curr;
-	close(frame->std_fd->stdin);
-	close(frame->std_fd->stdout);
-	ft_strclear(&frame->strlst, &free);
-	ft_treeclear(frame->root, &free);
-	ft_tokenclear(&frame->tokenlst, &free);
-	while (frame->envp[i])
-		free(frame->envp[i++]);
-	free(frame->envp);
-	free(frame);
-	return (-1);
-}
-
 int	lexer_parser_main(char *input, char **envp, t_data **d_curr)
 {
 	int		code;
@@ -38,7 +19,7 @@ int	lexer_parser_main(char *input, char **envp, t_data **d_curr)
 	}
 	frame->root = buildbtree(envp, frame->tokenlst);
 	if (ft_read_flow(frame->root, &frame->strlst) < 0)
-		return (ft_free_parser_error(&frame));
+		return (-1);
 	*d_curr = frame;
 	return (0);
 }

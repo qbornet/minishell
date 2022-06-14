@@ -22,7 +22,11 @@ LFT = ./libft/
 
 # Sources files
 SRCS = 	env_utils.c \
-	lexer_parser_main.c
+	lexer_parser_main.c \
+	sig.c \
+	exit_free.c \
+	start_prompt.c \
+	start.c 
 
 # Tools
 TOOLS = ft_tokenadd_back.c \
@@ -137,10 +141,6 @@ test: $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) -lft -o $@
 	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
 
-eclean:	clean
-	$(RM) expan
-	printf "[$(GREEN)removed$(WHITE)] expan\n"
-
 star: $(READOBJS) $(BTREEOBJS) $(STAROBJS) $(TOOLSOBJS) $(OBJS) $(LEXEROBJS) $(VAREXPOBJS)
 	make -C $(LFT)
 	echo "-------------------"
@@ -152,10 +152,13 @@ varexp: $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) $(VAREXPOBJS)
 	echo "-------------------"
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) $(VAREXPOBJS) -lft -o $@
 	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
-	
-tclean: clean
-	$(RM) test
 
+start: $(PIPEOBJS) $(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS)
+	make -C $(LFT)
+	echo "-------------------"
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(EXPANOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(PIPEOBJS) $(OBJS) -lft -lreadline -o $@
+	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
+	
 rclean:
 	$(RM) $(OBJS_DIR)
 	$(RM) read

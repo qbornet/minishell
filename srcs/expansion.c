@@ -94,6 +94,7 @@ int	start_expansion(t_data **d_curr)
 }
 
 
+/*
 char	**ft_dup_envp(char **envp)
 {
 	int		i;
@@ -196,3 +197,4 @@ int	main(int ac, char **av, char **envp)
 	ft_free_expan_error(&frame);
 	return (0);
 }
+*/

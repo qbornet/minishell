@@ -3,7 +3,12 @@
 void	sigint_handler(int signum)
 {
 	if (signum == SIGINT)
-		start_prompt();
+	{
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		write(1, "^C\n", 3);
+		rl_redisplay();
+	}
 }
 
 void	sigquit_handler(int signum)
@@ -23,13 +28,13 @@ int	set_sig(struct sigaction *act_int, struct sigaction *act_quit)
 {
 	ft_memset(act_int, 0, sizeof(struct sigaction));
 	ft_memset(act_quit, 0, sizeof(struct sigaction));
-	if (sigemptyset(act_int->sa_mask) < 0)
+	if (sigemptyset(&act_int->sa_mask) < 0)
 		return (-1);
-	if (sigemptyset(act_quit->sa_mask) < 0)
+	if (sigemptyset(&act_quit->sa_mask) < 0)
 		return (-1);
-	if (sigaddset(act_int->sa_mask, SIGINT) < 0)
+	if (sigaddset(&act_int->sa_mask, SIGINT) < 0)
 		return (-1);
-	if (sigaddset(act_quit->sa_mask, SIGQUIT) < 0)
+	if (sigaddset(&act_quit->sa_mask, SIGQUIT) < 0)
 		return (-1);
 	act_int->sa_handler = &sigint_handler;
 	act_quit->sa_handler = &sigquit_handler;

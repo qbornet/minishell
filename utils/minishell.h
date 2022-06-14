@@ -18,9 +18,10 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-# define HEREDOC_PROMPT "here_doc?> "
+# define OPEN_MAX 1024
+# define HEREDOC_PROMPT "\e[1;38;5;11m?>\e[0m "
 # define DEFAULT_PATH "PATH=/usr/local/bin:/usr/bin:/bin"
-# define PROMPT "$> "
+# define PROMPT "\e[1;38;5;12mminishell:>\e[0m "
 # define ERR_PARSER "Error: Syntax error\n"
 # define ERR_COMMAND "Error: command not found\n"
 # define ERR_FILE "Error: no such file\n"
@@ -140,7 +141,6 @@ typedef	struct s_cmdblock
 // Notre struct "foure tout"
 typedef struct s_data
 {
-	char		*str; // variable temporaire juste pour tester le here_doc
 	char		**envp; // pas oublier a strdup le envp au debut
 	char		**var_pool;
 	char		***cmd_pool;
@@ -151,6 +151,18 @@ typedef struct s_data
 	t_cmdblock	*cmdblk;
 	t_tokenlist	*tokenlst;
 }	t_data;
+
+/* START_H */
+/* exit_free.c start.c start_prompt.c */
+
+int		exit_group(t_data **d_curr);
+int		start_prompt(t_data **d_curr);
+int		free_redoo(t_data **d_curr, char *str);
+char	**ft_envp(char **envp);
+void	ft_free_envp(char **envp);
+void	ft_free_cpool(char ***cpool);
+void	ft_free_vpool(char **var_pool);
+void	close_allfd(void);
 
 /* SORT_H */
 /* ft_qsort.c */
