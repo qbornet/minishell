@@ -1,4 +1,5 @@
 #include <minishell.h>
+
 static void	ft_history(char *str)
 {
 	if (str && *str)
@@ -22,6 +23,13 @@ static int	ret_perror(char *str)
 
 static int	set_start(struct termios *t, struct sigaction *act_int, struct sigaction *act_quit)
 {
+
+	if (!ft_check_tty())
+	{
+		ioctl(STDIN_FILENO, TIOCSCTTY, 0);
+		ioctl(STDOUT_FILENO, TIOCSCTTY, 0);
+		ioctl(STDERR_FILENO, TIOCSCTTY, 0);
+	}
 	if (ft_check_tty())
 	{
 		if (set_sig(act_int, act_quit) < 0)
@@ -33,8 +41,6 @@ static int	set_start(struct termios *t, struct sigaction *act_int, struct sigact
 		if (tcsetattr(STDIN_FILENO, TCSANOW, t) < 0)
 			return (ret_perror("tsetattr() "));
 	}
-	else
-		return (-1);
 	return (0);
 }
 
@@ -58,7 +64,7 @@ int	start_prompt(t_data **d_curr)
 			return (exit_group(d_curr));
 		if (start_expansion(d_curr) < 0)
 			return (exit_group(d_curr));
-		if (ft_pipe(&(*d_curr)->cmdblk, (*d_curr)->envp) < 0)
+		if (ft_pipe(d_curr, (*d_curr)->envp) < 0)
 			return (exit_group(d_curr));
 		free_redoo(d_curr, str);
 	}
