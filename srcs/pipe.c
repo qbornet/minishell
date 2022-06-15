@@ -28,15 +28,14 @@ int	ft_len_cmdblock(t_cmdblock *cmdblock)
 	return (i);
 }
 
-int	ft_pipe(t_cmdblock **cmdblock, char **envp)
+int	ft_pipe(t_data **frame, char **envp)
 {	
 	int			**pipes;
 	int			*pids;
 	int			len_cmdb;
 	int			i;
-	t_cmdblock	*usage;
 
-	len_cmdb = ft_len_cmdblock(*cmdblock);
+	len_cmdb = ft_len_cmdblock((*frame)->cmdblk);
 	if (alloc_pipes_pids(&pipes, &pids, len_cmdb))
 		return (1);
 	i = -1;
@@ -47,12 +46,11 @@ int	ft_pipe(t_cmdblock **cmdblock, char **envp)
 			return (free_and_msg(pipes, pids, 0, "fork"));
 		if (pids[i] == 0)
 		{
-			usage = ft_next_cmdblock(i, cmdblock);
 			if (close_pipes(pipes, len_cmdb, pids, i) == -1)
 				return (1);
-			if (open_fd(pipes, cmdblock, len_cmdb, i) == -1)
+			if (open_fd(pipes, frame, len_cmdb, i) == -1)
 				return (free_and_return(pipes, pids, 0, 1));
-			if (pipex(pipes, pids, envp, usage) == -1)
+			if (pipex(pipes, pids, envp, ft_next_cmdblock(i, &(*frame)->cmdblk)) == -1)
 				return (errno);
 		}
 	}

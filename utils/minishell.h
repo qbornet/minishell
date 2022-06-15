@@ -309,13 +309,13 @@ int		dup_in(int new_in);
 int		dup_out(int new_out);
 int		close_pipe(int *pd);
 int		set_outfile(t_redirlist *outfile);
-int		set_infile(t_redirlist *infile);
+int		set_infile(t_data **frame, t_redirlist *infile);
 
 /* Pipes */
-int		ft_pipe(t_cmdblock **cmdblock, char **envp);
+int		ft_pipe(t_data **frame, char **envp);
 
 /* Pipe utils 0 */
-int		open_fd(int **pipes, t_cmdblock **avector, int pipes_len, int i);
+int		open_fd(int **pipes, t_data **frame, int pipes_len, int i);
 
 /* Redirection */
 int		ft_redirection_less(char *infile);
