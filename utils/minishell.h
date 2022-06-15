@@ -132,6 +132,7 @@ typedef struct s_redirlist
 
 typedef	struct s_cmdblock
 {
+	int					len;
 	char				**cmd;
 	t_redirlist			*infile;
 	t_redirlist			*outfile;
@@ -336,7 +337,7 @@ char	*free_elt_tab(char **tab);
 char	*free_str_tab(char **tab, int index);
 void	*free_int_tab(int **tab, int i);
 void	*free_int(int *tab);
-int		free_and_return(int **tab1, int *tab2, int index, int return_val);
+int		free_pipes_pids(int **tab1, int *tab2, int pipes_len, int return_val);
 int		free_and_msg(int **tab1, int *tab2, int index, char *msg);
 
 /* Error tools */

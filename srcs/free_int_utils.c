@@ -6,7 +6,7 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 12:52:49 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/08 19:45:45 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/15 18:39:59 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ void	*free_int_tab(int **tab, int i)
 	return (NULL);
 }
 
-int	free_and_return(int **tab1, int *tab2, int index, int return_val)
+int	free_pipes_pids(int **tab1, int *tab2, int p_len, int return_val)
 {
-	free_int_tab(tab1, index);
+	if (p_len)
+		free_int_tab(tab1, 0);
 	free_int(tab2);
 	return (return_val);
 }

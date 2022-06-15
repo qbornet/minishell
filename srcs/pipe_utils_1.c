@@ -6,7 +6,7 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:04:52 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/15 17:49:40 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/15 18:41:07 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	close_pipes(int **pipes, int pipes_len, int *pids, int i)
 		{
 			if (close_pipe(pipes[j]) == -1)
 			{	
-				free_and_return(pipes, pids, 0, 1);
+				free_pipes_pids(pipes, pids, pipes_len, 1);
 				ft_putendl_fd("close_pipes: error", 2);
 				return (-1);
 			}
