@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 19:31:57 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/15 08:11:56 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/15 17:13:16 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	exec_cmd(t_cmdblock *cmdblock, char **env)
 		return (-1);
 	}
 	execve((cmdblock->cmd)[0], cmdblock->cmd, env);
-	return (0);
+	exit(0);
 }
 
 int	pipex(int **pipes, int *pids, char **envp, t_cmdblock *cmdblock)
