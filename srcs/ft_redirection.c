@@ -14,7 +14,7 @@ int	ft_redirection_less(char *infile)
 	return (0);
 }
 
-int	ft_redicrection_great(char *outfile)
+int	ft_redirection_great(char *outfile)
 {
 	int		fd;
 
@@ -30,7 +30,7 @@ int	ft_redicrection_great(char *outfile)
 	return (0);
 }
 
-int	ft_redicrection_dgreat(char *outfile)
+int	ft_redirection_dgreat(char *outfile)
 {
 	int		fd;
 

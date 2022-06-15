@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 16:46:50 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/13 13:44:57 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/14 09:04:46 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,12 @@ int	set_outfile(t_redirlist *outfile)
 {
 	while (outfile)
 	{
-		if (ft_redicrection_great(outfile->str) == -1)
-			return (-1);
+		if (outfile->type == E_GREAT)
+			if (ft_redirection_great(outfile->str) == -1)
+				return (-1);
+		if (outfile->type == E_DGREAT)
+			if (ft_redirection_dgreat(outfile->str) == -1)
+				return (-1);
 		outfile = outfile->next;
 	}
 	return (0);

@@ -2,7 +2,7 @@
 
 static int	open_first(t_data **frame, int **pipes, t_cmdblock *cmdblock, int i)
 {
-	if (dup_out(cmdblock->std_fd->stdin) < 0)
+	if (dup_in(cmdblock->std_fd->stdin) < 0)
 		return (-1);
 	if (set_infile(frame, cmdblock->infile) < 0)
 		return (-1);
@@ -28,22 +28,9 @@ static int	open_last(t_data **frame, int **pipes, t_cmdblock *cmdblock, int i)
 	return (0);
 }
 
-static int	open_pipe(int **pipes, int i)
-{
-	if (ft_redirection_pipe_in(pipes[i - 1], 0) < 0)
-		return (-1);
-	if (ft_redirection_pipe_out(pipes[i], 1) < 0)
-		return (-1);
-	return (0);
-}
-
 static int	open_mid(t_data **frame, int **pipes, t_cmdblock *cmdblock, int i)
 {
-	int			j;
-
-	j = -1;
-	while (++j != i)
-		cmdblock = cmdblock->next;
+	cmdblock = next_cmdb(i, &cmdblock);
 	if (ft_redirection_pipe_in(pipes[i - 1], 0) < 0)
 		return (-1);
 	if (set_infile(frame, cmdblock->infile) < 0)
@@ -59,6 +46,8 @@ int	open_fd(int **pipes, t_data **frame, int pipes_len, int i)
 {
 	t_cmdblock	*cmdblock;
 
+	if (pipes_len == 0)
+		return (0);
 	cmdblock = (*frame)->cmdblk;
 	if (i == 0)
 	{
@@ -70,14 +59,9 @@ int	open_fd(int **pipes, t_data **frame, int pipes_len, int i)
 		if (open_last(frame, pipes, cmdblock, i) < 0)
 			return (-1);
 	}
-	else if (pipes_len > 2)
-	{
-		if (open_mid(frame, pipes, cmdblock, i) < 0)
-			return (-1);
-	}
 	else
 	{
-		if (open_pipe(pipes, i) < 0)
+		if (open_mid(frame, pipes, cmdblock, i) < 0)
 			return (-1);
 	}
 	return (0);

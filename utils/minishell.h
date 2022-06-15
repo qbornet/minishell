@@ -312,15 +312,16 @@ int		set_outfile(t_redirlist *outfile);
 int		set_infile(t_data **frame, t_redirlist *infile);
 
 /* Pipes */
-int		ft_pipe(t_data **frame, char **envp);
+int			ft_pipe(t_data **frame, char **envp);
+t_cmdblock	*next_cmdb(int i, t_cmdblock **curr);
 
 /* Pipe utils 0 */
 int		open_fd(int **pipes, t_data **frame, int pipes_len, int i);
 
 /* Redirection */
 int		ft_redirection_less(char *infile);
-int		ft_redicrection_great(char *outfile);
-int		ft_redicrection_dgreat(char *outfile);
+int		ft_redirection_great(char *outfile);
+int		ft_redirection_dgreat(char *outfile);
 int		ft_redirection_pipe_in(int *pd, int pid);
 int		ft_redirection_pipe_out(int *pd, int pid);
 

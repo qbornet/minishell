@@ -6,7 +6,7 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:04:52 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/12 12:46:27 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/15 08:44:07 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,16 @@ int	close_pipes(int **pipes, int pipes_len, int *pids, int i)
 {
 	int	j;
 
+	if (pipes_len == 0)
+		return (0);
 	j = -1;
-	j = -1;
+	if (i == 0)
+		j = 0;
+	else if (i == pipes_len)
+		pipes_len--;
 	while (++j < pipes_len)
 	{
-		if (j != i && j != i - 1)
+		if (i == 0 || i == pipes_len || (j != i && j != i - 1))
 		{
 			if (close_pipe(pipes[j]) == -1)
 			{	
@@ -54,10 +59,10 @@ static int	**malloc_and_open_pipes(int len)
 
 int	alloc_pipes_pids(int ***pipes, int **pids, int pipes_len)
 {
-	*pipes = malloc_and_open_pipes(pipes_len);
+	*pipes = malloc_and_open_pipes(pipes_len - 1);
 	if (!*pipes)
 		return (error("malloc_pipes: error"));
-	*pids = malloc(sizeof(int) * (pipes_len + 1));
+	*pids = malloc(sizeof(int) * pipes_len);
 	if (!*pids)
 	{
 		free_int_tab(*pipes, 0);
