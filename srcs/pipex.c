@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/26 19:31:57 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/15 18:52:35 by jfrancai         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 int	get_cmd_tab(t_cmdblock *cmdblock, char **env)
@@ -40,7 +28,7 @@ int	exec_cmd(t_cmdblock *cmdblock, char **env)
 	{
 		perror((cmdblock->cmd)[0]);
 		free_str_tab(cmdblock->cmd, 0);
-		exit (-1);
+		exit(127);
 	}
 	execve((cmdblock->cmd)[0], cmdblock->cmd, env);
 	exit(0);
@@ -60,5 +48,5 @@ int	pipex(int **pipes, int *pids, char **envp, t_cmdblock *cmdblock)
 		errno = 126;
 		return (-1);
 	}
-	return (0);
+	exit(0);
 }
