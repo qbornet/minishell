@@ -6,7 +6,7 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 21:21:18 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/08 21:45:22 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/15 17:56:36 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ int	pipex_status(int pipes_len, int **pipes, int *pids)
 		if (WIFEXITED(wstatus))
 			status_code = WEXITSTATUS(wstatus);
 	}
-	free_and_return(pipes, pids, 0, 1);
+	if (pipes_len)
+		free_int_tab(pipes, 0);
+	free_int(pids);
 	return (status_code);
 }
 
