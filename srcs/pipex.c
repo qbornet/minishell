@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 19:31:57 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/10 13:06:58 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/15 08:11:56 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	get_cmd_tab(t_cmdblock *cmdblock, char **env)
 	}
 	free_str(cmd[0]);
 	cmd[0] = path;
+	cmdblock->cmd = cmd;
 	return (0);
 }
 
