@@ -30,7 +30,7 @@ static int	open_last(t_data **frame, int **pipes, t_cmdblock *cmdblock, int i)
 
 static int	open_mid(t_data **frame, int **pipes, t_cmdblock *cmdblock, int i)
 {
-	cmdblock = ft_next_cmdblock(i, &cmdblock);
+	cmdblock = next_cmdb(i, &cmdblock);
 	if (ft_redirection_pipe_in(pipes[i - 1], 0) < 0)
 		return (-1);
 	if (set_infile(frame, cmdblock->infile) < 0)

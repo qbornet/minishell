@@ -300,7 +300,7 @@ int		set_infile(t_data **frame, t_redirlist *infile);
 
 /* Pipes */
 int			ft_pipe(t_data **frame, char **envp);
-t_cmdblock	*ft_next_cmdblock(int i, t_cmdblock **curr);
+t_cmdblock	*next_cmdb(int i, t_cmdblock **curr);
 
 /* Pipe utils 0 */
 int		open_fd(int **pipes, t_data **frame, int pipes_len, int i);
