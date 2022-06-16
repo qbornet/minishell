@@ -60,7 +60,7 @@ static int	replace_env(char *var, char ***env_curr)
 
 int	ft_export(char *var, t_data **d_curr)
 {
-	long	i;
+	size_t	i;
 	char	**new;
 	char	**temp;
 
