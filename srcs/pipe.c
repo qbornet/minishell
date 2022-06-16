@@ -51,7 +51,7 @@ int	ft_pipe(t_data **frame, char **envp)
 	{
 		pids[i] = fork();
 		if (pids[i] == -1)
-			return (free_and_msg(pipes, pids, 0, "fork"));
+			return (free_and_msg(pipes, pids, len_cmdb - 1, "fork"));
 		if (pids[i] == 0)
 		{
 			if (close_pipes(pipes, len_cmdb - 1, pids, i) == -1)
