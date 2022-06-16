@@ -290,7 +290,7 @@ void	sigint_handler(int signum);
 void	sigquit_handler(int signum);
 
 /* BIN_H */
-int			ft_free_err(char **old, char **new);
+int			ft_dup_error(char **arr);
 int			ft_pwd(void);
 int			ft_echo(const char *s, int flag);
 int			ft_cd(const char *path);
@@ -298,6 +298,7 @@ int			ft_export(char *var, char ***env_curr);
 int			ft_unset(char *var, char ***env_curr);
 int			ft_env(char **envp);
 int			print_error(t_error code);
+char		*search_varpool(char *var, char **var_pool);
 
 /* PIPE_H */
 /* Pipex */
