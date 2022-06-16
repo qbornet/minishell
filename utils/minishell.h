@@ -161,6 +161,7 @@ int		exit_group(t_data **d_curr);
 int		start_prompt(t_data **d_curr);
 int		free_redoo(t_data **d_curr, char *str);
 char	**ft_envp(char **envp);
+void	ft_free_all(t_data **d_curr);
 void	ft_free_envp(char **envp);
 void	ft_free_cpool(char ***cpool);
 void	ft_free_vpool(char **var_pool);

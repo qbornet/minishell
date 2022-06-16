@@ -9,13 +9,15 @@ int	lexer_parser_main(char *input, char **envp, t_data **d_curr)
 	code = lexical_analysis(input, &frame->tokenlst);
 	if (code == 1)
 	{
-		printf("something went wrong in token creation: make sure your quotes are closed\n");
-		return (-1);
+		printf("Could'nt recognize token\n");
+		ft_free_all(d_curr);
+		exit(127);
 	}
 	else if (code == 2)
 	{
-		printf("something went wrong in token creation: do you ran out of allocable memory ?\n");
-		return (-2);
+		printf("malloc(): Not enough mem\n");
+		ft_free_all(d_curr);
+		exit(127);
 	}
 	frame->root = buildbtree(envp, frame->tokenlst);
 	if (ft_read_flow(frame->root, &frame->strlst) < 0)
