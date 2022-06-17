@@ -34,6 +34,6 @@ void	heredoc_handler(int signum)
 		sigaddset(&act.sa_mask, SIGINT);
 		act.sa_handler = &sigint_handler;
 		sigaction(SIGINT, &act, NULL);
-		errno = 130;
+		g_exit_status = 130;
 	}
 }
