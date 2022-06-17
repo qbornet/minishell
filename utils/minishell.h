@@ -267,7 +267,7 @@ size_t		ft_len_metachar(char *s);
 
 /* HERE_DOC_H */
 /* heredoc_str.c heredoc_utils.c heredoc_error.c here_doc.c */
-int		here_doc(t_data **d_curr, t_cmdblock **c_curr, *word);
+int		here_doc(t_data **d_curr, t_cmdblock **c_curr, char *word);
 int		opt_word(char **w_curr);
 int		ft_replace_node(t_redirlist **r_curr, char *word, char *tempfile);
 int		ft_error_here(char *word);
