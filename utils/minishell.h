@@ -271,7 +271,7 @@ int		here_doc(t_data **d_curr, t_cmdblock **c_curr, char *word);
 int		opt_word(char **w_curr);
 int		ft_replace_node(t_redirlist **r_curr, char *word, char *tempfile);
 int		ft_error_here(char *word);
-int		ft_strcmp_here(char *s1, char *s2, char *res);
+int		ft_strcmp_here(char *s1, char *s2);
 char	*do_expand(t_data **d_curr, char *str);
 char	*ft_varexp(char *var, char **envp, char **var_pool);
 char	*ft_error_ret(char *s1);
