@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 16:46:50 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/14 09:04:46 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/17 11:41:36 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,13 @@ int	close_pipe(int *pd)
 
 int	set_infile(t_data **frame, t_redirlist *infile)
 {
+	(void)frame;
 	while (infile)
 	{
-		if (infile->type == E_LESS)
-			if (ft_redirection_less(infile->str) == -1)
-				return (-1);
+		if (ft_redirection_less(infile->str) == -1)
+			return (-1);
 		if (infile->type == E_DLESS)
-			if (here_doc(frame, infile->str))
-				return (-1);
+			unlink(infile->str);
 		infile = infile->next;
 	}
 	return (0);
