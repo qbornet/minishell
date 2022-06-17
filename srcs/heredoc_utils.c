@@ -47,7 +47,7 @@ int	ft_replace_node(t_redirlist	**r_curr, char *word, char *tempfile)
 			return (i);
 		}
 		i++;
-		redir->next;
+		redir = redir->next;
 	}
 	return (-1);
 }
