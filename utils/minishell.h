@@ -313,7 +313,7 @@ int		dup_in(int new_in);
 int		dup_out(int new_out);
 int		close_pipe(int *pd);
 int		set_outfile(t_redirlist *outfile);
-int		set_infile(t_data **frame, t_redirlist *infile);
+int		set_infile(t_redirlist *infile);
 
 /* Pipes */
 int			ft_pipe(t_data **frame, char **envp);
@@ -347,6 +347,6 @@ int		free_and_msg(int **tab1, int *tab2, int pipes_len, char *msg);
 int		standard_error(char *str);
 int		main_error(char *str);
 int		error(char *str);
-int		pipex_status(int pipes_len, int **pipes, int *pids);
+int		pipex_status(t_data **frame, int pipes_len, int **pipes, int *pids);
 
 #endif

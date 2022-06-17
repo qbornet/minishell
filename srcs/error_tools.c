@@ -6,17 +6,35 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 21:21:18 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/16 07:15:01 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/17 15:18:54 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	pipex_status(int pipes_len, int **pipes, int *pids)
+static int	ft_unlink_tmpfiles(t_cmdblock *cmdblock)
 {
-	int	wstatus;
-	int	status_code;
-	int	i;
+	t_redirlist	*infile;
+
+	while (cmdblock)
+	{
+		infile = cmdblock->infile;
+		while (infile)
+		{
+			if (infile->type == E_DLESS)
+				unlink(infile->str);
+			infile = infile->next;
+		}
+		cmdblock = cmdblock->next;
+	}
+	return (0);
+}
+
+int	pipex_status(t_data **frame, int pipes_len, int **pipes, int *pids)
+{
+	int			i;
+	int			wstatus;
+	int			status_code;
 
 	i = -1;
 	while (++i < pipes_len)
@@ -31,6 +49,7 @@ int	pipex_status(int pipes_len, int **pipes, int *pids)
 			status_code = WEXITSTATUS(wstatus);
 	}
 	free_pipes_pids(pipes, pids, pipes_len, 0);
+	ft_unlink_tmpfiles((*frame)->cmdblk);
 	return (status_code);
 }
 
