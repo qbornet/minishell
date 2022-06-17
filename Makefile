@@ -1,6 +1,6 @@
 # Configuration
 #---------------------------------------------------
-# main is in expansion.c
+# main is in start.c
 
 # Output 
 NAME = minishell

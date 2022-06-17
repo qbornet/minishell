@@ -143,6 +143,7 @@ typedef	struct s_cmdblock
 // Notre struct "foure tout"
 typedef struct s_data
 {
+	int			total_cmd;
 	char		**envp; // pas oublier a strdup le envp au debut
 	char		**var_pool;
 	char		***cmd_pool;
