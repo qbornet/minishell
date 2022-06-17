@@ -349,6 +349,6 @@ int		main_error(char *str);
 int		error(char *str);
 int		pipex_status(t_data **frame, int pipes_len, int **pipes, int *pids);
 
-int		g_exit_status;
+extern int		g_exit_status;
 
 #endif

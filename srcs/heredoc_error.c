@@ -1,5 +1,7 @@
 #include <minishell.h>
 
+int		g_exit_status;
+
 int	ft_error_here(char *word)
 {
 	free(word);
