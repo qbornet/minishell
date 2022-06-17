@@ -1,7 +1,10 @@
 *.[oad]
+*.sh
 *.out
 *.sw*
 .DS_Store
 tags
 lexer
 objs
+start
+minishell

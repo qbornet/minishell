@@ -26,16 +26,16 @@ static void	ft_change_node(t_strlist **s_curr, t_strlist **head_curr)
 	*s_curr = strlst;
 }
 
-void	ft_do_starexp(t_data **d_curr)
+int	ft_do_starexp(t_data **d_curr)
 {
-	int			flag;
-	char		*str;
-	t_data		*frame;
-	t_strlist	*strlst;
+	int				flag;
+	char			*str;
+	t_strlist		*strlst;
+	unsigned int	i;
 
+	i = 0;
 	str = "";
-	frame = *d_curr;
-	strlst = frame->strlst;
+	strlst = (*d_curr)->strlst;
 	while (strlst)
 	{
 		flag = 0;
@@ -46,10 +46,16 @@ void	ft_do_starexp(t_data **d_curr)
 		else if (str[0] == '\'')
 			flag = 2;
 		if (!flag && strlst->data)
-			strlst = starexp(&strlst, frame);
+		{
+			strlst = starexp(&strlst, (*d_curr), &i);
+			if (!strlst)
+				return (-1);
+		}
 		strlst = strlst->next;
 	}
+	return (0);
 }
+
 void	ft_do_varexp(t_data **d_curr)
 {
 	int			flag;

@@ -1,5 +1,6 @@
 # Configuration
 #---------------------------------------------------
+# main is in start.c
 
 # Output 
 NAME = minishell
@@ -21,7 +22,11 @@ LFT = ./libft/
 
 # Sources files
 SRCS = 	env_utils.c \
-	lexer_parser_main.c
+	lexer_parser_main.c \
+	sig.c \
+	exit_free.c \
+	start_prompt.c \
+	start.c 
 
 # Tools
 TOOLS = ft_tokenadd_back.c \
@@ -32,6 +37,7 @@ TOOLS = ft_tokenadd_back.c \
 	ft_tokennew.c \
 	ft_tokensize.c \
 	free_str_utils.c \
+	free_int_utils.c \
 	ft_qsort.c
 
 # File to create lexer part
@@ -60,7 +66,30 @@ READ = ft_read_flow.c \
 EXPAN = expansion.c \
 		expansion_utils.c \
 		expansion_error.c \
-		ft_braces.c
+		expansion_check.c \
+		ft_create_cmd.c \
+		ft_create_join.c \
+		ft_lenlist.c \
+		ft_cmdblock.c \
+		ft_redirlst.c \
+		command_block.c
+
+# File to create here_doc part
+HEREDOC = heredoc_utils.c \
+		  heredoc_error.c \
+		  heredoc_str.c \
+		  opt_heredoc.c \
+		  here_doc.c
+
+# File to create pipe part
+PIPE = pipe.c \
+	pipe_utils_0.c \
+	pipe_utils_1.c \
+	pipex.c \
+	pipex_utils.c \
+	ft_redirection.c \
+	error_tools.c
+
 
 GREEN   = \033[1;32m
 WHITE   = \033[0;m
@@ -70,6 +99,7 @@ WHITE   = \033[0;m
 # Header files
 UTILS = $(UTILS_DIR)/$(addsufix .h, $(NAME))
 
+PIPEOBJS = $(PIPE:%.c=$(OBJS_DIR)/%.o)
 EXPANOBJS = $(EXPAN:%.c=$(OBJS_DIR)/%.o)
 READOBJS = $(READ:%.c=$(OBJS_DIR)/%.o)
 LEXEROBJS = $(LEXER:%.c=$(OBJS_DIR)/%.o)
@@ -77,9 +107,21 @@ BTREEOBJS = $(BTREE:%.c=$(OBJS_DIR)/%.o)
 STAROBJS = $(STAR:%.c=$(OBJS_DIR)/%.o)
 TOOLSOBJS = $(TOOLS:%.c=$(OBJS_DIR)/%.o)
 VAREXPOBJS = $(VAREXP:%.c=$(OBJS_DIR)/%.o)
+HEREOBJS = $(HEREDOC:%.c=$(OBJS_DIR)/%.o)
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS = $(OBJS:%.o=%.d)
 
+pipe: $(PIPEOBJS) $(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS)
+	make -C $(LFT)
+	echo "-------------------"
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(EXPANOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(PIPEOBJS) $(OBJS) -lft -lreadline -o $@
+	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
+
+here:	$(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS)
+	make -C $(LFT)
+	echo "-------------------"
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(EXPANOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS) -lft -lreadline -o $@
+	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
 
 expan:	$(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(OBJS)
 	make -C $(LFT)
@@ -99,10 +141,6 @@ test: $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) -lft -o $@
 	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
 
-eclean:	clean
-	$(RM) expan
-	printf "[$(GREEN)removed$(WHITE)] expan\n"
-
 star: $(READOBJS) $(BTREEOBJS) $(STAROBJS) $(TOOLSOBJS) $(OBJS) $(LEXEROBJS) $(VAREXPOBJS)
 	make -C $(LFT)
 	echo "-------------------"
@@ -114,10 +152,13 @@ varexp: $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) $(VAREXPOBJS)
 	echo "-------------------"
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) $(VAREXPOBJS) -lft -o $@
 	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
-	
-tclean: clean
-	$(RM) test
 
+start: $(PIPEOBJS) $(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS)
+	make -C $(LFT)
+	echo "-------------------"
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(EXPANOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(PIPEOBJS) $(OBJS) -lft -lreadline -o $@
+	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
+	
 rclean:
 	$(RM) $(OBJS_DIR)
 	$(RM) read

@@ -95,6 +95,7 @@ int	lexical_analysis(char *input, t_tokenlist **lst)
 	return (0);
 }
 
+/*
 int	main(int ac, char **av, char **envp)
 {
 	int			code;
@@ -125,3 +126,4 @@ int	main(int ac, char **av, char **envp)
 	}
 	return (0);
 }
+*/

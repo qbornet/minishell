@@ -24,6 +24,7 @@ int	is_metachar(char c)
 		|| c == '<'
 		|| c == '>'
 		|| c == '$' 
+		|| c == '*'
 		|| c == '\''
 		|| c == '\"')
 		return (1);

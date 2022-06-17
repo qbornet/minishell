@@ -1,82 +1,63 @@
 #include <minishell.h>
- /* fonction utile au moment de l'execution fait toute les redirection */
 
-static char	*ft_do_str(char *lex, int len)
-{
-	int		i;
-	char	*str;
-
-	i = 0;
-	str = (char *)malloc(sizeof(char) * (len + 1));
-	if (!str)
-		return (NULL);
-	while (i < len && *lex)
-		str[i++] = *lex++;
-	str[i] = '\0';
-	return (str);
-}
-
-static int	ft_redirection_dgreat(char *str)
-{
-	int	fd;
-	int	new_fd;
-
-	fd = open(str, O_CREAT | O_WRONLY | O_APPEND, 0644);
-	if (fd == -1)
-		return (-1);
-	free(str);
-	new_fd = dup2(fd, STDOUT_FILENO);
-	close(fd);
-	return (new_fd);
-}
-
-static int	ft_redirection_great(t_btree *tree, enum e_token type)
+int	ft_redirection_less(char *infile)
 {
 	int		fd;
-	int		new_fd;
-	char	*str;
 
-	str = ft_do_str(tree->node->token->lex, tree->node->token->len);
-	if (!str)
-		return (-1);
-	if (type == E_DGREAT)
-		return (ft_redirection_dgreat(str));
-	fd = open(str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	free(str);
+	fd = open(infile, O_RDONLY);
 	if (fd == -1)
+		return (standard_error(infile));
+	if (dup_in(fd) == -1)
 		return (-1);
-	new_fd = dup2(fd, STDOUT_FILENO);
-	close(fd);
-	return (new_fd);
-
+	if (close(fd) == -1)
+		return (standard_error("pipe_in close fd"));
+	return (0);
 }
 
-static int	ft_redirection_less(t_btree *tree)
+int	ft_redirection_great(char *outfile)
 {
 	int		fd;
-	int		new_fd;
-	char	*str;
 
-	str = ft_do_str(str);
-	if (!str)
-		return (-1);
-	fd = open(str, O_RDONLY);
-	free(str);
+	if (unlink(outfile) == -1)
+		errno = 0;
+	fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
-	{
-		print_error(E_FILE);
+		return (standard_error(outfile));
+	if (dup_out(fd) == -1)
 		return (-1);
-	}
-	new_fd = dup2(fd, STDIN_FILENO);
-	close(fd);
-	return (new_fd);
+	if (close(fd) == -1)
+		return (standard_error("pipe_out fd"));
+	return (0);
 }
 
-int	ft_redirection(t_btree *tree, int redirection)
+int	ft_redirection_dgreat(char *outfile)
 {
-	if (redirection == 1)
-		return (ft_redirection_great(tree->right, tree->node->type));
-	else if (redirection == 2)
-		return (ft_redirection_less(tree->right));
+	int		fd;
+
+	fd = open(outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd == -1)
+		return (standard_error(outfile));
+	if (dup_out(fd) == -1)
+		return (-1);
+	if (close(fd) == -1)
+		return (standard_error("pipe_out fd"));
+	return (0);
+}
+
+int	ft_redirection_pipe_out(int *pd, int pid)
+{
+	if (dup_out(pd[pid]) == -1)
+		return (-1);
+	if (close_pipe(pd) == -1)
+		return (standard_error("pipe_out close pd"));
+	return (0);
+}
+
+int	ft_redirection_pipe_in(int *pd, int pid)
+{
+	if (dup_in(pd[pid]) == -1)
+		return (-1);
+	if (close_pipe(pd) == -1)
+		return (standard_error("pipe_in close pd"));
 	return (0);
 }

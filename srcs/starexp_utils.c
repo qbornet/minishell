@@ -56,7 +56,7 @@ int	ft_starcmp(const char *s1, const char *s2)
 	return (loop(i, s1, s2, ft_strlen(s2)));
 }
 
-t_strlist	*insert_strlst(t_strlist **slst, t_strlist **head, t_data *frame)
+t_strlist	*insert_strlst(t_strlist **slst, t_strlist **head, t_data *frame, unsigned int *s_id)
 {
 	t_strlist	*tmp;
 	t_strlist	*lst;
@@ -73,8 +73,12 @@ t_strlist	*insert_strlst(t_strlist **slst, t_strlist **head, t_data *frame)
 	free(lst->data);
 	free(lst);
 	lst = *head;
+	lst->s_id = ++(*s_id);
 	while (lst->next)
+	{
 		lst = lst->next;
+		lst->s_id = *s_id;
+	}
 	lst->next = tmp;
 	if (tmp)
 		tmp->prev = lst;
