@@ -80,5 +80,5 @@ int	ft_pipe(t_data **frame, char **envp)
 				return (-1);
 		}
 	}
-	return (pipex_status(len_cmdb - 1, pipes, pids));
+	return (pipex_status(frame, len_cmdb - 1, pipes, pids));
 }
