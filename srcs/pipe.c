@@ -24,29 +24,34 @@ static int	ft_call_heredoc(t_data **frame, t_cmdblock **cmdblock, t_redirlist *i
 	return (0);
 }
 
-static int	ft_init_exec(t_data **frame)
+static int	ft_len_cmdblk(t_cmdblock *cmdblock)
 {
-	int			i;
-	t_cmdblock	*cmdblock;
+	int	i;
 
-	cmdblock = (*frame)->cmdblk;
-	if (!cmdblock)
-		return (0);
 	i = 0;
 	while (cmdblock)
 	{
 		i++;
 		cmdblock = cmdblock->next;
 	}
+	return (i);
+}
+
+static int	ft_init_exec(t_data **frame)
+{
+	int			len;
+	t_cmdblock	*cmdblock;
+
 	cmdblock = (*frame)->cmdblk;
+	len = ft_len_cmdblk(cmdblock);
 	while (cmdblock)
 	{
 		if (ft_call_heredoc(frame, &cmdblock, cmdblock->infile) < 0)
 			return (-1);
-		cmdblock->len = i;
+		cmdblock->len = len;
 		cmdblock = cmdblock->next;
 	}
-	return (i);
+	return (len);
 }
 
 int	ft_pipe(t_data **frame, char **envp)
