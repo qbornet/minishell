@@ -30,9 +30,10 @@ void	heredoc_handler(int signum)
 	{
 		ft_memset(&act, 0, sizeof(struct sigaction));
 		close(0);
-		write(1, "^C\n", 3);
+		write(1, "^C", 2);
 		sigaddset(&act.sa_mask, SIGINT);
 		act.sa_handler = &sigint_handler;
 		sigaction(SIGINT, &act, NULL);
+		errno = 130;
 	}
 }
