@@ -4,17 +4,24 @@ static int	insert_cmd(t_data **d_curr)
 {
 	size_t		i;
 	char		***cpool;
+	int			total_cmd;
 
-	i = -1;
+	i = 0;
+	total_cmd = (*d_curr)->total_cmd;
 	cpool = (*d_curr)->cmd_pool;
-	while (cpool[++i])
-		if (ft_blockadd_back(\
+	while (total_cmd--)
+	{
+		if (!cpool[i])
+		{
+			if (ft_blockadd_back(\
+						&(*d_curr)->cmdblk, (*d_curr)->std_fd, NULL) < 0)
+				return (-1);
+		}
+		else if (ft_blockadd_back(\
 					&(*d_curr)->cmdblk, (*d_curr)->std_fd, cpool[i]) < 0)
 			return (-1);
-	if (!cpool[0])
-		if (ft_blockadd_back(\
-					&(*d_curr)->cmdblk, (*d_curr)->std_fd, NULL) < 0)
-			return (-1);
+		i++;
+	}
 	return (0);
 }
 

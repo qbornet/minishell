@@ -50,11 +50,16 @@ void	opt_find_dollars(char **s_curr, size_t *i)
 
 int	opt_word(char **w_curr)
 {
-	char	*tmp;
-	char	*word;
+	char				*tmp;
+	char				*word;
+	struct sigaction	act;
 
 	tmp = NULL;
 	word = *w_curr;
+	ft_memset(&act, 0, sizeof(struct sigaction));
+	act.sa_handler = &heredoc_handler;
+	if (sigaction(SIGINT, &act, NULL) < 0)
+		return (-1);
 	if (word[0] == '\"' || word[0] == '\'')
 	{
 		tmp = ft_substr(word, 1, (ft_strlen(word) - 2));

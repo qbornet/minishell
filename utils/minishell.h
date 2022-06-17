@@ -20,9 +20,9 @@
 # include <readline/history.h>
 
 # define OPEN_MAX 1024
-# define HEREDOC_PROMPT "\e[1;38;5;11m?>\e[0m "
+# define HEREDOC_PROMPT "\1\e[1;38;5;11m\2?>\1\e[0m\2 "
 # define DEFAULT_PATH "PATH=/usr/local/bin:/usr/bin:/bin"
-# define PROMPT "\e[1;38;5;12mminishell:>\e[0m "
+# define PROMPT "\1\e[1;38;5;12m\2minishell:>\1\e[0m\2 "
 # define ERR_PARSER "Error: Syntax error\n"
 # define ERR_COMMAND "Error: command not found\n"
 # define ERR_FILE "Error: no such file\n"
@@ -143,6 +143,7 @@ typedef	struct s_cmdblock
 // Notre struct "foure tout"
 typedef struct s_data
 {
+	int			total_cmd;
 	char		**envp; // pas oublier a strdup le envp au debut
 	char		**var_pool;
 	char		***cmd_pool;
@@ -267,8 +268,9 @@ size_t		ft_len_metachar(char *s);
 
 /* HERE_DOC_H */
 /* heredoc_str.c heredoc_utils.c heredoc_error.c here_doc.c */
-int		here_doc(t_data **d_curr, char *word);
+int		here_doc(t_data **d_curr, t_cmdblock **c_curr, char *word);
 int		opt_word(char **w_curr);
+int		ft_replace_node(t_redirlist **r_curr, char *word, char *tempfile);
 int		ft_error_here(char *word);
 int		ft_strcmp_here(char *s1, char *s2);
 char	*do_expand(t_data **d_curr, char *str);
@@ -276,6 +278,7 @@ char	*ft_varexp(char *var, char **envp, char **var_pool);
 char	*ft_error_ret(char *s1);
 char	*ft_error_malloc(char **arr);
 char	*ft_random_str(char *pathname, int bytes);
+void	heredoc_handler(int signum);
 void	opt_free_doexpand(char *str, char *begin_str, char *end_str);
 void	opt_find_dollars(char **s_curr, size_t *i);
 size_t	ft_num_expand(char *str);
@@ -311,7 +314,7 @@ int		dup_in(int new_in);
 int		dup_out(int new_out);
 int		close_pipe(int *pd);
 int		set_outfile(t_redirlist *outfile);
-int		set_infile(t_data **frame, t_redirlist *infile);
+int		set_infile(t_redirlist *infile);
 
 /* Pipes */
 int			ft_pipe(t_data **frame, char **envp);
@@ -339,12 +342,12 @@ char	*free_str_tab(char **tab, int index);
 void	*free_int_tab(int **tab, int i);
 void	*free_int(int *tab);
 int		free_pipes_pids(int **tab1, int *tab2, int pipes_len, int return_val);
-int		free_and_msg(int **tab1, int *tab2, int index, char *msg);
+int		free_and_msg(int **tab1, int *tab2, int pipes_len, char *msg);
 
 /* Error tools */
 int		standard_error(char *str);
 int		main_error(char *str);
 int		error(char *str);
-int		pipex_status(int pipes_len, int **pipes, int *pids);
+int		pipex_status(t_data **frame, int pipes_len, int **pipes, int *pids);
 
 #endif

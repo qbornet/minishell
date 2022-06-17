@@ -29,11 +29,36 @@ char	*ft_varexp(char *var, char **envp, char **var_pool)
 	return (str);
 }
 
+int	ft_replace_node(t_redirlist	**r_curr, char *word, char *tempfile)
+{
+	char		*str;
+	size_t		i;
+	t_redirlist	*redir;
+
+	i = 0;
+	redir = *r_curr;
+	while (redir)
+	{
+		str = redir->str;
+		if (!ft_strncmp(str, word, ft_strlen(str)))
+		{
+			free(redir->str);
+			redir->str = tempfile;
+			return (i);
+		}
+		i++;
+		redir = redir->next;
+	}
+	return (-1);
+}
+
 int	ft_strcmp_here(char *s1, char *s2)
 {
 	size_t	i;
 
 	i = 0;
+	if (!s1)
+		return (0);
 	while (s1[i] && s1[i] == s2[i])
 		i++;
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);

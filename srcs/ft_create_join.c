@@ -13,20 +13,16 @@ static int	ft_lenlst_malloc(t_lenlist **len_curr, int length)
 	return (0);
 }
 
-static int	ft_cmd_node(t_btree *root)
+static void	ft_cmd_node(t_btree *root, int *pipe_count)
 {
-	static int	node_count;
 
 	if (root && root->node)
 	{
-		ft_cmd_node(root->left);
-		if (root->node->type == E_VALID_FILE
-				|| root->node->type == E_VALID_BUILTIN
-				|| root->node->type == E_WORD)
-			node_count++;
-		ft_cmd_node(root->right);
+		ft_cmd_node(root->left, pipe_count);
+		if (root->node->type == E_PIPE)
+			*pipe_count += 1;
+		ft_cmd_node(root->right, pipe_count);
 	}
-	return (node_count);
 }
 
 static int	ft_length_lst(t_tokenlist *tokenlst)
@@ -74,9 +70,11 @@ static int	ft_strlst_len(t_btree *root, t_lenlist **len_curr)
 
 int	ft_create_join(t_data **d_curr)
 {
-	int		total_cmd;
+	int total_cmd;
 	
-	total_cmd = ft_cmd_node((*d_curr)->root);
+	total_cmd = 1;
+	ft_cmd_node((*d_curr)->root, &total_cmd);
+	(*d_curr)->total_cmd = total_cmd;
 	(*d_curr)->cmd_pool = ft_calloc((total_cmd + 1), sizeof(char **));
 	if (!(*d_curr)->cmd_pool)
 		return (-1);
