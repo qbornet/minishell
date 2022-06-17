@@ -31,6 +31,8 @@ int	is_special_token(char c, t_token *token)
 		return (0);
 	if (c == '&'
 		|| c == '|'
+		|| c == ';'
+		|| c == '\\'
 		|| c == '>'
 		|| c == '<'
 		|| c == ')'
@@ -55,7 +57,8 @@ void	word_token(char *input, t_token *token)
 	char	*tmp;
 
 	tmp = input;
-	while (*input && (*input != ' ' || token->qt) && !is_special_token(*input, token))
+	while (*input && (*input != ' ' || token->qt)
+		&& !is_special_token(*input, token))
 	{
 		if (*input == '\"' && !token->qt)
 			token->qt = E_DOUBLE;
@@ -116,6 +119,12 @@ int	is_token_1(char *input, t_token *token)
 	else if (*input == '(')
 		token->type = E_ERROR;
 	else if (*input == ')')
+		token->type = E_ERROR;
+	else if (*input == '&')
+		token->type = E_ERROR;
+	else if (*input == '\\')
+		token->type = E_ERROR;
+	else if (*input == ';')
 		token->type = E_ERROR;
 	return (token->type);
 }
