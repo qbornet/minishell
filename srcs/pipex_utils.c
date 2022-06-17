@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 16:46:50 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/17 11:41:36 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/17 14:45:57 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,8 @@ int	close_pipe(int *pd)
 	return (0);
 }
 
-int	set_infile(t_data **frame, t_redirlist *infile)
+int	set_infile(t_redirlist *infile)
 {
-	(void)frame;
 	while (infile)
 	{
 		if (ft_redirection_less(infile->str) == -1)
