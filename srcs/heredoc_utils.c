@@ -52,11 +52,16 @@ int	ft_replace_node(t_redirlist	**r_curr, char *word, char *tempfile)
 	return (-1);
 }
 
-int	ft_strcmp_here(char *s1, char *s2)
+int	ft_strcmp_here(char *s1, char *s2, char *res)
 {
 	size_t	i;
 
 	i = 0;
+	if (!s1)
+	{
+		free(res);
+		return (0);
+	}
 	while (s1[i] && s1[i] == s2[i])
 		i++;
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);

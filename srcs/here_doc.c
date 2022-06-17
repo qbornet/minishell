@@ -101,7 +101,7 @@ int	here_doc(t_data **d_curr, t_cmdblock **c_curr, char *word)
 	while (1)
 	{
 		str = readline(HEREDOC_PROMPT);
-		if (!ft_strcmp_here(str, word))
+		if (!ft_strcmp_here(str, word, res))
 			break ;
 		str = opt_here_doc(d_curr, str, flag);
 		if (!str)
