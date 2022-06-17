@@ -2,8 +2,6 @@
 
 static int	open_first(t_data **frame, int **pipes, t_cmdblock *cmdblock, int i)
 {
-	if (dup_in(cmdblock->std_fd->stdin) < 0)
-		return (-1);
 	if (set_infile(frame, cmdblock->infile) < 0)
 		return (-1);
 	if (ft_redirection_pipe_out(pipes[i], 1) < 0)
@@ -20,8 +18,6 @@ static int	open_last(t_data **frame, int **pipes, t_cmdblock *cmdblock, int i)
 	if (ft_redirection_pipe_in(pipes[i - 1], 0) < 0)
 		return (-1);
 	if (set_infile(frame, cmdblock->infile) < 0)
-		return (-1);
-	if (dup_out(cmdblock->std_fd->stdout) < 0)
 		return (-1);
 	if (set_outfile(cmdblock->outfile) < 0)
 		return (-1);

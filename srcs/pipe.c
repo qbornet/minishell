@@ -12,8 +12,19 @@ t_cmdblock	*next_cmdb(int i, t_cmdblock **curr)
 	}
 	return (cmdblk);
 }
+static int	ft_call_heredoc(t_data **frame, t_cmdblock **cmdblock, t_redirlist *infile)
+{
+	while (infile)
+	{
+		if (infile->type == E_DLESS)
+			if (here_doc(frame, cmdblock, infile->str) < 0)
+				return (-1);
+		infile = infile->next;
+	}
+	return (0);
+}
 
-static int	ft_len_cmdblock(t_data **frame)
+static int	ft_init_exec(t_data **frame)
 {
 	int			i;
 	t_cmdblock	*cmdblock;
@@ -30,6 +41,8 @@ static int	ft_len_cmdblock(t_data **frame)
 	cmdblock = (*frame)->cmdblk;
 	while (cmdblock)
 	{
+		if (ft_call_heredoc(frame, &cmdblock, cmdblock->infile) < 0)
+			return (-1);
 		cmdblock->len = i;
 		cmdblock = cmdblock->next;
 	}
@@ -43,7 +56,7 @@ int	ft_pipe(t_data **frame, char **envp)
 	int			len_cmdb;
 	int			i;
 
-	len_cmdb = ft_len_cmdblock(frame);
+	len_cmdb = ft_init_exec(frame);
 	if (alloc_pipes_pids(&pipes, &pids, len_cmdb))
 		return (-1);
 	i = -1;
@@ -51,7 +64,7 @@ int	ft_pipe(t_data **frame, char **envp)
 	{
 		pids[i] = fork();
 		if (pids[i] == -1)
-			return (free_and_msg(pipes, pids, 0, "fork"));
+			return (free_and_msg(pipes, pids, len_cmdb - 1, "fork"));
 		if (pids[i] == 0)
 		{
 			if (close_pipes(pipes, len_cmdb - 1, pids, i) == -1)

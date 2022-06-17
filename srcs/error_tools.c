@@ -6,7 +6,7 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 21:21:18 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/15 17:56:36 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/16 07:15:01 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	pipex_status(int pipes_len, int **pipes, int *pids)
 	i = -1;
 	while (++i < pipes_len)
 		if (close_pipe(pipes[i]) == -1)
-			return (free_and_msg(pipes, pids, 0, "pipes[i]: close error"));
+			return (free_and_msg(pipes, pids, pipes_len, "pipes[i]: close error"));
 	i = -1;
 	while (++i < pipes_len + 1)
 	{
@@ -30,9 +30,7 @@ int	pipex_status(int pipes_len, int **pipes, int *pids)
 		if (WIFEXITED(wstatus))
 			status_code = WEXITSTATUS(wstatus);
 	}
-	if (pipes_len)
-		free_int_tab(pipes, 0);
-	free_int(pids);
+	free_pipes_pids(pipes, pids, pipes_len, 0);
 	return (status_code);
 }
 

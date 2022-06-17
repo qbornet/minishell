@@ -340,7 +340,7 @@ char	*free_str_tab(char **tab, int index);
 void	*free_int_tab(int **tab, int i);
 void	*free_int(int *tab);
 int		free_pipes_pids(int **tab1, int *tab2, int pipes_len, int return_val);
-int		free_and_msg(int **tab1, int *tab2, int index, char *msg);
+int		free_and_msg(int **tab1, int *tab2, int pipes_len, char *msg);
 
 /* Error tools */
 int		standard_error(char *str);
