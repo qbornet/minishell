@@ -277,6 +277,7 @@ char	*ft_varexp(char *var, char **envp, char **var_pool);
 char	*ft_error_ret(char *s1);
 char	*ft_error_malloc(char **arr);
 char	*ft_random_str(char *pathname, int bytes);
+void	heredoc_handler(int signum);
 void	opt_free_doexpand(char *str, char *begin_str, char *end_str);
 void	opt_find_dollars(char **s_curr, size_t *i);
 size_t	ft_num_expand(char *str);

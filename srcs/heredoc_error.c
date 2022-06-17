@@ -21,3 +21,13 @@ char	*ft_error_malloc(char **arr)
 		free(arr[i]);
 	return (NULL);
 }
+
+void	heredoc_handler(int signum)
+{
+	if (signum == SIGINT)
+	{
+		rl_replace_line(NULL, 0);
+		rl_redisplay();
+		exit(0);
+	}
+}
