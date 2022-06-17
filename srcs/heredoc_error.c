@@ -24,10 +24,15 @@ char	*ft_error_malloc(char **arr)
 
 void	heredoc_handler(int signum)
 {
+	struct sigaction	act;
+
 	if (signum == SIGINT)
 	{
-		rl_replace_line(NULL, 0);
-		rl_redisplay();
-		exit(0);
+		ft_memset(&act, 0, sizeof(struct sigaction));
+		close(0);
+		write(1, "^C\n", 3);
+		sigaddset(&act.sa_mask, SIGINT);
+		act.sa_handler = &sigint_handler;
+		sigaction(SIGINT, &act, NULL);
 	}
 }

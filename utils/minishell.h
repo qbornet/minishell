@@ -20,9 +20,9 @@
 # include <readline/history.h>
 
 # define OPEN_MAX 1024
-# define HEREDOC_PROMPT "\e[1;38;5;11m?>\e[0m "
+# define HEREDOC_PROMPT "\1\e[1;38;5;11m\2?>\1\e[0m\2 "
 # define DEFAULT_PATH "PATH=/usr/local/bin:/usr/bin:/bin"
-# define PROMPT "\e[1;38;5;12mminishell:>\e[0m "
+# define PROMPT "\1\e[1;38;5;12m\2minishell:>\1\e[0m\2 "
 # define ERR_PARSER "Error: Syntax error\n"
 # define ERR_COMMAND "Error: command not found\n"
 # define ERR_FILE "Error: no such file\n"
@@ -271,7 +271,7 @@ int		here_doc(t_data **d_curr, t_cmdblock **c_curr, char *word);
 int		opt_word(char **w_curr);
 int		ft_replace_node(t_redirlist **r_curr, char *word, char *tempfile);
 int		ft_error_here(char *word);
-int		ft_strcmp_here(char *s1, char *s2);
+int		ft_strcmp_here(char *s1, char *s2, char *res);
 char	*do_expand(t_data **d_curr, char *str);
 char	*ft_varexp(char *var, char **envp, char **var_pool);
 char	*ft_error_ret(char *s1);

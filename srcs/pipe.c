@@ -17,8 +17,12 @@ static int	ft_call_heredoc(t_data **frame, t_cmdblock **cmdblock, t_redirlist *i
 	while (infile)
 	{
 		if (infile->type == E_DLESS)
+		{
 			if (here_doc(frame, cmdblock, infile->str) < 0)
 				return (-1);
+			dup2((*frame)->std_fd->stdin, 0);
+			ioctl(STDIN_FILENO, TIOCSCTTY, 0);
+		}
 		infile = infile->next;
 	}
 	return (0);

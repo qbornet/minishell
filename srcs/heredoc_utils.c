@@ -52,14 +52,14 @@ int	ft_replace_node(t_redirlist	**r_curr, char *word, char *tempfile)
 	return (-1);
 }
 
-int	ft_strcmp_here(char *s1, char *s2)
+int	ft_strcmp_here(char *s1, char *s2, char *res)
 {
 	size_t	i;
 
 	i = 0;
 	if (!s1)
 	{
-		ft_putstr_fd("warning: read EOF\n", 2);
+		free(res);
 		return (0);
 	}
 	while (s1[i] && s1[i] == s2[i])
