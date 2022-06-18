@@ -1,20 +1,19 @@
 #include "minishell.h"
 
-/* Fonction qui detect le token End Of Input (\0)
- * @param: c
- * - le caracter a evaluer
- *
- * @param: token
- * - Pointeur vers le token a modifier
- *
- * @return: int
- * - token type
- * */
-int	is_eoi(char c, t_token *token)
+int	get_token(char **input, t_token *token)
 {
-	if (!c)
+	if (!**input)
+	{
 		token->type = E_EOI;
-	return (token->type);
+		token->len = 0;
+	}
+	else if (is_token_2(*input, token) && !token->qt)
+		token->len = 2;
+	else if (is_token_1(*input, token) && !token->qt)
+		token->len = 1;
+	else
+		word_token(*input, token);
+	return (0);
 }
 
 /* Fonction pour detecter un char qui pourrait

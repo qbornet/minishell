@@ -183,7 +183,7 @@ t_tokenlist	*ft_tokenlast(t_tokenlist *lst);
 // Lexer utils
 int			is_special_token(char c, t_token *token);
 void		word_token(char *input, t_token *token);
-int			is_eoi(char c, t_token *token);
+int			get_token(char **input, t_token *token);
 int			is_token_1(char *input, t_token *token);
 int			is_token_2(char *input, t_token *token);
 //void		sep_token(char *input, t_token *token);

@@ -33,14 +33,7 @@ static t_token	*get_next_token(char **input, unsigned int qt)
 	token = tokeninit(input, qt);
 	if (!token)
 		return (NULL);
-	if (is_eoi(**input, token))
-		token->len = 0;
-	else if (is_token_2(*input, token) && !token->qt)
-		token->len = 2;
-	else if (is_token_1(*input, token) && !token->qt)
-		token->len = 1;
-	else
-		word_token(*input, token);
+	get_token(input, token);	
 	*input += token->len;
 	if (token->type == E_ERROR
 		|| (token->qt && token->type == E_EOI)
