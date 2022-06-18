@@ -7,12 +7,11 @@ int	get_token(char **input, t_token *token)
 		token->type = E_EOI;
 		token->len = 0;
 	}
-	else if (is_token_2(*input, token) && !token->qt)
-		token->len = 2;
-	else if (is_token_1(*input, token) && !token->qt)
-		token->len = 1;
-	else
-		word_token(*input, token);
+	if (is_token_2(*input, token))
+		return (2);
+	if (is_token_1(*input, token))
+		return (1);
+	word_token(*input, token);
 	return (0);
 }
 
@@ -121,7 +120,12 @@ int	is_token_1(char *input, t_token *token)
 		|| *input == '\\'
 		|| *input == ';')
 		token->type = E_ERROR;
-	return (token->type);
+	if (token->type && !token->qt)
+	{
+		token->len = 1;
+		return (1);
+	}
+	return (0);
 }
 
 int	is_token_2(char *input, t_token *token)
@@ -132,5 +136,10 @@ int	is_token_2(char *input, t_token *token)
 		token->type = E_DLESS;
 	else if (!ft_strncmp(">>", input, 2))
 		token->type = E_DGREAT;
-	return (token->type);
+	if (token->type && !token->qt)
+	{
+		token->len = 2;
+		return (2);
+	}
+	return (0);
 }

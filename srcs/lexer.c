@@ -10,6 +10,7 @@ static t_token	*tokeninit(char **input, unsigned int qt)
 	token->lex = *input;
 	token->type = 0;
 	token->qt = qt;
+	token->error = 0;
 	token->len = 0;
 	return (token);
 }
@@ -33,23 +34,31 @@ static t_token	*get_next_token(char **input, unsigned int qt)
 	token = tokeninit(input, qt);
 	if (!token)
 		return (NULL);
-	get_token(input, token);	
+	token->error = get_token(input, token);
 	*input += token->len;
 	if (token->type == E_ERROR
 		|| (token->qt && token->type == E_EOI)
 		|| !token->type)
 	{
-		free(token);
-		return (NULL);
+		token->lex = NULL;
+		return (token);
 	}
 	return (token);
 }
 
-static int	ft_free_handler(t_token **token, t_tokenlist **lst, int code)
+static int	ft_free_handler(t_token **token, t_tokenlist **lst)
 {
-	ft_tokenclear(lst, free);
-	if (code == 2)
-		free(*token);
+	int	code;
+
+	if (!*lst)
+		code = 4;
+	else
+		ft_tokenclear(lst, free);
+	if (!*token)
+		code = 3;
+	else if ((*token)->error)
+		code = (*token)->error;
+	free(*token);
 	return (code);
 }
 
@@ -76,11 +85,11 @@ int	lexical_analysis(char *input, t_tokenlist **lst)
 			token = get_next_token(&input, ft_tokenlast(newlst)->token->qt);
 		else
 			token = get_next_token(&input, 0);
-		if (!token)
-			return (ft_free_handler(&token, lst, 1));
+		if (!token || !token->lex)
+			return (ft_free_handler(&token, lst));
 		newlst = ft_tokennew(token);
 		if (!newlst)
-			return (ft_free_handler(&token, lst, 2));
+			return (ft_free_handler(&token, lst));
 		ft_tokenadd_back(lst, newlst);
 		if (token->type == E_EOI)
 			break ;

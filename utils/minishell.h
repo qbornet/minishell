@@ -68,6 +68,7 @@ enum e_quote
 };
 
 typedef struct s_token {
+	int				error;
 	char			*lex;
 	size_t			len;
 	enum e_token	type;	
