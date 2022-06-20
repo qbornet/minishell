@@ -79,6 +79,18 @@ static int	ft_search_expansion(t_data **d_curr)
 	return (0);
 }
 
+void	print_strlst(t_strlist *strlst)
+{
+
+	printf("strlst: ");
+	while (strlst)
+	{
+		printf("%s:%d->", (char *)strlst->data, strlst->s_id);
+		strlst = strlst->next;
+	}
+	printf("NULL\n");
+}
+
 int	start_expansion(t_data **d_curr)
 {
 	if (ft_search_expansion(d_curr) < 0)
@@ -86,12 +98,15 @@ int	start_expansion(t_data **d_curr)
 	ft_do_varexp(d_curr);
 	if (ft_do_starexp(d_curr) < 0)
 		return (ft_free_expan_error(d_curr));
+	// need to add handle of '\' when in quotes so i need to escape those
+	print_strlst((*d_curr)->strlst);
 	if (ft_create_join(d_curr) < 0)
 		return (ft_free_expan_error(d_curr));
 	if (command_block(d_curr) < 0)
 		return (ft_free_expan_error(d_curr));
 	return (0);
 }
+
 
 
 /*
@@ -124,17 +139,6 @@ char	**ft_dup_envp(char **envp)
 	return (new_env);
 }
 
-void	print_strlst(t_strlist *strlst)
-{
-
-	printf("strlst: ");
-	while (strlst)
-	{
-		printf("%s:%d->", (char *)strlst->data, strlst->s_id);
-		strlst = strlst->next;
-	}
-	printf("NULL\n");
-}
 
 void	ft_get_word(t_data **d_curr, t_btree *root)
 {
