@@ -46,7 +46,6 @@ int	free_redoo(t_data **d_curr, char *str)
 	ft_treeclear(frame->root, &free);
 	ft_free_cpool(frame->cmd_pool);
 	ft_null_reset(&frame);
-	g_exit_status = 0;
 	return (0);
 }
 
