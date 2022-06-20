@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-/* TODO:
+/* TODO: ✔️ 
  * - Doit ajouter les variables deja presente dans var_pool si jamais = n'est pas present dans la l'input */
 
 static size_t	ft_len(char **envp)

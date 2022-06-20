@@ -294,9 +294,11 @@ void	sigint_handler(int signum);
 void	sigquit_handler(int signum);
 
 /* BIN_H */
+int			ft_recreate_envp(char ***envp_curr, size_t index_envp);
+int			ft_recreate_vpool(char ***vpool_curr, size_t index_vpool);
 int			ft_dup_error(char **arr);
 int			ft_pwd(void);
-int			ft_echo(const char *s, int flag);
+int			ft_echo(char *s, int flag);
 int			ft_cd(const char *path);
 int			ft_export(char *var, char ***env_curr);
 int			ft_unset(char *var, char ***env_curr);
