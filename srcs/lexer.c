@@ -10,6 +10,7 @@ static t_token	*tokeninit(char **input, unsigned int qt)
 	token->lex = *input;
 	token->type = 0;
 	token->qt = qt;
+	token->error = 0;
 	token->len = 0;
 	return (token);
 }
@@ -33,30 +34,31 @@ static t_token	*get_next_token(char **input, unsigned int qt)
 	token = tokeninit(input, qt);
 	if (!token)
 		return (NULL);
-	if (is_eoi(**input, token))
-		token->len = 0;
-	else if (is_token_2(*input, token) && !token->qt)
-		token->len = 2;
-	else if (is_token_1(*input, token) && !token->qt)
-		token->len = 1;
-	else
-		word_token(*input, token);
+	token->error = get_token(input, token);
 	*input += token->len;
 	if (token->type == E_ERROR
 		|| (token->qt && token->type == E_EOI)
 		|| !token->type)
 	{
-		free(token);
-		return (NULL);
+		token->lex = NULL;
+		return (token);
 	}
 	return (token);
 }
 
-static int	ft_free_handler(t_token **token, t_tokenlist **lst, int code)
+static int	ft_free_handler(t_token **token, t_tokenlist **lst)
 {
-	ft_tokenclear(lst, free);
-	if (code == 2)
-		free(*token);
+	int	code;
+
+	if (!*lst)
+		code = 4;
+	else
+		ft_tokenclear(lst, free);
+	if (!*token)
+		code = 3;
+	else if ((*token)->error)
+		code = (*token)->error;
+	free(*token);
 	return (code);
 }
 
@@ -83,11 +85,11 @@ int	lexical_analysis(char *input, t_tokenlist **lst)
 			token = get_next_token(&input, ft_tokenlast(newlst)->token->qt);
 		else
 			token = get_next_token(&input, 0);
-		if (!token)
-			return (ft_free_handler(&token, lst, 1));
+		if (!token || !token->lex)
+			return (ft_free_handler(&token, lst));
 		newlst = ft_tokennew(token);
 		if (!newlst)
-			return (ft_free_handler(&token, lst, 2));
+			return (ft_free_handler(&token, lst));
 		ft_tokenadd_back(lst, newlst);
 		if (token->type == E_EOI)
 			break ;
@@ -108,7 +110,7 @@ int	main(int ac, char **av, char **envp)
 	(void)envp;
 	//input = "=toto tata= echo toto mo ===nmo||onnai( ssee&&ttoitco)mm|e|||ntc ava>>>>>p < lutot <<biene< ttoia;sdfjas;dfjaspdfji                   world && Hello Bob=";
 	//input = " echo>  Hello world Bob";
-	input = "ech \" '\"o'bonjo\"\"\"ur' $TOTO 'ls -ls echo bonjour' echo 'ls$TOTO'";
+	input = "ecl a \" '\"o'bonjo\"\"\"ur' $TOTO 'ls -ls echo bonjour' echo 'ls$TOTO'";
 	if (!input)
 		return (-1);
 	code = lexical_analysis(input, &lst);

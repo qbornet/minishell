@@ -16,7 +16,7 @@ int	exit_group(t_data **d_curr)
 	free(frame->std_fd);
 	free(frame);
 	close_allfd();
-	exit(errno);
+	exit(g_exit_status);
 }
 
 void	ft_null_reset(t_data **d_curr)
@@ -46,7 +46,6 @@ int	free_redoo(t_data **d_curr, char *str)
 	ft_treeclear(frame->root, &free);
 	ft_free_cpool(frame->cmd_pool);
 	ft_null_reset(&frame);
-	errno = 0;
 	return (0);
 }
 

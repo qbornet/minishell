@@ -18,8 +18,7 @@ int	ft_redirection_great(char *outfile)
 {
 	int		fd;
 
-	if (unlink(outfile) == -1)
-		errno = 0;
+	unlink(outfile);
 	fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 		return (standard_error(outfile));
