@@ -74,7 +74,9 @@ static char	*ft_strendl(char *str)
 static char	*opt_here_doc(t_data **d_curr, char *str, int flag)
 {
 	int		to_do;
+	size_t	i;
 
+	i = 0;
 	if (flag)
 	{
 		to_do = ft_num_expand(str);
@@ -84,6 +86,7 @@ static char	*opt_here_doc(t_data **d_curr, char *str, int flag)
 			if (!str)
 				return (ft_error_malloc(((char *[]){str, NULL})));
 		}
+		opt_find_dollars(&str, &i);
 	}
 	return (str);
 }

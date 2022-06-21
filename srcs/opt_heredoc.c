@@ -19,6 +19,13 @@ static char	*ft_remove(char *str, size_t i)
 	return (new_str);
 }
 
+int		ft_isexit_heredoc(char *str)
+{
+	if (str[0] == '?' && (!ft_isprint(str[1] || !str[1])))
+		return (1);
+	return (0);
+}
+
 void	opt_free_doexpand(char *str, char *begin_str, char *end_str)
 {
 	if (str)
