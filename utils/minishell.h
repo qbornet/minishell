@@ -264,6 +264,9 @@ int			ft_starcmp(const char *s1, const char *s2);
 
 /* VAREXP_H */
 /* varexp.c varexp_utils.c */
+int			ft_isexit(char *s);
+char		*check_intab(char **tab, char *var_name);
+void		opt_expandvar(int *flag, char **tmp, char **envp, char **s);
 void		expand(t_strlist *strlst, char **env, t_data **frame);
 size_t		ft_len_onechar(char *s, char a);
 size_t		ft_len_metachar(char *s);

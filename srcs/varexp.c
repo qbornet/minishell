@@ -1,24 +1,5 @@
-#include "minishell.h"
+#include <minishell.h>
 
-static char	*check_intab(char **tab, char *var_name)
-{
-	size_t	len;
-	size_t	var_len;
-
-	if (!tab)
-		return (NULL);
-	var_len = ft_len_metachar(var_name);
-	while (*tab)
-	{
-		len = ft_len_onechar(*tab, '=');
-		if (len < var_len)
-			len = var_len;
-		if (!ft_strncmp(*tab, var_name, len))
-			break ;
-		tab++;
-	}
-	return (*tab);
-}
 
 static void	new_data(char *tmp, t_strlist **strlst, char *result)
 {
@@ -48,24 +29,45 @@ static void	new_data(char *tmp, t_strlist **strlst, char *result)
 static char	*expand_var(char **s, t_strlist **strlst, char **env, t_data *frame)
 {
 	int		len;
+	int		flag;
 	char	*tmp;
 	char	*result;
 
+	flag = 0;
 	result = NULL;
-		tmp = check_intab(env, *s + 1);
+	opt_expandvar(&flag, &tmp, env, s);
 	if (!tmp)
 		tmp = check_intab(frame->var_pool, *s + 1);
-	while (tmp && *tmp && *tmp != '=')
+	while (!flag && tmp && *tmp && *tmp != '=')
 		tmp++;
-	if (tmp)
+	if (!flag && tmp)
 		tmp++;
-	len = ft_strlen(tmp) + ft_strlen((char *)(*strlst)->data)
-		- ft_len_metachar(*s);
+	len = ft_strlen(tmp) + ft_strlen((*strlst)->data) - ft_len_metachar(*s);
 	result = ft_calloc(len + 1, sizeof(char));
 	if (!result)
 		return (NULL);
 	new_data(tmp, strlst, result);
 	return (result);
+}
+
+char	*check_intab(char **tab, char *var_name)
+{
+	size_t	len;
+	size_t	var_len;
+
+	if (!tab)
+		return (NULL);
+	var_len = ft_len_metachar(var_name);
+	while (*tab)
+	{
+		len = ft_len_onechar(*tab, '=');
+		if (len < var_len)
+			len = var_len;
+		if (!ft_strncmp(*tab, var_name, len))
+			break ;
+		tab++;
+	}
+	return (*tab);
 }
 
 void	expand(t_strlist *strlst, char **env, t_data **frame)
