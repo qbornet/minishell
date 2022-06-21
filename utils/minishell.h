@@ -239,6 +239,7 @@ void		ft_print_tokenlist(t_tokenlist *lst);
 /* command_block.c ft_cmdblock.c */
 int			command_block(t_data **d_curr);
 int			start_expansion(t_data **d_curr);
+int			ft_do_quotes(t_data	**d_curr);
 int			ft_create_cmd(t_data **d_curr, int total_cmd);
 int			ft_create_join(t_data **d_curr);
 int			ft_check_pool(char  *str, char **pool, int res);
@@ -263,6 +264,9 @@ int			ft_starcmp(const char *s1, const char *s2);
 
 /* VAREXP_H */
 /* varexp.c varexp_utils.c */
+int			ft_isexit(char *s);
+char		*check_intab(char **tab, char *var_name);
+void		opt_expandvar(int *flag, char **tmp, char **envp, char **s);
 void		expand(t_strlist *strlst, char **env, t_data **frame);
 size_t		ft_len_onechar(char *s, char a);
 size_t		ft_len_metachar(char *s);
