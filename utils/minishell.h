@@ -238,6 +238,7 @@ void		ft_print_tokenlist(t_tokenlist *lst);
 /* command_block.c ft_cmdblock.c */
 int			command_block(t_data **d_curr);
 int			start_expansion(t_data **d_curr);
+int			ft_do_quotes(t_data	**d_curr);
 int			ft_create_cmd(t_data **d_curr, int total_cmd);
 int			ft_create_join(t_data **d_curr);
 int			ft_check_pool(char  *str, char **pool, int res);
