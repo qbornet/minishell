@@ -86,13 +86,14 @@ int	start_expansion(t_data **d_curr)
 	ft_do_varexp(d_curr);
 	if (ft_do_starexp(d_curr) < 0)
 		return (ft_free_expan_error(d_curr));
+	if (ft_do_quotes(d_curr) < 0)
+		return (ft_free_expan_error(d_curr));
 	if (ft_create_join(d_curr) < 0)
 		return (ft_free_expan_error(d_curr));
 	if (command_block(d_curr) < 0)
 		return (ft_free_expan_error(d_curr));
 	return (0);
 }
-
 
 /*
 char	**ft_dup_envp(char **envp)
