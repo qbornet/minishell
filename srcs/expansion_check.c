@@ -66,7 +66,7 @@ int	ft_do_quotes(t_data **d_curr)
 	while (strlst)
 	{
 		str = strlst->data;
-		if (str[0] == '\'' || str[0] == '\"')
+		if (str && (str[0] == '\'' || str[0] == '\"'))
 			if (ft_removes_quotes(&strlst) < 0)
 				return (-1);
 		strlst = strlst->next;
