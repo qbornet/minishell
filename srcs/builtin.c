@@ -8,7 +8,7 @@ int	exec_builtin(t_cmdblock *cmdblock, char **envp)
 	if (!ft_strcmp("cd", cmdblock->cmd[0]))
 		return (0);
 	if (!ft_strcmp("pwd", cmdblock->cmd[0]))
-		return (0);
+		return (ft_pwd());
 	if (!ft_strcmp("export", cmdblock->cmd[0]))
 		return (0);
 	if (!ft_strcmp("unset", cmdblock->cmd[0]))
