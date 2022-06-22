@@ -1,6 +1,4 @@
-#include "bin.h"
-#include <stdio.h>
-#include "../libft/includes/libft.h"
+#include "minishell.h"
 
 /* TODO:
  * - Doit ajouter les variables deja presente dans var_pool si jamais = n'est pas present dans la l'input */
@@ -15,7 +13,7 @@ static long	ft_len(char **envp)
 	return (i);
 }
 
-static int	ft_free_envp(char **old)
+static int	ft_free_env(char **old)
 {
 	long	i;
 
@@ -68,7 +66,7 @@ static int	replace_env(char *var, char ***env_curr)
 /* NOTE : ✔️ 
  * Rajouter un check pour voir si la variable existe. Si oui alors il faut remplacer sa valeur */
 
-int	ft_export(char *var, char ***env_curr)
+int	ft_export(t_cmdblock *cmdblock, char ***env_curr)
 {
 	long	i;
 	char	**new;
@@ -78,10 +76,10 @@ int	ft_export(char *var, char ***env_curr)
 	i = -1;
 	envp = *env_curr;
 	temp = envp;
-	if (!*var)
+	if (!cmdblock->cmd[1])
 		return (2);
-	if (index_match(var, *env_curr) >= 0)
-		return (replace_env(var, &envp));
+	if (index_match(cmdblock->cmd[1], *env_curr) >= 0)
+		return (replace_env(cmdblock->cmd[1], &envp));
 	new = (char **)malloc(sizeof(char *) * (ft_len(envp) + 2));
 	if (!new)
 		return (ft_free_err(new, temp));
@@ -91,10 +89,10 @@ int	ft_export(char *var, char ***env_curr)
 		if (!new[i])
 			return (ft_free_err(new, temp));
 	}
-	new[i++] = var;
+	new[i++] = cmdblock->cmd[1];
 	new[i] = NULL;
 	*env_curr = new;
-	return (ft_free_envp(temp));
+	return (ft_free_env(temp));
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 21:21:18 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/22 14:51:50 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/22 15:29:44 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	pipex_status(t_data **frame, int pipes_len, int **pipes, int *pids)
 
 	if (!pipes_len && !ft_strcmp("cd", (*frame)->cmdblk->cmd[0]))
 		ft_cd((*frame)->cmdblk, (*frame)->envp);
+	if (!pipes_len && !ft_strcmp("exit", (*frame)->cmdblk->cmd[0]))
+		ft_exit(0);
 	i = -1;
 	while (++i < pipes_len)
 		if (close_pipe(pipes[i]) == -1)

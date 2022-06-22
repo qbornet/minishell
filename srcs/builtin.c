@@ -14,7 +14,7 @@ int	exec_builtin(t_cmdblock *cmdblock, char **envp)
 	if (!ft_strcmp("unset", cmdblock->cmd[0]))
 		return (0);
 	if (!ft_strcmp("env", cmdblock->cmd[0]))
-		return (0);
+		return (ft_env(envp));
 	if (!ft_strcmp("exit", cmdblock->cmd[0]))
 		return (0);
 	return (1);

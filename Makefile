@@ -94,6 +94,7 @@ PIPE = pipe.c \
 	pwd.c \
 	unset.c \
 	env.c \
+	exit.c \
 	error_tools.c
 
 
