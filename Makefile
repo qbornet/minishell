@@ -88,6 +88,8 @@ PIPE = pipe.c \
 	pipex.c \
 	pipex_utils.c \
 	ft_redirection.c \
+	builtin.c \
+	echo.c \
 	error_tools.c
 
 

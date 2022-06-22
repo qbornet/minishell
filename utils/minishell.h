@@ -301,7 +301,7 @@ void	sigquit_handler(int signum);
 /* BIN_H */
 int			ft_free_err(char **old, char **new);
 int			ft_pwd(void);
-int			ft_echo(const char *s, int flag);
+int			ft_echo(const t_cmdblock *cmdblock);
 int			ft_cd(const char *path);
 int			ft_export(char *var, char ***env_curr);
 int			ft_unset(char *var, char ***env_curr);
@@ -311,6 +311,9 @@ int			print_error(t_error code);
 /* PIPE_H */
 /* Pipex */
 int		pipex(int **pipes, int *pids, char **envp, t_cmdblock *cmdblock);
+
+/* Builtin exec */
+int			exec_builtin(t_cmdblock *cmdblock);
 
 /* Pipex tools */
 int		dup_in(int new_in);

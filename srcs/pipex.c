@@ -38,6 +38,8 @@ int	pipex(int **pipes, int *pids, char **envp, t_cmdblock *cmdblock)
 {
 	if (g_exit_status == 130)
 		exit(g_exit_status);
+	if (exec_builtin(cmdblock))
+		exit(0);
 	if (get_cmd_tab(cmdblock, envp) == -1)
 	{
 		free_pipes_pids(pipes, pids, cmdblock->len, -1);
