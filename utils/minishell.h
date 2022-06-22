@@ -310,8 +310,6 @@ int			print_error(t_error code);
 
 /* PIPE_H */
 /* Pipex */
-int		get_cmd_tab(t_cmdblock *cmdblock, char **env);
-int		exec_cmd(t_cmdblock *cmdblock, char **env);
 int		pipex(int **pipes, int *pids, char **envp, t_cmdblock *cmdblock);
 
 /* Pipex tools */

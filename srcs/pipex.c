@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	get_cmd_tab(t_cmdblock *cmdblock, char **env)
+static int	get_cmd_tab(t_cmdblock *cmdblock, char **env)
 {
 	char	*path;
 	char	**cmd;
@@ -22,7 +22,7 @@ int	get_cmd_tab(t_cmdblock *cmdblock, char **env)
 	return (0);
 }
 
-int	exec_cmd(t_cmdblock *cmdblock, char **env)
+static int	exec_cmd(t_cmdblock *cmdblock, char **env)
 {
 	if (access((cmdblock->cmd)[0], X_OK) == -1)
 	{
