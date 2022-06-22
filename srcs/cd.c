@@ -47,7 +47,7 @@ int	ft_cd(const t_cmdblock *cmdblock, char **envp)
 	{
 		write(2, "cd: ", 4); 
 		write(2, cmdblock->cmd[1], ft_strlen(cmdblock->cmd[1]));
-		write(2, ": No such file or directory\n", 28); 
+		write(2, ": Not a directory\n", 19); 
 		return (-1);
 	}
 	return (0);
