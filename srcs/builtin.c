@@ -2,10 +2,11 @@
 
 int	exec_builtin(t_cmdblock *cmdblock, char **envp)
 {
+	(void)envp;
 	if (!ft_strcmp("echo", cmdblock->cmd[0]))
 		return (ft_echo(cmdblock));
 	if (!ft_strcmp("cd", cmdblock->cmd[0]))
-		return (ft_cd(cmdblock, envp));
+		return (0);
 	if (!ft_strcmp("pwd", cmdblock->cmd[0]))
 		return (0);
 	if (!ft_strcmp("export", cmdblock->cmd[0]))
