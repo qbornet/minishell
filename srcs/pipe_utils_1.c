@@ -6,7 +6,7 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:04:52 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/15 18:41:07 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/22 13:18:45 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ int	close_pipes(int **pipes, int pipes_len, int *pids, int i)
 {
 	int	j;
 
-	if (pipes_len == 0)
-		return (0);
 	j = -1;
 	if (i == 0)
 		j = 0;

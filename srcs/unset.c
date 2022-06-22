@@ -1,5 +1,4 @@
-#include "bin.h"
-#include "libft/utils/libft.h"
+#include "minishell.h"
 
 /* TODO:
  * - Doit unset toute les variables qui ont le meme nom dans var_pool et envp */
@@ -37,7 +36,7 @@ static int	index_match(char *var, char **envp)
 	return (-1);
 }
 
-static int	free_str_tab(char **new, int last)
+static int	free_str_t(char **new, int last)
 {
 	while (last--)
 		free(new[last]);
@@ -68,7 +67,7 @@ int	ft_unset(char *var, char ***env_curr)
 			envp++;
 		new[i] = ft_strdup(*envp++);
 		if (!new[i])
-			return (free_str_tab(new, i));
+			return (free_str_t(new, i));
 		i++;
 	}
 	new[i] = NULL;

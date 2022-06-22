@@ -40,8 +40,6 @@ static int	open_mid(int **pipes, t_cmdblock *cmdblock, int i)
 
 static int	ft_open(t_cmdblock *cmdblock)
 {
-	if (dup_in(cmdblock->std_fd->stdin) < 0)
-		return (-1);
 	if (set_infile(cmdblock->infile) < 0)
 		return (-1);
 	if (set_outfile(cmdblock->outfile) < 0)

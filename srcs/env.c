@@ -1,5 +1,4 @@
-#include "bin.h"
-//#include "./libft/utils/libft.h"
+#include "minishell.h"
 
 int	ft_env(char **envp)
 {

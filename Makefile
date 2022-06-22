@@ -90,6 +90,10 @@ PIPE = pipe.c \
 	ft_redirection.c \
 	builtin.c \
 	echo.c \
+	cd.c \
+	pwd.c \
+	unset.c \
+	env.c \
 	error_tools.c
 
 

@@ -36,17 +36,26 @@ static int	exec_cmd(t_cmdblock *cmdblock, char **env)
 
 int	pipex(int **pipes, int *pids, char **envp, t_cmdblock *cmdblock)
 {
+	int	exec_code;
+
 	if (g_exit_status == 130)
 		exit(g_exit_status);
-	if (!exec_builtin(cmdblock))
+	exec_code = exec_builtin(cmdblock, envp);
+	if (exec_code == 0)
 		exit(0);
-	if (get_cmd_tab(cmdblock, envp) == -1)
+	else if (exec_code < 0)
+	{
+		free_pipes_pids(pipes, pids, cmdblock->len, -1);
+		g_exit_status = 126;
+		return (-1);
+	}
+	if (get_cmd_tab(cmdblock, envp) < 0)
 	{
 		free_pipes_pids(pipes, pids, cmdblock->len, -1);
 		g_exit_status = 127;
 		return (-1);
 	}
-	if (exec_cmd(cmdblock, envp) == -1)
+	if (exec_cmd(cmdblock, envp) < 0)
 	{
 		free_pipes_pids(pipes, pids, cmdblock->len, -1);
 		g_exit_status = 126;
