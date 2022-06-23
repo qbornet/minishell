@@ -318,12 +318,22 @@ int			ft_env(char **envp);
 int			ft_exit(int status);
 int			print_error(t_error code);
 
-/* PIPE_H */
-/* Pipex */
-int			pipex(t_process *pr, t_data **frame, t_cmdblock *cmdblock);
+/* EXEC_H */
+/* Exec */
+int			run_exec(t_data **frame);
+
+/* Exec utils */
+int			ft_len_cmdblk(t_cmdblock *cmdblock);
+int			ft_init_exec(t_data **frame);
+int			get_cmd_tab(t_cmdblock *cmdblock, char **env);
+int			exec_cmd(t_cmdblock *cmdblock, char **env);
 
 /* Builtin exec */
 int			exec_builtin(t_cmdblock *cmdblock, t_data **frame);
+
+/* PIPE_H */
+/* Pipex */
+int			pipex(t_process *pr, t_data **frame, t_cmdblock *cmdblock);
 
 /* Pipex tools */
 int			dup_in(int new_in);
@@ -333,22 +343,22 @@ int			set_outfile(t_redirlist *outfile);
 int			set_infile(t_redirlist *infile);
 
 /* Pipes */
-int			ft_pipe(t_data **frame);
+int			ft_pipe(t_process *pr, t_data **frame);
 t_cmdblock	*next_cmdb(int i, t_cmdblock **curr);
 
 /* Pipe utils 0 */
-int		open_fd(t_process *pr, t_cmdblock *cmdblock, int i);
+int			open_fd(t_process *pr, t_cmdblock *cmdblock, int i);
 
 /* Redirection */
-int		ft_redirection_less(char *infile);
-int		ft_redirection_great(char *outfile);
-int		ft_redirection_dgreat(char *outfile);
-int		ft_redirection_pipe_in(int *pd, int pid);
-int		ft_redirection_pipe_out(int *pd, int pid);
+int			ft_redirection_less(char *infile);
+int			ft_redirection_great(char *outfile);
+int			ft_redirection_dgreat(char *outfile);
+int			ft_redirection_pipe_in(int *pd, int pid);
+int			ft_redirection_pipe_out(int *pd, int pid);
 
 /* Pipe utils 1 */
-int		close_pipes(t_process *pr, int i);
-int		alloc_pipes_pids(t_process *pr);
+int			close_pipes(t_process *pr, int i);
+int			alloc_pipes_pids(t_process *pr);
 
 /* Free tools */
 char	*free_str(char *str);
@@ -365,6 +375,7 @@ int		standard_error(char *str);
 int		main_error(char *str);
 int		error(char *str);
 int		pipex_status(t_data **frame, t_process *pr);
+int		ft_unlink_tmpfiles(t_cmdblock *cmdblock);
 
 extern int		g_exit_status;
 

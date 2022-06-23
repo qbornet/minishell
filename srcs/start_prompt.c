@@ -64,7 +64,7 @@ int	start_prompt(t_data **d_curr)
 			return (exit_group(d_curr));
 		if (start_expansion(d_curr) < 0)
 			return (exit_group(d_curr));
-		if (ft_pipe(d_curr) < 0)
+		if (run_exec(d_curr) < 0)
 			return (exit_group(d_curr));
 		free_redoo(d_curr, str);
 	}

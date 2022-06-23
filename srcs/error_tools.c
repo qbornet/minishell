@@ -6,13 +6,13 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 21:21:18 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/23 18:13:17 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/23 18:51:22 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	ft_unlink_tmpfiles(t_cmdblock *cmdblock)
+int	ft_unlink_tmpfiles(t_cmdblock *cmdblock)
 {
 	t_redirlist	*infile;
 

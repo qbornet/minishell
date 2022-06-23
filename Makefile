@@ -88,6 +88,8 @@ PIPE = pipe.c \
 	pipex.c \
 	pipex_utils.c \
 	ft_redirection.c \
+	exec.c \
+	exec_utils.c \
 	builtin.c \
 	export.c \
 	export_err.c \
