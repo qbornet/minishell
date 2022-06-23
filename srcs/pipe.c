@@ -60,26 +60,28 @@ static int	ft_init_exec(t_data **frame)
 
 int	ft_pipe(t_data **frame)
 {	
+	t_process	*pr;
 	int			i;
 
-	(*frame)->pr.len_cmdb = ft_init_exec(frame);
-	if (alloc_pipes_pids(&(*frame)->pr))
+	pr = &(*frame)->pr;
+	pr->len_cmdb = ft_init_exec(frame);
+	if (alloc_pipes_pids(pr))
 		return (-1);
 	i = -1;
-	while (++i < (*frame)->pr.len_cmdb)
+	while (++i < pr->len_cmdb)
 	{
-		(*frame)->pr.pids[i] = fork();
-		if ((*frame)->pr.pids[i] == -1)
-			return (free_and_msg((*frame)->pr.pipes, (*frame)->pr.pids, (*frame)->pr.len_cmdb - 1, "fork"));
-		if ((*frame)->pr.pids[i] == 0)
+		pr->pids[i] = fork();
+		if (pr->pids[i] == -1)
+			return (free_and_msg(pr->pipes, pr->pids, pr->len_cmdb - 1, "fork"));
+		if (pr->pids[i] == 0)
 		{
-			if (close_pipes((*frame)->pr.pipes, (*frame)->pr.len_cmdb - 1, (*frame)->pr.pids, i) == -1)
+			if (close_pipes(pr->pipes, pr->len_cmdb - 1, pr->pids, i) == -1)
 				return (-1);
-			if (open_fd((*frame)->pr.pipes, frame, (*frame)->pr.len_cmdb - 1, i) == -1)
-				return (free_pipes_pids((*frame)->pr.pipes, (*frame)->pr.pids, (*frame)->pr.len_cmdb - 1, -1));
-			if (pipex((*frame)->pr.pipes, (*frame)->pr.pids, (*frame)->envp, next_cmdb(i, &(*frame)->cmdblk)) == -1)
+			if (open_fd(pr->pipes, frame, pr->len_cmdb - 1, i) == -1)
+				return (free_pipes_pids(pr->pipes, pr->pids, pr->len_cmdb - 1, -1));
+			if (pipex(pr->pipes, pr->pids, (*frame)->envp, next_cmdb(i, &(*frame)->cmdblk)) == -1)
 				return (-1);
 		}
 	}
-	return (pipex_status(frame, (*frame)->pr.len_cmdb - 1, (*frame)->pr.pipes, (*frame)->pr.pids));
+	return (pipex_status(frame, pr->len_cmdb - 1, pr->pipes, pr->pids));
 }
