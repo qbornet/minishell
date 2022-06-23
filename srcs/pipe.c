@@ -77,7 +77,7 @@ int	ft_pipe(t_data **frame)
 		{
 			if (close_pipes(pr, i) == -1)
 				return (-1);
-			if (open_fd(pr->pipes, frame, pr->len_cmdb - 1, i) == -1)
+			if (open_fd(pr, (*frame)->cmdblk, i) == -1)
 				return (free_pipes_pids(pr->pipes, pr->pids, pr->len_cmdb - 1, -1));
 			if (pipex(pr->pipes, pr->pids, (*frame)->envp, next_cmdb(i, &(*frame)->cmdblk)) == -1)
 				return (-1);

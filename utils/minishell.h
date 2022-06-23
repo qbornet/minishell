@@ -337,7 +337,7 @@ int			ft_pipe(t_data **frame);
 t_cmdblock	*next_cmdb(int i, t_cmdblock **curr);
 
 /* Pipe utils 0 */
-int		open_fd(int **pipes, t_data **frame, int pipes_len, int i);
+int		open_fd(t_process *pr, t_cmdblock *cmdblock, int i);
 
 /* Redirection */
 int		ft_redirection_less(char *infile);

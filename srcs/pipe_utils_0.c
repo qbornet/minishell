@@ -47,11 +47,11 @@ static int	ft_open(t_cmdblock *cmdblock)
 	return (0);
 }
 
-int	open_fd(int **pipes, t_data **frame, int pipes_len, int i)
+int	open_fd(t_process *pr, t_cmdblock *cmdblock, int i)
 {
-	t_cmdblock	*cmdblock;
+	int	pipes_len;
 
-	cmdblock = (*frame)->cmdblk;
+	pipes_len = pr->len_cmdb - 1;
 	if (pipes_len == 0)
 	{
 		if (ft_open(cmdblock) < 0)
@@ -59,17 +59,17 @@ int	open_fd(int **pipes, t_data **frame, int pipes_len, int i)
 	}
 	else if (i == 0)
 	{
-		if (open_first(pipes, cmdblock, i) < 0)
+		if (open_first(pr->pipes, cmdblock, i) < 0)
 			return (-1);
 	}
 	else if (i == pipes_len)
 	{
-		if (open_last(pipes, cmdblock, i) < 0)
+		if (open_last(pr->pipes, cmdblock, i) < 0)
 			return (-1);
 	}
 	else
 	{
-		if (open_mid(pipes, cmdblock, i) < 0)
+		if (open_mid(pr->pipes, cmdblock, i) < 0)
 			return (-1);
 	}
 	return (0);
