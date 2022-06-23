@@ -79,7 +79,7 @@ int	ft_pipe(t_data **frame)
 				return (-1);
 			if (open_fd(pr, (*frame)->cmdblk, i) == -1)
 				return (free_pipes_pids(pr->pipes, pr->pids, pr->len_cmdb - 1, -1));
-			if (pipex(pr, (*frame)->envp, next_cmdb(i, &(*frame)->cmdblk)) == -1)
+			if (pipex(pr, frame, next_cmdb(i, &(*frame)->cmdblk)) == -1)
 				return (-1);
 		}
 	}

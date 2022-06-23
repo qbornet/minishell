@@ -320,10 +320,10 @@ int			print_error(t_error code);
 
 /* PIPE_H */
 /* Pipex */
-int			pipex(t_process *pr, char **envp, t_cmdblock *cmdblock);
+int			pipex(t_process *pr, t_data **frame, t_cmdblock *cmdblock);
 
 /* Builtin exec */
-int			exec_builtin(t_cmdblock *cmdblock, char **envp);
+int			exec_builtin(t_cmdblock *cmdblock, t_data **frame);
 
 /* Pipex tools */
 int			dup_in(int new_in);
