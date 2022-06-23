@@ -141,6 +141,13 @@ typedef	struct s_cmdblock
 	struct s_cmdblock	*next;
 }	t_cmdblock;
 
+typedef struct s_process
+{
+	int	**pipes;
+	int	*pids;
+	int	len_cmdb;
+} t_process;
+
 // Notre struct "foure tout"
 typedef struct s_data
 {
@@ -154,6 +161,7 @@ typedef struct s_data
 	t_lenlist	*lenlst;
 	t_cmdblock	*cmdblk;
 	t_tokenlist	*tokenlst;
+	t_process	pr;
 }	t_data;
 
 /* START_H */
@@ -325,7 +333,7 @@ int			set_outfile(t_redirlist *outfile);
 int			set_infile(t_redirlist *infile);
 
 /* Pipes */
-int			ft_pipe(t_data **frame, char **envp);
+int			ft_pipe(t_data **frame);
 t_cmdblock	*next_cmdb(int i, t_cmdblock **curr);
 
 /* Pipe utils 0 */
