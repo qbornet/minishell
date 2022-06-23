@@ -89,6 +89,8 @@ PIPE = pipe.c \
 	pipex_utils.c \
 	ft_redirection.c \
 	builtin.c \
+	export.c \
+	export_err.c \
 	echo.c \
 	cd.c \
 	pwd.c \
