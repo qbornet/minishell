@@ -34,7 +34,7 @@ static int	exec_cmd(t_cmdblock *cmdblock, char **env)
 	exit(0);
 }
 
-int	pipex(int **pipes, int *pids, char **envp, t_cmdblock *cmdblock)
+int	pipex(t_process *pr, char **envp, t_cmdblock *cmdblock)
 {
 	int	exec_code;
 
@@ -45,19 +45,19 @@ int	pipex(int **pipes, int *pids, char **envp, t_cmdblock *cmdblock)
 		exit(0);
 	else if (exec_code < 0)
 	{
-		free_pipes_pids(pipes, pids, cmdblock->len, -1);
+		free_pipes_pids(pr->pipes, pr->pids, cmdblock->len, -1);
 		g_exit_status = 126;
 		return (-1);
 	}
 	if (get_cmd_tab(cmdblock, envp) < 0)
 	{
-		free_pipes_pids(pipes, pids, cmdblock->len, -1);
+		free_pipes_pids(pr->pipes, pr->pids, cmdblock->len, -1);
 		g_exit_status = 127;
 		return (-1);
 	}
 	if (exec_cmd(cmdblock, envp) < 0)
 	{
-		free_pipes_pids(pipes, pids, cmdblock->len, -1);
+		free_pipes_pids(pr->pipes, pr->pids, cmdblock->len, -1);
 		g_exit_status = 126;
 		return (-1);
 	}
