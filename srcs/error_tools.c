@@ -6,7 +6,7 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 21:21:18 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/23 18:51:22 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/23 20:04:59 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	pipex_status(t_data **frame, t_process *pr)
 	int			i;
 	int			pipes_len;
 	int			wstatus;
-	int			status_code;
 
 	pipes_len = pr->len_cmdb - 1;
 	i = -1;
@@ -48,11 +47,11 @@ int	pipex_status(t_data **frame, t_process *pr)
 		waitpid(pr->pids[i], &wstatus, 0);
 		status_code = 0;
 		if (WIFEXITED(wstatus))
-			status_code = WEXITSTATUS(wstatus);
+			g_exit_status = WEXITSTATUS(wstatus);
 	}
 	free_pipes_pids(pr->pipes, pr->pids, pipes_len, 0);
 	ft_unlink_tmpfiles((*frame)->cmdblk);
-	return (status_code);
+	return (g_exit_status);
 }
 
 int	standard_error(char *str)
