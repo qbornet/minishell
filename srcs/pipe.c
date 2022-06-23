@@ -83,5 +83,5 @@ int	ft_pipe(t_data **frame)
 				return (-1);
 		}
 	}
-	return (pipex_status(frame, pr->len_cmdb - 1, pr->pipes, pr->pids));
+	return (pipex_status(frame,	pr));
 }
