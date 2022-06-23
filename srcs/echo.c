@@ -7,6 +7,7 @@
 int	ft_echo(const t_cmdblock *cmdblock)
 {
 	int		i;
+	int		len;
 	int		flag;
 	char	**s;
 
@@ -18,10 +19,11 @@ int	ft_echo(const t_cmdblock *cmdblock)
 	s = cmdblock->cmd;
 	while (s[i])
 	{
-		if (write(1, s[i], ft_strlen(s[i])) < 0)
+		len = write(1, s[i], ft_strlen(s[i]));
+		if (len < 0)
 			return (-2);
 		i++;
-		if (s[i])
+		if (s[i] && len > 0)
 			if (write(1, " ", 1) < 0)
 				return (-3);
 	}
