@@ -13,7 +13,6 @@ static long	ft_len(char **envp)
 	return (i);
 }
 
-
 static long	index_match(char *var, char **envp)
 {
 	long	i;

@@ -4,7 +4,7 @@ static char	*get_env_home(char **env)
 {
 	int		i;
 	char	*home;
-	
+
 	i = 0;
 	home = NULL;
 	if (!env)
@@ -33,7 +33,7 @@ int	ft_cd(const t_cmdblock *cmdblock, char **envp)
 
 	if (cmdblock->cmd[1] && cmdblock->cmd[2])
 	{
-		ft_putendl_fd("cd: too many arguments", 2); 
+		ft_putendl_fd("cd: too many arguments", 2);
 		return (-1);
 	}
 	home = get_env_home(envp);
@@ -45,9 +45,9 @@ int	ft_cd(const t_cmdblock *cmdblock, char **envp)
 		return (0);
 	if (chdir(cmdblock->cmd[1]) < 0)
 	{
-		write(2, "cd: ", 4); 
+		write(2, "cd: ", 4);
 		write(2, cmdblock->cmd[1], ft_strlen(cmdblock->cmd[1]));
-		write(2, ": Not a directory\n", 19); 
+		write(2, ": Not a directory\n", 19);
 		return (-1);
 	}
 	return (0);

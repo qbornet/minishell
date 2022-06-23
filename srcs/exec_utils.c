@@ -13,15 +13,15 @@ int	ft_len_cmdblk(t_cmdblock *cmdblock)
 	return (i);
 }
 
-static int	ft_call_heredoc(t_data **frame, t_cmdblock **cmdblock, t_redirlist *infile)
+static int	ft_call_heredoc(t_data **f, t_cmdblock **c, t_redirlist *infile)
 {
 	while (infile)
 	{
 		if (infile->type == E_DLESS)
 		{
-			if (here_doc(frame, cmdblock, infile->str) < 0)
+			if (here_doc(f, c, infile->str) < 0)
 				return (-1);
-			dup2((*frame)->std_fd->stdin, 0);
+			dup2((*f)->std_fd->stdin, 0);
 			ioctl(STDIN_FILENO, TIOCSCTTY, 0);
 		}
 		infile = infile->next;

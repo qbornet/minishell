@@ -6,7 +6,7 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 21:21:18 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/23 20:04:59 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/23 20:15:55 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ int	pipex_status(t_data **frame, t_process *pr)
 	i = -1;
 	while (++i < pipes_len)
 		if (close_pipe(pr->pipes[i]) == -1)
-			return (free_and_msg(pr->pipes, pr->pids, pipes_len, "pipes[i]: close error"));
+			return (free_and_msg(pr->pipes,
+				pr->pids, pipes_len, "pipes[i]: close error"));
 	i = -1;
 	while (++i < pipes_len + 1)
 	{
 		waitpid(pr->pids[i], &wstatus, 0);
-		status_code = 0;
 		if (WIFEXITED(wstatus))
 			g_exit_status = WEXITSTATUS(wstatus);
 	}
