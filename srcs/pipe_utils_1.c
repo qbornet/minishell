@@ -6,7 +6,7 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:04:52 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/22 13:18:45 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/23 16:54:15 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,18 @@ static int	**malloc_and_open_pipes(int len)
 	return (p);
 }
 
-int	alloc_pipes_pids(int ***pipes, int **pids, int pipes_len)
+int	alloc_pipes_pids(t_process *pr)
 {
-	if (pipes_len > 0)
+	if (pr->len_cmdb> 0)
 	{
-		*pipes = malloc_and_open_pipes(pipes_len - 1);
-		if (!*pipes)
+		pr->pipes = malloc_and_open_pipes(pr->len_cmdb - 1);
+		if (!pr->pipes)
 			return (error("malloc_pipes: error"));
 	}
-	*pids = malloc(sizeof(int) * pipes_len);
-	if (!*pids)
+	pr->pids = malloc(sizeof(int) * pr->len_cmdb);
+	if (!pr->pids)
 	{
-		free_int_tab(*pipes, 0);
+		free_int_tab(pr->pipes, 0);
 		return (error("malloc pids: error"));
 	}
 	return (0);

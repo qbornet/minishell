@@ -64,7 +64,7 @@ int	ft_pipe(t_data **frame)
 	int			i;
 
 	len_cmdb = ft_init_exec(frame);
-	if (alloc_pipes_pids(&(*frame)->pr.pipes, &(*frame)->pr.pids, len_cmdb))
+	if (alloc_pipes_pids(&(*frame)->pr))
 		return (-1);
 	i = -1;
 	while (++i < len_cmdb)
