@@ -6,7 +6,7 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 21:21:18 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/22 15:29:44 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/23 12:27:41 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,7 @@ int	pipex_status(t_data **frame, int pipes_len, int **pipes, int *pids)
 	int			wstatus;
 	int			status_code;
 
-	if (!pipes_len && !ft_strcmp("cd", (*frame)->cmdblk->cmd[0]))
-		ft_cd((*frame)->cmdblk, (*frame)->envp);
-	if (!pipes_len && !ft_strcmp("exit", (*frame)->cmdblk->cmd[0]))
-		ft_exit(0);
-	i = -1;
+		i = -1;
 	while (++i < pipes_len)
 		if (close_pipe(pipes[i]) == -1)
 			return (free_and_msg(pipes, pids, pipes_len, "pipes[i]: close error"));
@@ -52,6 +48,16 @@ int	pipex_status(t_data **frame, int pipes_len, int **pipes, int *pids)
 		if (WIFEXITED(wstatus))
 			status_code = WEXITSTATUS(wstatus);
 	}
+
+	if (!pipes_len && !ft_strcmp("cd", (*frame)->cmdblk->cmd[0]))
+		ft_cd((*frame)->cmdblk, (*frame)->envp);
+	if (!pipes_len && !ft_strcmp("exit", (*frame)->cmdblk->cmd[0]))
+		ft_exit(0);
+	if (!pipes_len && !ft_strcmp("export", (*frame)->cmdblk->cmd[0]))
+		ft_export((*frame)->cmdblk, &(*frame)->envp);
+	if (!pipes_len && !ft_strcmp("unset", (*frame)->cmdblk->cmd[0]))
+		ft_unset((*frame)->cmdblk, &(*frame)->envp);
+
 	free_pipes_pids(pipes, pids, pipes_len, 0);
 	ft_unlink_tmpfiles((*frame)->cmdblk);
 	return (status_code);

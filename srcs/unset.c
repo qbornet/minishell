@@ -45,8 +45,7 @@ static int	free_str_t(char **new, int last)
 
 /* Prend env, regarde pour var dans env et le retire.
  * Alloue de la memoire de facon approprie */
-
-int	ft_unset(char *var, char ***env_curr)
+int	ft_unset_var(char *var, char ***env_curr)
 {
 	int		i;
 	char	**envp;
@@ -65,13 +64,34 @@ int	ft_unset(char *var, char ***env_curr)
 	{
 		if (i == index_to_unset)
 			envp++;
-		new[i] = ft_strdup(*envp++);
-		if (!new[i])
-			return (free_str_t(new, i));
+		if (*envp)
+		{
+			new[i] = ft_strdup(*envp++);
+			if (!new[i])
+				return (free_str_t(new, i));
+		}
 		i++;
 	}
 	new[i] = NULL;
 	*env_curr = new;
+	return (0);
+}
+
+int	ft_unset(t_cmdblock *cmdblock, char ***envp)
+{
+	int		i;
+	char	*var;
+
+	i = 1;
+	while (cmdblock->cmd[i])
+	{
+		var = ft_strdup(cmdblock->cmd[i]);
+		if (!var)
+			return (-1);
+		if (ft_unset_var(var, envp))
+			return (-1);
+		i++;
+	}
 	return (0);
 }
 
