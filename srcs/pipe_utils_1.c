@@ -6,16 +6,18 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:04:52 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/23 16:54:15 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/23 17:28:27 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	close_pipes(int **pipes, int pipes_len, int *pids, int i)
+int	close_pipes(t_process *pr, int i)
 {
+	int	pipes_len;
 	int	j;
 
+	pipes_len = pr->len_cmdb - 1;
 	j = -1;
 	if (i == 0)
 		j = 0;
@@ -25,9 +27,9 @@ int	close_pipes(int **pipes, int pipes_len, int *pids, int i)
 	{
 		if (i == 0 || i == pipes_len || (j != i && j != i - 1))
 		{
-			if (close_pipe(pipes[j]) == -1)
+			if (close_pipe(pr->pipes[j]) == -1)
 			{	
-				free_pipes_pids(pipes, pids, pipes_len, 1);
+				free_pipes_pids(pr->pipes, pr->pids, pipes_len, 1);
 				ft_putendl_fd("close_pipes: error", 2);
 				return (-1);
 			}

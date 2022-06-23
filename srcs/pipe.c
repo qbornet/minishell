@@ -75,7 +75,7 @@ int	ft_pipe(t_data **frame)
 			return (free_and_msg(pr->pipes, pr->pids, pr->len_cmdb - 1, "fork"));
 		if (pr->pids[i] == 0)
 		{
-			if (close_pipes(pr->pipes, pr->len_cmdb - 1, pr->pids, i) == -1)
+			if (close_pipes(pr, i) == -1)
 				return (-1);
 			if (open_fd(pr->pipes, frame, pr->len_cmdb - 1, i) == -1)
 				return (free_pipes_pids(pr->pipes, pr->pids, pr->len_cmdb - 1, -1));

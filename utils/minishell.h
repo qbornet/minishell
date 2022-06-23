@@ -347,7 +347,7 @@ int		ft_redirection_pipe_in(int *pd, int pid);
 int		ft_redirection_pipe_out(int *pd, int pid);
 
 /* Pipe utils 1 */
-int		close_pipes(int **pipes, int pipes_len, int *pids, int i);
+int		close_pipes(t_process *pr, int i);
 int		alloc_pipes_pids(t_process *pr);
 
 /* Free tools */
