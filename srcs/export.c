@@ -13,17 +13,6 @@ static long	ft_len(char **envp)
 	return (i);
 }
 
-static int	ft_free_env(char **old)
-{
-	long	i;
-
-	i = -1;
-	while (old[++i])
-		if (old[i])
-			free(old[i]);
-	free(old);
-	return (0);
-}
 
 static long	index_match(char *var, char **envp)
 {
@@ -51,6 +40,8 @@ static int	replace_env(char *var, char ***env_curr)
 	char	**envp;
 
 	start = index_match(var, *env_curr);
+	if (start < 0)
+		return (1);
 	envp = *env_curr;
 	free(envp[start]);
 	envp[start] = var;
@@ -66,7 +57,7 @@ static int	replace_env(char *var, char ***env_curr)
 /* NOTE : ✔️ 
  * Rajouter un check pour voir si la variable existe. Si oui alors il faut remplacer sa valeur */
 
-int	ft_export(t_cmdblock *cmdblock, char ***env_curr)
+static int	ft_export_var(char *var, char ***env_curr)
 {
 	long	i;
 	char	**new;
@@ -76,10 +67,10 @@ int	ft_export(t_cmdblock *cmdblock, char ***env_curr)
 	i = -1;
 	envp = *env_curr;
 	temp = envp;
-	if (!cmdblock->cmd[1])
+	if (!var)
 		return (2);
-	if (index_match(cmdblock->cmd[1], *env_curr) >= 0)
-		return (replace_env(cmdblock->cmd[1], &envp));
+	if (!replace_env(var, &envp))
+		return (0);
 	new = (char **)malloc(sizeof(char *) * (ft_len(envp) + 2));
 	if (!new)
 		return (ft_free_err(new, temp));
@@ -89,10 +80,28 @@ int	ft_export(t_cmdblock *cmdblock, char ***env_curr)
 		if (!new[i])
 			return (ft_free_err(new, temp));
 	}
-	new[i++] = cmdblock->cmd[1];
+	new[i++] = var;
 	new[i] = NULL;
 	*env_curr = new;
 	return (ft_free_env(temp));
+}
+
+int	ft_export(t_cmdblock *cmdblock, char ***envp)
+{
+	int		i;
+	char	*var;
+
+	i = 1;
+	while (cmdblock->cmd[i])
+	{
+		var = ft_strdup(cmdblock->cmd[i]);
+		if (!var)
+			return (-1);
+		if (ft_export_var(var, envp))
+			return (-1);
+		i++;
+	}
+	return (0);
 }
 
 /*

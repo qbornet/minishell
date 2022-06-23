@@ -1,4 +1,16 @@
-#include "bin.h"
+#include "minishell.h"
+
+int	ft_free_env(char **old)
+{
+	long	i;
+
+	i = -1;
+	while (old[++i])
+		if (old[i])
+			free(old[i]);
+	free(old);
+	return (0);
+}
 
 int	ft_free_err(char **old, char **new)
 {
