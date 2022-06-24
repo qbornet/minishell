@@ -90,7 +90,7 @@ PIPE = pipe.c \
 	ft_redirection.c \
 	exec.c \
 	exec_utils.c \
-	builtin.c \
+	exec_builtin.c \
 	export.c \
 	export_err.c \
 	echo.c \
