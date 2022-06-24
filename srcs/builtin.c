@@ -2,7 +2,7 @@
 
 int	exec_builtin(t_cmdblock *cmdblock, t_data **frame)
 {
-	if (!cmdblock->cmd)
+	if (!cmdblock->cmd || !cmdblock->cmd[0])
 		return (0);
 	if (!ft_strcmp("echo", cmdblock->cmd[0]))
 		return (ft_echo(cmdblock));

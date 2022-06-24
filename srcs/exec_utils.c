@@ -59,10 +59,9 @@ int	get_cmd_tab(t_cmdblock *cmdblock, char **env)
 	{
 		ft_putstr_fd(cmd[0], 2);
 		ft_putendl_fd(": command not found", 2);
-		free_str_tab(cmd, 0);
+		// pas besoin de free cmd[0] ou cmd je free tout dans strclear a la fin du pipe
 		return (-1);
 	}
-	free_str(cmd[0]);
 	cmd[0] = path;
 	cmdblock->cmd = cmd;
 	return (0);

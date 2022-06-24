@@ -1,43 +1,5 @@
 #include <minishell.h>
 
-static int	ft_addslash(char c)
-{
-	if (c == '\a' || c == '\b'
-		|| c == '\e' || c == '\f'
-		|| c == '\n' || c == '\r'
-		|| c == '\t' || c == '\v'
-		|| c == '\\' || c == '\''
-		|| c == '\"' || c == '\?')
-		return (1);
-	return (0);
-}
-
-static char	*ft_escape_sequence(char *str)
-{
-	size_t	i;
-	size_t	count;
-	char	*new;
-
-	i = -1;
-	count = 0;
-	while (str[++i])
-		if (ft_addslash(str[i]))
-			count++;
-	i = 0;
-	new = malloc(sizeof(char) * (ft_strlen(str) + count + 1));
-	if (!new)
-		return (NULL);
-	while (str[i])
-	{
-		if (ft_addslash(str[i + 1]))
-			new[i++] = '\\';
-		new[i] = str[i];
-		i++;
-	}
-	free(str);
-	return (new);
-}
-
 static int	ft_removes_quotes(t_strlist **s_curr)
 {
 	char		*new;
@@ -48,9 +10,6 @@ static int	ft_removes_quotes(t_strlist **s_curr)
 	if (!new)
 		return (-1);
 	free(strlst->data);
-	new = ft_escape_sequence(new);
-	if (!new)
-		return (-1);
 	strlst->data = new;
 	return (0);
 }
