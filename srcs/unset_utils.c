@@ -20,11 +20,11 @@ static void	ft_free_old(char **pool)
 	free(pool);
 }
 
-int	ft_recreate_envp(char ***envp_curr, size_t index_envp)
+int	ft_recreate_envp(char ***envp_curr, ssize_t index_envp)
 {
 	char	**new;
 	char	**envp;
-	size_t	i;
+	ssize_t	i;
 
 	if (index_envp == -1)
 		return (0);
@@ -48,11 +48,11 @@ int	ft_recreate_envp(char ***envp_curr, size_t index_envp)
 	return (0);
 }
 
-int	ft_recreate_vpool(char ***vpool_curr, size_t index_vpool)
+int	ft_recreate_vpool(char ***vpool_curr, ssize_t index_vpool)
 {
 	char	**new;
 	char	**vpool;
-	size_t	i;
+	ssize_t	i;
 
 	if (index_vpool == -1)
 		return (0);

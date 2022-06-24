@@ -13,7 +13,7 @@ static size_t	ft_len(char **envp)
 	return (i);
 }
 
-static int	ft_free_envp(char **old)
+static int	ft_free_env(char **old)
 {
 	long	i;
 
@@ -60,7 +60,7 @@ static int	replace_env(char *var, char ***env_curr)
 	return (0);
 }
 
-int	ft_export(char *var, t_data **d_curr)
+static int	ft_export_var(char *var, t_data **d_curr)
 {
 	size_t	i;
 	char	**new;
@@ -70,23 +70,43 @@ int	ft_export(char *var, t_data **d_curr)
 	temp = (*d_curr)->envp;
 	if (!*var)
 		return (0);
-	if (index_match(var, &(*d_curr)->envp) >= 0)
+	if (index_match(var, (*d_curr)->envp) >= 0)
 		return (replace_env(var, &(*d_curr)->envp));
 	var = search_varpool(var, (*d_curr)->var_pool);
 	if (!var)
 		return (0);
-	new = ft_calloc((ft_len(envp) + 2), sizeof(char *));
+	new = ft_calloc((ft_len(temp) + 2), sizeof(char *));
 	if (!new)
 		return (-1);
-	while (envp[++i])
+	while (temp[++i])
 	{
-		new[i] = ft_strdup(envp[i]);
+		new[i] = ft_strdup(temp[i]);
 		if (!new[i])
 			return (ft_dup_error(new));
 	}
 	new[i++] = var;
 	(*d_curr)->envp = new;
-	return (ft_free_envp(temp));
+	return (ft_free_env(temp));
+}
+
+int	ft_export(t_data **frame)
+{
+	int			i;
+	char		*var;
+	t_cmdblock *cmdblock;
+
+	i = 1;
+	cmdblock = (*frame)->cmdblk;
+	while (cmdblock->cmd[i])
+	{
+		var = ft_strdup(cmdblock->cmd[i]);
+		if (!var)
+			return (-1);
+		if (ft_export_var(var, frame))
+			return (-1);
+		i++;
+	}
+	return (0);
 }
 
 /*

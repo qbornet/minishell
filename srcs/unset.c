@@ -44,14 +44,13 @@ static size_t	index_match_vpool(char *var, char **var_pool)
 	return (-1);
 }
 
-int	ft_unset(t_data **d_curr, char *var)
+static int	ft_unset_var(t_data **d_curr, char *var)
 {
-	size_t	i;
 	size_t	index_envp;
 	size_t	index_vpool;
 	char	**new;
 
-	new = ft_calloc(ft_len(envp), sizeof(char *));
+	new = ft_calloc(ft_len((*d_curr)->envp), sizeof(char *));
 	if (!new)
 		return (1);
 	index_envp = index_match(var, (*d_curr)->envp);
@@ -60,6 +59,22 @@ int	ft_unset(t_data **d_curr, char *var)
 		return (1);
 	if (ft_recreate_vpool(&(*d_curr)->var_pool, index_vpool) < 0)
 		return (1);
+	return (0);
+}
+
+int	ft_unset(t_data **frame)
+{
+	int			i;
+	t_cmdblock *cmdblock;
+
+	i = 1;
+	cmdblock = (*frame)->cmdblk;
+	while (cmdblock->cmd[i])
+	{
+		if (ft_unset_var(frame, cmdblock->cmd[i]))
+			return (-1);
+		i++;
+	}
 	return (0);
 }
 

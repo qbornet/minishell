@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-static int	ft_search_equals(char *var)
+static int	ft_search_equals(char **var)
 {
 	char	*varcpy;
 
@@ -34,9 +34,7 @@ static int	ft_replace_var(char **v_curr, char **var_pool)
 
 char	*search_varpool(char *var, char **var_pool)
 {
-	char	*new;
-
-	if (ft_search_equals(var))
+	if (ft_search_equals(&var))
 		return (var);
 	if (ft_replace_var(&var, var_pool) < 0)
 		return (NULL);

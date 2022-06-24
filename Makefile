@@ -92,11 +92,13 @@ PIPE = pipe.c \
 	exec_utils.c \
 	exec_builtin.c \
 	export.c \
-	export_err.c \
+	export_error.c \
+	export_vpool.c \
 	echo.c \
 	cd.c \
 	pwd.c \
 	unset.c \
+	unset_utils.c \
 	env.c \
 	exit.c \
 	error_tools.c
