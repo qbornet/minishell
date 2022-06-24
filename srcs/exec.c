@@ -33,32 +33,8 @@ static int	exec(t_process *pr, t_data **frame, t_cmdblock *cmdblock)
 	exit(0);
 }
 
-int	run_exec(t_data **frame)
+static int	exec_single(t_process *pr, t_data **frame)
 {
-	int			exec_code;
-	t_process	*pr;
-
-	pr = &(*frame)->pr;
-	pr->len_cmdb = ft_init_exec(frame);
-	if (alloc_pipes_pids(pr))
-		return (-1);
-	if (pr->len_cmdb - 1)
-		return (ft_pipe(pr, frame));
-	if (open_fd(pr, (*frame)->cmdblk, 0) == -1)
-		return (free_pipes_pids(pr->pipes, pr->pids, pr->len_cmdb - 1, -1));
-	exec_code = exec_builtin((*frame)->cmdblk, frame);
-	if (dup_out((*frame)->std_fd->stdout) == -1)
-		return (free_pipes_pids(pr->pipes, pr->pids, pr->len_cmdb - 1, -1));
-	if (dup_in((*frame)->std_fd->stdin) == -1)
-		return (free_pipes_pids(pr->pipes, pr->pids, pr->len_cmdb - 1, -1));
-	if (!exec_code)
-		return (0);
-	if (exec_code < 0)
-	{
-		free_pipes_pids(pr->pipes, pr->pids, (*frame)->cmdblk->len, -1);
-		g_exit_status = 126;
-		return (-1);
-	}
 	pr->pids[0] = fork();
 	if (pr->pids[0] == -1)
 		return (free_and_msg(pr->pipes, pr->pids, pr->len_cmdb - 1, "fork"));
@@ -70,4 +46,24 @@ int	run_exec(t_data **frame)
 			return (-1);
 	}
 	return (exec_status(frame, pr));
+}
+
+int	run_exec(t_data **frame)
+{
+	int			exec_code;
+	t_process	*pr;
+
+	pr = &(*frame)->pr;
+	pr->len_cmdb = ft_init_exec(frame);
+	if (pr->len_cmdb - 1 == 0)
+	{
+		exec_code = exec_builtin_single((*frame)->cmdblk, frame);
+		if (!exec_code || exec_code < 0)
+			return (0);
+	}
+	if (alloc_pipes_pids(pr))
+		return (-1);
+	if (pr->len_cmdb - 1)
+		return (ft_pipe(pr, frame));
+	return (exec_single(pr, frame));
 }

@@ -22,16 +22,18 @@ int	ft_pipe(t_process *pr, t_data **frame)
 	{
 		pr->pids[i] = fork();
 		if (pr->pids[i] == -1)
-			return (free_and_msg(pr->pipes, pr->pids, pr->len_cmdb - 1, "fork"));
+			return (free_and_msg(pr->pipes
+					, pr->pids, pr->len_cmdb - 1, "fork"));
 		if (pr->pids[i] == 0)
 		{
 			if (close_pipes(pr, i) == -1)
 				return (-1);
 			if (open_fd(pr, (*frame)->cmdblk, i) == -1)
-				return (free_pipes_pids(pr->pipes, pr->pids, pr->len_cmdb - 1, -1));
+				return (free_pipes_pids(pr->pipes
+						, pr->pids, pr->len_cmdb - 1, -1));
 			if (pipex(pr, frame, next_cmdb(i, &(*frame)->cmdblk)) == -1)
 				return (-1);
 		}
 	}
-	return (pipex_status(frame,	pr));
+	return (pipex_status(frame, pr));
 }
