@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	exec_builtin(t_cmdblock *cmdblock, t_data **frame)
+int	is_builtin(t_cmdblock *cmdblock, t_data **frame)
 {
 	if (!cmdblock->cmd || !cmdblock->cmd[0])
 		return (0);
@@ -18,5 +18,26 @@ int	exec_builtin(t_cmdblock *cmdblock, t_data **frame)
 		return (ft_env((*frame)->envp));
 	if (!ft_strcmp("exit", cmdblock->cmd[0]))
 		return (ft_exit(0));
-	return (2);
+	return (1);
+}
+
+int	exec_builtin_single(t_cmdblock *cmdblock, t_data **frame)
+{
+	int			exec_code;
+	t_process	*pr;
+
+	pr = &(*frame)->pr;
+	if (open_fd(pr, cmdblock, 0) == -1)
+		return (-1);
+	exec_code = is_builtin(cmdblock, frame);
+	if (dup_out((*frame)->std_fd->stdout) == -1)
+		return (-1);
+	if (dup_in((*frame)->std_fd->stdin) == -1)
+		return (-1);
+	if (exec_code < 0)
+	{
+		g_exit_status = 126;
+		return (-1);
+	}
+	return (exec_code);
 }

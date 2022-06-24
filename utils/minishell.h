@@ -329,7 +329,8 @@ int			get_cmd_tab(t_cmdblock *cmdblock, char **env);
 int			exec_cmd(t_cmdblock *cmdblock, char **env);
 
 /* Builtin exec */
-int			exec_builtin(t_cmdblock *cmdblock, t_data **frame);
+int			is_builtin(t_cmdblock *cmdblock, t_data **frame);
+int			exec_builtin_single(t_cmdblock *cmdblock, t_data **frame);
 
 /* PIPE_H */
 /* Pipex */
