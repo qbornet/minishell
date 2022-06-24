@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-/* TODO:
+/* TODO: ✔️ 
  * - Doit unset toute les variables qui ont le meme nom dans var_pool et envp */
 
 static long	ft_len(char **envp)
@@ -16,86 +16,55 @@ static long	ft_len(char **envp)
 /* Compare cmp_var et envp[i];
  * Retourne la position de var dans envp, -1 sinon */
 
-static int	index_match(char *var, char **envp)
+static size_t	index_match(char *var, char **envp)
 {
-	char	*cmp_var;
 	int		i;
 
 	i = 0;
-	cmp_var = ft_strjoin(var, "=");
 	while (envp[i])
 	{
-		if (!ft_strncmp(cmp_var, envp[i], ft_strlen(var) + 1))
-		{
-			free(cmp_var);
+		if (!ft_strncmp(var, envp[i], ft_strlen(var)))
 			return (i);
-		}
 		i++;
 	}
-	free(cmp_var);
 	return (-1);
 }
 
-static int	free_str_t(char **new, int last)
-{
-	while (last--)
-		free(new[last]);
-	return (-1);
-}
-
-/* Prend env, regarde pour var dans env et le retire.
- * Alloue de la memoire de facon approprie */
-int	ft_unset_var(char *var, char ***env_curr)
+static size_t	index_match_vpool(char *var, char **var_pool)
 {
 	int		i;
-	char	**envp;
-	char	**new;
-	int		index_to_unset;
 
-	envp = *env_curr;
-	new = (char **)malloc(sizeof(char *) * ft_len(envp));
+	i = 0;
+	while (var_pool[i])
+	{
+		if (!ft_strncmp(var, var_pool[i], ft_strlen(var)))
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+int	ft_unset(t_data **d_curr, char *var)
+{
+	size_t	i;
+	size_t	index_envp;
+	size_t	index_vpool;
+	char	**new;
+
+	new = ft_calloc(ft_len(envp), sizeof(char *));
 	if (!new)
 		return (1);
-	index_to_unset = index_match(var, envp);
-	if (index_to_unset == -1)
-		return (2);
-	i = 0;
-	while (*envp)
-	{
-		if (i == index_to_unset)
-			envp++;
-		if (*envp)
-		{
-			new[i] = ft_strdup(*envp++);
-			if (!new[i])
-				return (free_str_t(new, i));
-		}
-		i++;
-	}
-	new[i] = NULL;
-	*env_curr = new;
-	return (0);
-}
-
-int	ft_unset(t_cmdblock *cmdblock, char ***envp)
-{
-	int		i;
-	char	*var;
-
-	i = 1;
-	while (cmdblock->cmd[i])
-	{
-		var = ft_strdup(cmdblock->cmd[i]);
-		if (!var)
-			return (-1);
-		if (ft_unset_var(var, envp))
-			return (-1);
-		i++;
-	}
+	index_envp = index_match(var, (*d_curr)->envp);
+	index_vpool = index_match_vpool(var, (*d_curr)->var_pool);
+	if (ft_recreate_envp(&(*d_curr)->envp, index_envp) < 0)
+		return (1);
+	if (ft_recreate_vpool(&(*d_curr)->var_pool, index_vpool) < 0)
+		return (1);
 	return (0);
 }
 
 /*
+
 int	main(int ac, char **av, char **envp)
 {
 	char	*str;

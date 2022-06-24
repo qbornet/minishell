@@ -1,11 +1,11 @@
-#include "minishell.h"
+#include <minishell.h>
 
-/* TODO:
+/* TODO: ✔️ 
  * - Doit ajouter les variables deja presente dans var_pool si jamais = n'est pas present dans la l'input */
 
-static long	ft_len(char **envp)
+static size_t	ft_len(char **envp)
 {
-	long	i;
+	size_t	i;
 
 	i = 0;
 	while (envp[i])
@@ -13,7 +13,19 @@ static long	ft_len(char **envp)
 	return (i);
 }
 
-static long	index_match(char *var, char **envp)
+static int	ft_free_envp(char **old)
+{
+	long	i;
+
+	i = -1;
+	while (old[++i])
+		if (old[i])
+			free(old[i]);
+	free(old);
+	return (0);
+}
+
+static size_t	index_match(char *var, char **envp)
 {
 	long	i;
 	char	*endcpy;
@@ -48,59 +60,33 @@ static int	replace_env(char *var, char ***env_curr)
 	return (0);
 }
 
-/* char *var doit etre une string malloc, tout peut etre free au moment de l'exit,
- * ***env_curr est present pour avoir toujours l'orginal
- * et eviter d'avoir une erreur a longterme si on ajoute plusieur fois des variables avec export
- * ou unset des variables ce sera toujours a jour */
-
-/* NOTE : ✔️ 
- * Rajouter un check pour voir si la variable existe. Si oui alors il faut remplacer sa valeur */
-
-static int	ft_export_var(char *var, char ***env_curr)
+int	ft_export(char *var, t_data **d_curr)
 {
-	long	i;
+	size_t	i;
 	char	**new;
 	char	**temp;
-	char	**envp;
 
 	i = -1;
-	envp = *env_curr;
-	temp = envp;
-	if (!var)
-		return (2);
-	if (!replace_env(var, &envp))
+	temp = (*d_curr)->envp;
+	if (!*var)
 		return (0);
-	new = (char **)malloc(sizeof(char *) * (ft_len(envp) + 2));
+	if (index_match(var, &(*d_curr)->envp) >= 0)
+		return (replace_env(var, &(*d_curr)->envp));
+	var = search_varpool(var, (*d_curr)->var_pool);
+	if (!var)
+		return (0);
+	new = ft_calloc((ft_len(envp) + 2), sizeof(char *));
 	if (!new)
-		return (ft_free_err(new, temp));
+		return (-1);
 	while (envp[++i])
 	{
 		new[i] = ft_strdup(envp[i]);
 		if (!new[i])
-			return (ft_free_err(new, temp));
+			return (ft_dup_error(new));
 	}
 	new[i++] = var;
-	new[i] = NULL;
-	*env_curr = new;
-	return (ft_free_env(temp));
-}
-
-int	ft_export(t_cmdblock *cmdblock, char ***envp)
-{
-	int		i;
-	char	*var;
-
-	i = 1;
-	while (cmdblock->cmd[i])
-	{
-		var = ft_strdup(cmdblock->cmd[i]);
-		if (!var)
-			return (-1);
-		if (ft_export_var(var, envp))
-			return (-1);
-		i++;
-	}
-	return (0);
+	(*d_curr)->envp = new;
+	return (ft_free_envp(temp));
 }
 
 /*

@@ -307,16 +307,18 @@ void	sigint_handler(int signum);
 void	sigquit_handler(int signum);
 
 /* BIN_H */
-int			ft_free_err(char **old, char **new);
-int			ft_free_env(char **old);
+int			ft_recreate_envp(char ***envp_curr, size_t index_envp);
+int			ft_recreate_vpool(char ***vpool_curr, size_t index_vpool);
+int			ft_dup_error(char **arr);
 int			ft_pwd(void);
 int			ft_echo(const t_cmdblock *cmdblock);
-int			ft_cd(const t_cmdblock *cmdblock, char **envp);
-int			ft_export(t_cmdblock *cmdblock, char ***envp);
-int			ft_unset(t_cmdblock *cmdblock, char ***envp);
+int			ft_cd(const char *path);
+int			ft_export(char *var, char ***env_curr);
+int			ft_unset(char *var, char ***env_curr);
 int			ft_env(char **envp);
 int			ft_exit(int status);
 int			print_error(t_error code);
+char		*search_varpool(char *var, char **var_pool);
 
 /* EXEC_H */
 /* Exec */
