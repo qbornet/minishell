@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strlist.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/25 11:28:50 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/25 12:20:44 by jfrancai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 t_strlist	*ft_strlst_new(void *data, enum e_token type)
@@ -37,7 +49,6 @@ int	ft_strlst_addback(t_strlist **lst_curr, void *data, enum e_token type)
 	head->next->prev = head;
 	return (0);
 }
-
 
 void	*ft_strclear(t_strlist **s_curr, void (*del) (void *))
 {

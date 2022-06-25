@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   btreebuilder_utils_0.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/25 11:27:07 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/25 13:04:05 by jfrancai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_btree	*ft_newbtree(t_nodes *node)
@@ -60,53 +72,7 @@ void	btree_addnode(t_btree **root, t_tokenlist **lst)
 	if (!leaf)
 		return ;
 	if (!is_word_or_brace(leaf->node->type))
-	{
-		if (!(*root)->right && !is_word_or_brace((*root)->node->type)
-			&& (*root)->node->type != E_VALID_BUILTIN
-			&& (*root)->node->type != E_VALID_FILE)
-		{
-			(*root)->right = ft_newleaf(NULL);
-			if (!(*root)->right)
-			{
-				free(leaf->node);
-				free(leaf);
-				return ;
-			}
-			(*root)->right->node->type = E_CONTINUE;
-		}
-		if (!(*root)->left && !is_word_or_brace((*root)->node->type)
-			&& (*root)->node->type != E_VALID_BUILTIN
-			&& (*root)->node->type != E_VALID_FILE
-			&& !is_redirection((*root)->node->type))
-		{
-			(*root)->left = ft_newleaf(NULL);
-			if (!(*root)->left)
-			{
-				free(leaf->node);
-				free(leaf);
-				return ;
-			}
-			(*root)->left->node->type = E_ERROR;
-		}
-		leaf->left = *root;
-		*root = leaf;
-	}
+		return (ft_not_word_or_brace(&leaf, root));
 	else
-	{
-		if (is_word_or_brace((*root)->node->type))
-		{
-			leaf->left = *root;
-			*root = leaf;
-		}
-		else
-		{
-			if (!(*root)->right)	
-				(*root)->right = leaf;
-			else
-			{
-				leaf->left = (*root)->right;
-				(*root)->right = leaf;
-			}
-		}
-	}
+		return (ft_word_or_brace(&leaf, root));
 }

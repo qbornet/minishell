@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   here_doc.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/25 11:29:30 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/25 12:09:40 by jfrancai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 static int	ret_res(t_cmdblock **c_curr, char *res, char *word)
@@ -8,7 +20,7 @@ static int	ret_res(t_cmdblock **c_curr, char *res, char *word)
 	str = ft_random_str("/tmp/heredoc-", 8);
 	if (!str)
 		return (-1);
-	fd_val = open(str, O_CREAT | O_EXCL | O_RDWR , 0644);
+	fd_val = open(str, O_CREAT | O_EXCL | O_RDWR, 0644);
 	if (fd_val == -1)
 	{
 		free(res);

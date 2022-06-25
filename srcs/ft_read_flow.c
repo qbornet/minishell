@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_read_flow.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/25 11:28:33 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/25 12:10:39 by jfrancai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 static t_strlist	*ft_create_lst(t_tokenlist *tokenlst, t_strlist **s_curr)
@@ -41,7 +53,6 @@ char	*ft_create_str(char *lex, size_t len)
 	str[i] = '\0';
 	return (str);
 }
-
 
 int	ft_find_operator(t_btree *tree)
 {

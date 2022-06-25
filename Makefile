@@ -46,7 +46,8 @@ LEXER = lexer.c \
 
 # File to create binary tree part
 BTREE = btreebuilder.c \
-	btreebuilder_utils.c \
+	btreebuilder_utils_0.c \
+	btreebuilder_utils_1.c \
 	tree_utils.c \
 	check_cmd.c
 
@@ -124,77 +125,12 @@ HEREOBJS = $(HEREDOC:%.c=$(OBJS_DIR)/%.o)
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS = $(OBJS:%.o=%.d)
 
-pipe: $(PIPEOBJS) $(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS)
-	make -C $(LFT)
-	echo "-------------------"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(EXPANOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(PIPEOBJS) $(OBJS) -lft -lreadline -o $@
-	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
-
-here:	$(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS)
-	make -C $(LFT)
-	echo "-------------------"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(EXPANOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS) -lft -lreadline -o $@
-	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
-
-expan:	$(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(OBJS)
-	make -C $(LFT)
-	echo "-------------------"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(EXPANOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(OBJS) -lft -o $@
-	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
-
-read: $(READOBJS) $(OBJS)
-	make -C $(LFT)
-	echo "-------------------"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(OBJS) -lft -o $@
-	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
-
-test: $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS)
-	make -C $(LFT)
-	echo "-------------------"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) -lft -o $@
-	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
-
-star: $(READOBJS) $(BTREEOBJS) $(STAROBJS) $(TOOLSOBJS) $(OBJS) $(LEXEROBJS) $(VAREXPOBJS)
-	make -C $(LFT)
-	echo "-------------------"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(OBJS) $(READOBJS) $(VAREXPOBJS) $(BTREEOBJS) $(TOOLSOBJS) $(LEXEROBJS) $(STAROBJS) -lft -o $@
-	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
-
-varexp: $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) $(VAREXPOBJS)
-	make -C $(LFT)
-	echo "-------------------"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(OBJS) $(VAREXPOBJS) -lft -o $@
-	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
-
-start: $(PIPEOBJS) $(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS)
-	make -C $(LFT)
-	echo "-------------------"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(EXPANOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(PIPEOBJS) $(OBJS) -lft -lreadline -o $@
-	printf "\n[$(GREEN)OK$(WHITE)] Binary : $@\n\n"
-	
-rclean:
-	$(RM) $(OBJS_DIR)
-	$(RM) read
-
 all: $(NAME)
 
-
-lexer: $(LEXEROBJS) $(TOOLSOBJS)
-	make -C $(LFT)
-	echo "-------------------"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LEXEROBJS) $(TOOLSOBJS) -lft -o $@
-	printf "\n[$(GREEN)OK$(WHITE)] Binary : $(NAME)\n\n"
-
-btree: $(BTREEOBJS) $(LEXEROBJS) $(OBJS)
-	make -C $(LFT)
-	echo "-------------------"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(BTREEOBJS) $(LEXEROBJS) $(OBJS) -lft -o $@
-	printf "\n[$(GREEN)OK$(WHITE)] Binary : $(NAME)\n\n"
-
-$(NAME): $(OBJS)
+$(NAME): $(PIPEOBJS) $(EXPANOBJS) $(READOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(OBJS)
 	make -C $(LFT) 
 	echo "------------------"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(OBJS) -lft -o $(NAME)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(READOBJS) $(EXPANOBJS) $(LEXEROBJS) $(BTREEOBJS) $(TOOLSOBJS) $(VAREXPOBJS) $(STAROBJS) $(HEREOBJS) $(PIPEOBJS) $(OBJS) -lft -lreadline -o $@
 	printf "\n[$(GREEN)OK$(WHITE)] Binary : $(NAME)\n\n"
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c $(UTILS)
@@ -221,5 +157,3 @@ re: fclean all
 ifndef VERBOSE
 .SILENT:
 endif
-lexer.out: $(OBJS)
-	$(CC) $(CFLAGS) $^ -o  $@

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   start_prompt.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/25 11:30:18 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/25 11:41:36 by jfrancai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 static void	ft_history(char *str)
@@ -6,11 +18,10 @@ static void	ft_history(char *str)
 		add_history(str);
 }
 
-
 static int	ft_check_tty(void)
 {
-	if (isatty(STDIN_FILENO) &&
-		isatty(STDOUT_FILENO) && isatty(STDERR_FILENO))
+	if (isatty(STDIN_FILENO)
+		&& isatty(STDOUT_FILENO) && isatty(STDERR_FILENO))
 		return (1);
 	return (0);
 }
@@ -21,9 +32,9 @@ static int	ret_perror(char *str)
 	return (-1);
 }
 
-static int	set_start(struct termios *t, struct sigaction *act_int, struct sigaction *act_quit)
+static int	set_start(struct termios *t
+	, struct sigaction *act_int, struct sigaction *act_quit)
 {
-
 	if (!ft_check_tty())
 	{
 		ioctl(STDIN_FILENO, TIOCSCTTY, 0);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_create_join.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/25 11:28:26 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/25 11:39:08 by jfrancai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 static int	ft_lenlst_malloc(t_lenlist **len_curr, int length)
@@ -15,7 +27,6 @@ static int	ft_lenlst_malloc(t_lenlist **len_curr, int length)
 
 static void	ft_cmd_node(t_btree *root, int *pipe_count)
 {
-
 	if (root && root->node)
 	{
 		ft_cmd_node(root->left, pipe_count);
@@ -33,11 +44,11 @@ static int	ft_length_lst(t_tokenlist *tokenlst)
 	while (tokenlst)
 	{
 		if (tokenlst->token->type == E_PIPE
-				|| tokenlst->token->type == E_EOI
-				|| tokenlst->token->type == E_DGREAT
-				|| tokenlst->token->type == E_DLESS
-				|| tokenlst->token->type == E_GREAT
-				|| tokenlst->token->type == E_LESS)
+			|| tokenlst->token->type == E_EOI
+			|| tokenlst->token->type == E_DGREAT
+			|| tokenlst->token->type == E_DLESS
+			|| tokenlst->token->type == E_GREAT
+			|| tokenlst->token->type == E_LESS)
 			break ;
 		tokenlst = tokenlst->next;
 		i++;
@@ -54,8 +65,8 @@ static int	ft_strlst_len(t_btree *root, t_lenlist **len_curr)
 		if (ft_strlst_len(root->left, len_curr) < 0)
 			return (-1);
 		if (root->node->type == E_VALID_FILE
-				|| root->node->type == E_VALID_BUILTIN
-				|| root->node->type == E_WORD)
+			|| root->node->type == E_VALID_BUILTIN
+			|| root->node->type == E_WORD)
 		{
 			i = ft_length_lst(root->node->tokenlst);
 			if (ft_lenlst_malloc(len_curr, i) < 0)
@@ -70,8 +81,8 @@ static int	ft_strlst_len(t_btree *root, t_lenlist **len_curr)
 
 int	ft_create_join(t_data **d_curr)
 {
-	int total_cmd;
-	
+	int	total_cmd;
+
 	total_cmd = 1;
 	ft_cmd_node((*d_curr)->root, &total_cmd);
 	(*d_curr)->total_cmd = total_cmd;

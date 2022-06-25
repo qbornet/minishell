@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expansion_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/25 11:28:03 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/25 11:56:37 by jfrancai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 static void	ft_change_node(t_strlist **s_curr, t_strlist **head_curr)
@@ -26,14 +38,12 @@ static void	ft_change_node(t_strlist **s_curr, t_strlist **head_curr)
 	*s_curr = strlst;
 }
 
-int	ft_do_starexp(t_data **d_curr)
+int	ft_do_starexp(t_data **d_curr, unsigned int i)
 {
 	int				flag;
 	char			*str;
 	t_strlist		*strlst;
-	unsigned int	i;
 
-	i = 0;
 	str = "";
 	strlst = (*d_curr)->strlst;
 	while (strlst)

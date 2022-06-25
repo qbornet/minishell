@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expansion.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/25 11:27:52 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/25 11:56:18 by jfrancai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 static int	ft_ret_opt(char *var_cmp, char *var_name, int index)
@@ -84,7 +96,7 @@ int	start_expansion(t_data **d_curr)
 	if (ft_search_expansion(d_curr) < 0)
 		return (-1);
 	ft_do_varexp(d_curr);
-	if (ft_do_starexp(d_curr) < 0)
+	if (ft_do_starexp(d_curr, 0) < 0)
 		return (ft_free_expan_error(d_curr));
 	if (ft_do_quotes(d_curr) < 0)
 		return (ft_free_expan_error(d_curr));
@@ -94,106 +106,3 @@ int	start_expansion(t_data **d_curr)
 		return (ft_free_expan_error(d_curr));
 	return (0);
 }
-
-/*
-char	**ft_dup_envp(char **envp)
-{
-	int		i;
-	char	**new_env;
-
-	i = 0;
-	while (envp[i])
-		i++;
-	new_env = ft_calloc((i + 2), sizeof(char *));
-	if (!new_env)
-		return (NULL);
-	i = 0;
-	while (envp[i])
-	{
-		new_env[i] = ft_strdup(envp[i]);
-		if (!new_env[i])
-		{
-			i = 0;
-			while (new_env[i])
-				free(new_env[i++]);
-			free(new_env);
-			return (NULL);
-		}
-		i++;
-	}
-	new_env[i] = NULL;
-	return (new_env);
-}
-
-void	print_strlst(t_strlist *strlst)
-{
-
-	printf("strlst: ");
-	while (strlst)
-	{
-		printf("%s:%d->", (char *)strlst->data, strlst->s_id);
-		strlst = strlst->next;
-	}
-	printf("NULL\n");
-}
-
-void	ft_get_word(t_data **d_curr, t_btree *root)
-{
-	if (root && root->node)
-	{
-		ft_get_word(d_curr, root->left);
-		if (root->node->type == E_FD)
-			(*d_curr)->str = ft_create_str(root->node->token->lex, root->node->token->len);
-		ft_get_word(d_curr, root->right);
-	}
-}
-
-int	main(int ac, char **av, char **envp)
-{
-	t_data	*frame;
-	t_cmdblock	*cmdblk;
-	t_redirlist	*redir;
-
-	if (ac != 2)
-		return (-1);
-	frame = ft_calloc(1, sizeof(t_data));
-	frame->std_fd = ft_calloc(1, sizeof(t_termstd));
-	frame->std_fd->stdin = dup(STDIN_FILENO);
-	frame->std_fd->stdout = dup(STDOUT_FILENO);
-	frame->envp = ft_dup_envp(envp);
-	if (!frame->envp)
-		return (-1);
-	if (lexer_parser_main(av[1], frame->envp, &frame) < 0)
-		return (-1);
-	//ft_treeprint(frame->root, 0);
-	print_strlst(frame->strlst);
-	start_expansion(&frame);
-	print_strlst(frame->strlst);
-	cmdblk = frame->cmdblk;
-	while (cmdblk)
-	{
-		for (int i = 0; cmdblk->cmd[i]; i++)
-			printf("[%d]: %s\n", i, cmdblk->cmd[i]);
-		printf("std_fd:\e[20G	- stdin:%d\n\e[20G	- stdout:%d\n", cmdblk->std_fd->stdin, cmdblk->std_fd->stdout);
-		printf("outfile: ");
-		redir = cmdblk->outfile;
-		while (redir)
-		{
-			printf("\e[20G	-[type: %d]:%s\n", redir->type, redir->str);
-			redir = redir->next;
-		}
-		printf("\ninfile: ");
-		redir = cmdblk->infile;
-		while (redir)
-		{
-			printf("\e[20G	-[type: %d]:%s\n", redir->type, redir->str);
-			redir = redir->next;
-		}
-		printf("\n");
-		cmdblk = cmdblk->next;
-	}
-	ft_pipe(&frame, envp);
-	ft_free_expan_error(&frame);
-	return (0);
-}
-*/

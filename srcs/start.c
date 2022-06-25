@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   start.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/25 11:30:15 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/25 12:11:20 by jfrancai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 int	exit_group(t_data **d_curr)
@@ -36,7 +48,7 @@ void	ft_null_reset(t_data **d_curr)
 int	free_redoo(t_data **d_curr, char *str)
 {
 	t_data	*frame;
-	
+
 	frame = *d_curr;
 	free(str);
 	ft_lenclear(&frame->lenlst);
@@ -51,7 +63,6 @@ int	free_redoo(t_data **d_curr, char *str)
 
 int	start(char **envp)
 {
-
 	t_data	*frame;
 
 	frame = ft_calloc(1, sizeof(t_data));
@@ -59,7 +70,7 @@ int	start(char **envp)
 		return (-1);
 	frame->std_fd = ft_calloc(1, sizeof(t_termstd));
 	if (!frame->std_fd)
-		return(exit_group(&frame));
+		return (exit_group(&frame));
 	frame->std_fd->stdin = dup(STDIN_FILENO);
 	frame->std_fd->stdout = dup(STDOUT_FILENO);
 	if (frame->std_fd->stdin == -1 || frame->std_fd->stdin == -1)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/25 11:27:42 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/25 11:52:21 by jfrancai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ft_len_cmdblk(t_cmdblock *cmdblock)
@@ -59,7 +71,6 @@ int	get_cmd_tab(t_cmdblock *cmdblock, char **env)
 	{
 		ft_putstr_fd(cmd[0], 2);
 		ft_putendl_fd(": command not found", 2);
-		// pas besoin de free cmd[0] ou cmd je free tout dans strclear a la fin du pipe
 		return (-1);
 	}
 	cmd[0] = path;

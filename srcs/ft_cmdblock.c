@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_cmdblock.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/25 11:28:21 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/25 12:10:13 by jfrancai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 static t_cmdblock	*ft_newblock(t_termstd *fd, char **cmd)
@@ -46,4 +58,3 @@ int	ft_blockadd_back(t_cmdblock **cmd_curr, t_termstd *fd, char **cmd)
 		return (-1);
 	return (0);
 }
-

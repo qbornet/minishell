@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   starexp_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/25 11:30:13 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/25 12:20:02 by jfrancai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static size_t	get_next_star(const char *s, size_t start)
@@ -56,7 +68,8 @@ int	ft_starcmp(const char *s1, const char *s2)
 	return (loop(i, s1, s2, ft_strlen(s2)));
 }
 
-t_strlist	*insert_strlst(t_strlist **slst, t_strlist **head, t_data *frame, unsigned int *s_id)
+t_strlist	*insert_strlst(t_strlist **slst
+		, t_strlist **head, t_data *frame, unsigned int *s_id)
 {
 	t_strlist	*tmp;
 	t_strlist	*lst;

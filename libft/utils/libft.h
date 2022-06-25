@@ -6,7 +6,7 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/27 15:11:14 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/22 06:00:26 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/25 13:01:24 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }	t_list;
-
 
 int			ft_atoi(const char *nptr);
 int			ft_isalnum(int c);

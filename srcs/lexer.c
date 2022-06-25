@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/25 11:29:41 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/25 12:19:07 by jfrancai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static t_token	*tokeninit(char **input, unsigned int qt)
@@ -96,36 +108,3 @@ int	lexical_analysis(char *input, t_tokenlist **lst)
 	}
 	return (0);
 }
-
-/*
-int	main(int ac, char **av, char **envp)
-{
-	int			code;
-	char		*input;
-	t_tokenlist	*lst;
-	t_tokenlist	*tmp;
-
-	(void)ac;
-	(void)av;
-	(void)envp;
-	//input = "=toto tata= echo toto mo ===nmo||onnai( ssee&&ttoitco)mm|e|||ntc ava>>>>>p < lutot <<biene< ttoia;sdfjas;dfjaspdfji                   world && Hello Bob=";
-	//input = " echo>  Hello world Bob";
-	input = "ecl a \" '\"o'bonjo\"\"\"ur' $TOTO 'ls -ls echo bonjour' echo 'ls$TOTO'";
-	if (!input)
-		return (-1);
-	code = lexical_analysis(input, &lst);
-	if (code == 1)
-		return (printf("some error in token creation\n"));
-	else if (code == 2)
-		return (printf("some malloc error in tokenlist node creation\n"));
-	while (lst)
-	{
-		tmp = lst;
-		printf("lex : %s\nlen : %ld\ntype %d\n-------------------------------\n", lst->token->lex, lst->token->len, lst->token->type);
-		lst = lst->next;
-		free(tmp->token);
-		free(tmp);
-	}
-	return (0);
-}
-*/

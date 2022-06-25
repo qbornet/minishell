@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_redirlst.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/25 11:28:43 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/25 12:22:00 by jfrancai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 static t_redirlist	*ft_redirnew(char *str, enum e_token type)
 {
 	t_redirlist	*redirlst;
-	
+
 	redirlst = ft_calloc(1, sizeof(t_redirlist));
 	if (!redirlst)
 		return (NULL);

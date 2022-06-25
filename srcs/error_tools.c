@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_tools.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/18 21:21:18 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/23 20:15:55 by jfrancai         ###   ########.fr       */
+/*   Created: 2022/06/25 11:27:35 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/25 11:50:51 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	pipex_status(t_data **frame, t_process *pr)
 	while (++i < pipes_len)
 		if (close_pipe(pr->pipes[i]) == -1)
 			return (free_and_msg(pr->pipes,
-				pr->pids, pipes_len, "pipes[i]: close error"));
+					pr->pids, pipes_len, "pipes[i]: close error"));
 	i = -1;
 	while (++i < pipes_len + 1)
 	{

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/25 11:29:59 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/25 12:11:39 by jfrancai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	pipex_builtin(t_process *pr, t_data **frame, t_cmdblock *cmdblock)
@@ -20,7 +32,7 @@ int	pipex(t_process *pr, t_data **frame, t_cmdblock *cmdblock)
 {
 	if (g_exit_status == 130)
 		exit(g_exit_status);
-	if (pipex_builtin(pr, frame, cmdblock) < 0)	
+	if (pipex_builtin(pr, frame, cmdblock) < 0)
 		return (-1);
 	if (get_cmd_tab(cmdblock, (*frame)->envp) < 0)
 	{

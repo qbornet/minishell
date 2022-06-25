@@ -1,4 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_create_cmd.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/25 11:28:23 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/25 12:21:28 by jfrancai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
+
 static int	ft_isstar(int to_do, t_strlist *tmp)
 {
 	while (to_do && tmp && !tmp->s_id)
@@ -37,7 +50,8 @@ static size_t	ft_check_isstar(int to_do, t_strlist **s_curr)
 	return (i);
 }
 
-static int	ft_cmd_str(int to_do, size_t index, t_strlist **strlst, t_data **d_curr)
+static int	ft_cmd_str(int to_do, size_t index
+		, t_strlist **strlst, t_data **d_curr)
 {
 	size_t	i;
 	size_t	len;

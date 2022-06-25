@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   opt_heredoc.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/25 11:29:48 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/25 12:12:09 by jfrancai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 static char	*ft_remove(char *str, size_t i)
@@ -19,7 +31,7 @@ static char	*ft_remove(char *str, size_t i)
 	return (new_str);
 }
 
-int		ft_isexit_heredoc(char *str)
+int	ft_isexit_heredoc(char *str)
 {
 	if (str[0] == '?' && (!ft_isprint(str[1] || !str[1])))
 		return (1);

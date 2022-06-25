@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils_1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/01 11:04:52 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/23 17:28:27 by jfrancai         ###   ########.fr       */
+/*   Created: 2022/06/25 11:29:56 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/25 12:12:36 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	**malloc_and_open_pipes(int len)
 
 int	alloc_pipes_pids(t_process *pr)
 {
-	if (pr->len_cmdb> 0)
+	if (pr->len_cmdb > 0)
 	{
 		pr->pipes = malloc_and_open_pipes(pr->len_cmdb - 1);
 		if (!pr->pipes)
