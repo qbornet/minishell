@@ -4,19 +4,24 @@
 // printed (excluding the null byte used to end output to strings).
 // If an output error is encountered, a negative value is returned.
 
-int	ft_echo(const t_cmdblock *cmdblock)
+static int	set_flag(char *s)
 {
-	int		i;
-	int		len;
-	int		flag;
-	char	**s;
+	int	i;
 
-	flag = 0;
-	if (cmdblock->cmd[1] && !ft_strcmp("-n", cmdblock->cmd[1]))
-		flag++;
-	i = 1;
-	i += flag;
-	s = cmdblock->cmd;
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+static int	ft_echo_printer(char **s, int i, int flag)
+{
+	int	len;
+
 	while (s[i])
 	{
 		len = write(1, s[i], ft_strlen(s[i]));
@@ -31,4 +36,20 @@ int	ft_echo(const t_cmdblock *cmdblock)
 		if (write(1, "\n", 1) < 0)
 			return (-4);
 	return (0);
+}
+
+int	ft_echo(const t_cmdblock *cmdblock)
+{
+	int		i;
+	int		flag;
+
+	flag = 0;
+	i = 0;
+	while (cmdblock->cmd[++i] && cmdblock->cmd[i][0] == '-'
+		&& cmdblock->cmd[i][0] && cmdblock->cmd[i][1] == 'n')
+		if (!set_flag(cmdblock->cmd[i] + 1))
+			break ;
+	if (i != 1)
+		flag = 1;
+	return (ft_echo_printer(cmdblock->cmd, i, flag));
 }
