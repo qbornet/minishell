@@ -51,11 +51,6 @@ static int	ft_var(char *str, t_data **d_curr)
 {
 	int	res;
 
-	res = ft_ret_index(str, (*d_curr)->envp);
-	if (res == -2)
-		return (-1);
-	if (ft_check_pool(str, (*d_curr)->envp, res))
-		return (1);
 	res = ft_ret_index(str, (*d_curr)->var_pool);
 	if (res == -2)
 		return (-1);

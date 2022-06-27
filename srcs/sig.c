@@ -12,6 +12,16 @@
 
 #include <minishell.h>
 
+void	new_handler(int signum)
+{
+	if (signum == SIGINT)
+	{
+		close(STDIN_FILENO);
+		write(1, "^C\n", 3);
+		g_exit_status = 130;
+	}
+}
+
 void	sigint_handler(int signum)
 {
 	if (signum == SIGINT)

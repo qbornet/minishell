@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 12:54:12 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 13:00:03 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/27 13:37:20 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+# define BIN_NAME "start"
 # define OPEN_MAX 1024
 # define HEREDOC_PROMPT "\1\e[1;38;5;11m\2?>\1\e[0m\2 "
 # define DEFAULT_PATH "PATH=/usr/local/bin:/usr/bin:/bin"
@@ -155,10 +156,12 @@ typedef struct s_cmdblock
 
 typedef struct s_process
 {
-	int	**pipes;
-	int	*pids;
-	int	len_cmdb;
-}	t_process;
+	int		**pipes;
+	int		*pids;
+	int		len_cmdb;
+	pid_t	pgrp;
+	pid_t	sid;
+} t_process;
 
 // Notre struct "foure tout"
 typedef struct s_data
@@ -183,6 +186,7 @@ int			exit_group(t_data **d_curr);
 int			start_prompt(t_data **d_curr);
 int			free_redoo(t_data **d_curr, char *str);
 char		**ft_envp(char **envp);
+void		ft_free_all(t_data **d_curr);
 void		ft_free_envp(char **envp);
 void		ft_free_cpool(char ***cpool);
 void		ft_free_vpool(char **var_pool);
@@ -323,12 +327,13 @@ size_t		ft_strjoin_len(char *str);
 /* sig.c */
 int			set_sig(struct sigaction *act_int, struct sigaction *act_quit);
 int			term_isig(const struct termios *term);
+void		new_handler(int signum);
 void		sigint_handler(int signum);
 void		sigquit_handler(int signum);
 
 /* BIN_H */
-int			ft_recreate_envp(char ***envp_curr, ssize_t index_envp);
-int			ft_recreate_vpool(char ***vpool_curr, ssize_t index_vpool);
+int			ft_recreate_envp(char ***envp, ssize_t index_envp);
+int			ft_recreate_vpool(char ***vpool, ssize_t index_vpool);
 int			ft_dup_error(char **arr);
 int			ft_pwd(void);
 int			ft_echo(const t_cmdblock *cmdblock);
