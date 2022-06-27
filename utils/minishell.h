@@ -20,6 +20,7 @@
 # include <readline/history.h>
 
 # define BIN_NAME "start"
+# define DFL_HOME "/home"
 # define OPEN_MAX 1024
 # define HEREDOC_PROMPT "\1\e[1;38;5;11m\2?>\1\e[0m\2 "
 # define DEFAULT_PATH "PATH=/usr/local/bin:/usr/bin:/bin"
@@ -246,11 +247,12 @@ void		ft_treeprint(t_btree *tree, int type);
 void		ft_print_tokenlist(t_tokenlist *lst);
 
 /* EXPANSION_H */
-/* expansion.c expansion_utils.c expansion_error.c expansion_check.c */
+/* expansion.c expansion_utils.c expansion_error.c expansion_check.c expansion_tidle.c*/
 /* ft_create_join.c ft_create_cmd.c ft_lenlst.c */
 /* command_block.c ft_cmdblock.c */
 int			command_block(t_data **d_curr);
 int			start_expansion(t_data **d_curr);
+int			ft_do_tilde(t_data	**d_curr);
 int			ft_do_quotes(t_data	**d_curr);
 int			ft_create_cmd(t_data **d_curr, int total_cmd);
 int			ft_create_join(t_data **d_curr);

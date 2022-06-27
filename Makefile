@@ -67,6 +67,7 @@ EXPAN = expansion.c \
 		expansion_utils.c \
 		expansion_error.c \
 		expansion_check.c \
+		expansion_tilde.c \
 		ft_create_cmd.c \
 		ft_create_join.c \
 		ft_lenlist.c \
