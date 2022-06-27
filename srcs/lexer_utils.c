@@ -8,9 +8,9 @@ int	get_token(char **input, t_token *token)
 		token->len = 0;
 	}
 	if (is_token_2(*input, token))
-		return (2);
+		return (502);
 	if (is_token_1(*input, token))
-		return (1);
+		return (501);
 	word_token(*input, token);
 	return (0);
 }

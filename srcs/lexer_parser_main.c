@@ -2,22 +2,18 @@
 
 int	lexer_parser_main(char *input, char **envp, t_data **d_curr)
 {
-	int		code;
 	t_data	*frame;
 
 	frame = *d_curr;
-	code = lexical_analysis(input, &frame->tokenlst);
-	if (code == 1)
-		printf("lexer error: make sure not to use ) ( & \\ ;\n");
-	else if (code == 2)
-		printf("lexer error: make sure not to use ||\n");
-	else if (code == 3 || code == 4)
-		printf("lexer error: something wrong in token creation\n");
-	if (code)
-		return (-1);
+	g_exit_status = lexical_analysis(input, &frame->tokenlst);
+	if (g_exit_status)
+	{
+		error_printer();
+		return (g_exit_status);
+	}
 	frame->root = buildbtree(envp, frame->tokenlst);
 	if (ft_read_flow(frame->root, &frame->strlst) < 0)
-		return (-1);
+		return (-2);
 	*d_curr = frame;
 	return (0);
 }
