@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:27:20 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/27 13:19:15 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/27 13:45:57 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,10 @@ static int	set_flag(char *s)
 	return (1);
 }
 
-int	ft_echo(const t_cmdblock *cmdblock)
+static int	ft_echo_printer(char **s, int i, int flag)
 {
-	int		i;
-	int		len;
-	int		flag;
-	char	**s;
+	int	len;
 
-	flag = 0;
-	i = 0;
-	while (cmdblock->cmd[++i] && cmdblock->cmd[i][0] == '-')
-		if (!set_flag(cmdblock->cmd[i] + 1))
-			break ;
-	if (i != 1)
-		flag = 1;
-	s = cmdblock->cmd;
 	while (s[i])
 	{
 		len = write(1, s[i], ft_strlen(s[i]));
@@ -59,4 +48,19 @@ int	ft_echo(const t_cmdblock *cmdblock)
 		if (write(1, "\n", 1) < 0)
 			return (-4);
 	return (0);
+}
+
+int	ft_echo(const t_cmdblock *cmdblock)
+{
+	int		i;
+	int		flag;
+
+	flag = 0;
+	i = 0;
+	while (cmdblock->cmd[++i] && cmdblock->cmd[i][0] == '-' && cmdblock->cmd[i][0] && cmdblock->cmd[i][1] == 'n')
+		if (!set_flag(cmdblock->cmd[i] + 1))
+			break ;
+	if (i != 1)
+		flag = 1;
+	return (ft_echo_printer(cmdblock->cmd, i, flag));
 }
