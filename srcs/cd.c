@@ -37,12 +37,14 @@ int	ft_cd(const t_cmdblock *cmdblock, char **envp)
 		return (-1);
 	}
 	home = get_env_home(envp);
-	if (!home)
-		return (-1);
-	if (!cmdblock->cmd[1] && chdir_home(home) < 0)
-		return (-1);
-	else if (!cmdblock->cmd[1])
+	if (!home && !cmdblock->cmd[1])
 		return (0);
+	if (!cmdblock->cmd[1] && home)
+	{
+		if (chdir_home(home) < 0)
+			return (-1);
+		return (0);
+	}
 	if (chdir(cmdblock->cmd[1]) < 0)
 	{
 		write(2, "cd: ", 4);
