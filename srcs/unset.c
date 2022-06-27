@@ -3,20 +3,7 @@
 /* TODO: ✔️ 
  * - Doit unset toute les variables qui ont le meme nom dans var_pool et envp */
 
-static long	ft_len(char **envp)
-{
-	long	i;
-
-	i = 0;
-	while (envp[i])
-		i++;
-	return (i);
-}
-
-/* Compare cmp_var et envp[i];
- * Retourne la position de var dans envp, -1 sinon */
-
-static size_t	index_match(char *var, char **envp)
+static long	index_match(char *var, char **envp)
 {
 	int		i;
 
@@ -30,7 +17,7 @@ static size_t	index_match(char *var, char **envp)
 	return (-1);
 }
 
-static size_t	index_match_vpool(char *var, char **var_pool)
+static long	index_match_vpool(char *var, char **var_pool)
 {
 	int		i;
 
@@ -46,13 +33,9 @@ static size_t	index_match_vpool(char *var, char **var_pool)
 
 static int	ft_unset_var(t_data **d_curr, char *var)
 {
-	size_t	index_envp;
-	size_t	index_vpool;
-	char	**new;
+	long	index_envp;
+	long	index_vpool;
 
-	new = ft_calloc(ft_len((*d_curr)->envp), sizeof(char *));
-	if (!new)
-		return (1);
 	index_envp = index_match(var, (*d_curr)->envp);
 	index_vpool = index_match_vpool(var, (*d_curr)->var_pool);
 	if (ft_recreate_envp(&(*d_curr)->envp, index_envp) < 0)

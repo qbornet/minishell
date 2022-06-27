@@ -24,7 +24,9 @@ static int	ft_replace_var(char **v_curr, char **var_pool)
 		if (!ft_strncmp(var, var_pool[i], ft_strlen(var)))
 		{
 			free(var);
-			var = var_pool[i];
+			var = ft_strdup(var_pool[i]);
+			if (!var)
+				return (-1);
 			*v_curr = var;
 			return (0);
 		}

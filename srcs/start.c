@@ -2,6 +2,12 @@
 
 int	exit_group(t_data **d_curr)
 {
+	ft_free_all(d_curr);
+	exit(g_exit_status);
+}
+
+void	ft_free_all(t_data **d_curr)
+{
 	t_data	*frame;
 
 	frame = *d_curr;
@@ -16,7 +22,6 @@ int	exit_group(t_data **d_curr)
 	free(frame->std_fd);
 	free(frame);
 	close_allfd();
-	exit(g_exit_status);
 }
 
 void	ft_null_reset(t_data **d_curr)

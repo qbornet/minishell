@@ -5,6 +5,6 @@
 void	ft_exit(t_data **d_curr, int status)
 {
 	write(1, "exit\n", 5);
-	exit_group(d_curr);
+	ft_free_all(d_curr);
 	exit(status);
 }

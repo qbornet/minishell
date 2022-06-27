@@ -1,5 +1,32 @@
 #include "minishell.h"
 
+static void set_default(t_cmdblock *cmdblk)
+{
+	char				*str;
+	struct sigaction	sa;
+	struct sigaction	sa_int;
+	struct sigaction	sa_new;
+
+	str = cmdblk->cmd[0];
+	ft_memset(&sa, 0, sizeof(struct sigaction));
+	ft_memset(&sa_int, 0, sizeof(struct sigaction));
+	ft_memset(&sa_new, 0, sizeof(struct sigaction));
+	sa.sa_handler = SIG_DFL;
+	sa_int.sa_handler = SIG_IGN;
+	sa_new.sa_handler = &new_handler;
+	if (str && *str && ft_strnstr(str, BIN_NAME, ft_strlen(BIN_NAME)))
+		sigaction(SIGINT, &sa_int, NULL);
+	else
+		sigaction(SIGINT, &sa_new, NULL);
+	sigaction(SIGCONT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+	sigaction(SIGSTOP, &sa, NULL);
+	sigaction(SIGTSTP, &sa, NULL);
+	sigaction(SIGTTIN, &sa, NULL);
+	sigaction(SIGTTOU, &sa, NULL);
+	sigaction(SIGCHLD, &sa, NULL);
+}
+
 static int	exec_status(t_data **frame, t_process *pr)
 {
 	int			wstatus;
@@ -9,6 +36,13 @@ static int	exec_status(t_data **frame, t_process *pr)
 	status_code = 0;
 	if (WIFEXITED(wstatus))
 		status_code = WEXITSTATUS(wstatus);
+	/* Faudrais refaire la ligne dup2 dans les pipes en gros le but ici,
+	 * c'est quand j'envoie un ^C je dois close la stdin du coup,
+	 * si je veux recup un prompt je suis obliger de redup juste apres.
+	 * check ou tu dois le mettre dans ton code pour le refaire reprompt apres un ^C
+	 * genre test cat | cat
+	 * */
+	dup2((*frame)->std_fd->stdin, STDIN_FILENO);
 	free_pipes_pids(pr->pipes, pr->pids, 0, 0);
 	ft_unlink_tmpfiles((*frame)->cmdblk);
 	return (status_code);
@@ -54,6 +88,7 @@ int	run_exec(t_data **frame)
 	t_process	*pr;
 
 	pr = &(*frame)->pr;
+	set_default((*frame)->cmdblk);
 	pr->len_cmdb = ft_init_exec(frame);
 	if (pr->len_cmdb - 1 == 0)
 	{

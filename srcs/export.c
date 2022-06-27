@@ -25,7 +25,7 @@ static int	ft_free_env(char **old)
 	return (0);
 }
 
-static size_t	index_match(char *var, char **envp)
+static long	index_match(char *var, char **envp)
 {
 	long	i;
 	char	*endcpy;
@@ -70,7 +70,7 @@ static int	ft_export_var(char *var, t_data **d_curr)
 	temp = (*d_curr)->envp;
 	if (!*var)
 		return (0);
-	if (index_match(var, (*d_curr)->envp) >= 0)
+	if ((index_match(var, (*d_curr)->envp) >= 0))
 		return (replace_env(var, &(*d_curr)->envp));
 	var = search_varpool(var, (*d_curr)->var_pool);
 	if (!var)
