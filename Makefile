@@ -26,6 +26,7 @@ SRCS = 	env_utils.c \
 	sig.c \
 	exit_free.c \
 	start_prompt.c \
+	start_utils.c \
 	start.c 
 
 # Tools

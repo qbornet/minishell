@@ -169,11 +169,12 @@ typedef struct s_data
 }	t_data;
 
 /* START_H */
-/* exit_free.c start.c start_prompt.c */
+/* exit_free.c start.c start_prompt.c stat_utils.c */
 
 int		exit_group(t_data **d_curr);
 int		start_prompt(t_data **d_curr);
 int		free_redoo(t_data **d_curr, char *str);
+int		ft_addlevel(char ***envp_curr);
 char	**ft_envp(char **envp);
 void	ft_free_all(t_data **d_curr);
 void	ft_free_envp(char **envp);

@@ -101,7 +101,6 @@ int	start_expansion(t_data **d_curr)
 		return (ft_free_expan_error(d_curr));
 	if (command_block(d_curr) < 0)
 		return (ft_free_expan_error(d_curr));
-	print_strlst((*d_curr)->strlst);
 	return (0);
 }
 
