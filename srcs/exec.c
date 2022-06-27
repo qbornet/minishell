@@ -6,13 +6,13 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:27:38 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 11:27:39 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/27 13:53:37 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void set_default(t_cmdblock *cmdblk)
+static void	set_default(t_cmdblock *cmdblk)
 {
 	char				*str;
 	struct sigaction	sa;

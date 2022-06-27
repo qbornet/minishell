@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 12:54:12 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/27 13:37:20 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/27 14:33:16 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ typedef struct s_process
 	int		len_cmdb;
 	pid_t	pgrp;
 	pid_t	sid;
-} t_process;
+}	t_process;
 
 // Notre struct "foure tout"
 typedef struct s_data
@@ -191,6 +191,7 @@ void		ft_free_envp(char **envp);
 void		ft_free_cpool(char ***cpool);
 void		ft_free_vpool(char **var_pool);
 void		close_allfd(void);
+int			start(char **envp);
 
 /* SORT_H */
 /* ft_qsort.c */
@@ -339,11 +340,12 @@ int			ft_pwd(void);
 int			ft_echo(const t_cmdblock *cmdblock);
 int			ft_cd(const t_cmdblock *cmdblock, char **envp);
 int			ft_export(t_data **frame);
+int			ft_free_env(char **old);
 int			ft_unset(t_data **frame);
 int			ft_env(char **envp);
-void		ft_exit(t_data **d_curr, int status);
 int			print_error(t_error code);
 char		*search_varpool(char *var, char **var_pool);
+void		ft_exit(t_data **d_curr, int status);
 
 /* EXEC_H */
 /* Exec */

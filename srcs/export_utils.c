@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export_error.c                                     :+:      :+:    :+:   */
+/*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/25 11:28:07 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/27 14:27:49 by jfrancai         ###   ########.fr       */
+/*   Created: 2022/06/27 14:28:01 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/27 14:29:34 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include "minishell.h"
 
-int	ft_dup_error(char **arr)
+int	ft_free_env(char **old)
 {
-	size_t	i;
+	long	i;
 
 	i = -1;
-	while (arr[++i])
-		free(arr[i]);
-	free(arr);
-	return (-1);
+	while (old[++i])
+		if (old[i])
+			free(old[i]);
+	free(old);
+	return (0);
 }

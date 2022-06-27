@@ -1,24 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export_error.c                                     :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/25 11:28:07 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/27 14:27:49 by jfrancai         ###   ########.fr       */
+/*   Created: 2022/06/27 13:59:15 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/06/27 13:59:32 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include "minishell.h"
 
-int	ft_dup_error(char **arr)
+int	main(int ac, char **av, char **envp)
 {
-	size_t	i;
+	pid_t	pid;
+	int		status;
 
-	i = -1;
-	while (arr[++i])
-		free(arr[i]);
-	free(arr);
-	return (-1);
+	(void)ac;
+	(void)av;
+	pid = fork();
+	if (pid == 0)
+	{
+		execve("/bin/clear", ((char *[]){"clear", NULL}), envp);
+		return (0);
+	}
+	else if (pid == -1)
+		return (0);
+	else
+	{
+		waitpid(pid, &status, 0);
+		start(envp);
+	}
+	return (0);
 }

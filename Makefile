@@ -26,7 +26,8 @@ SRCS = 	env_utils.c \
 	sig.c \
 	exit_free.c \
 	start_prompt.c \
-	start.c 
+	start.c \
+	main.c
 
 # Tools
 TOOLS = ft_tokenadd_back.c \
@@ -93,6 +94,7 @@ PIPE = pipe.c \
 	exec_utils.c \
 	exec_builtin.c \
 	export.c \
+	export_utils.c \
 	export_error.c \
 	export_vpool.c \
 	echo.c \

@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:27:20 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/27 13:45:57 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/27 13:53:09 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ int	ft_echo(const t_cmdblock *cmdblock)
 
 	flag = 0;
 	i = 0;
-	while (cmdblock->cmd[++i] && cmdblock->cmd[i][0] == '-' && cmdblock->cmd[i][0] && cmdblock->cmd[i][1] == 'n')
+	while (cmdblock->cmd[++i] && cmdblock->cmd[i][0] == '-'
+		&& cmdblock->cmd[i][0] && cmdblock->cmd[i][1] == 'n')
 		if (!set_flag(cmdblock->cmd[i] + 1))
 			break ;
 	if (i != 1)

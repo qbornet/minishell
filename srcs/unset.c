@@ -6,14 +6,11 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:30:22 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 11:30:23 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/27 14:01:13 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* TODO: ✔️ 
- * - Doit unset toute les variables qui ont le meme nom dans var_pool et envp */
 
 static long	index_match(char *var, char **envp)
 {
@@ -60,7 +57,7 @@ static int	ft_unset_var(t_data **d_curr, char *var)
 int	ft_unset(t_data **frame)
 {
 	int			i;
-	t_cmdblock *cmdblock;
+	t_cmdblock	*cmdblock;
 
 	i = 1;
 	cmdblock = (*frame)->cmdblk;
@@ -72,28 +69,3 @@ int	ft_unset(t_data **frame)
 	}
 	return (0);
 }
-
-/*
-
-int	main(int ac, char **av, char **envp)
-{
-	char	*str;
-
-	if (ac != 2)
-		return (-1);
-	str = strdup(av[1]);
-	printf("-----------------------------------\n");
-	for (int i = 0; envp[i]; i++)
-		printf("%s\n", envp[i]);
-	ft_unset(str, &envp);
-	printf("-----------------------------------\n");
-	for (int i = 0; envp[i]; i++)
-		printf("%s\n", envp[i]);
-	for (int i = 0; envp[i]; i++)
-		if (envp[i])
-			free(envp[i]);
-	free(envp);
-	free(str);
-	return (0);
-}
-*/
