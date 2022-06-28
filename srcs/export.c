@@ -68,7 +68,7 @@ static int	ft_export_var(char *var, t_data **d_curr)
 
 	i = -1;
 	temp = (*d_curr)->envp;
-	if (!*var)
+	if (ft_checkvar_name(var))
 		return (0);
 	if ((index_match(var, (*d_curr)->envp) >= 0))
 		return (replace_env(var, &(*d_curr)->envp));

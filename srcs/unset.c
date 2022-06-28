@@ -48,15 +48,27 @@ static int	ft_unset_var(t_data **d_curr, char *var)
 int	ft_unset(t_data **frame)
 {
 	int			i;
+	char		*var;
 	t_cmdblock *cmdblock;
 
 	i = 1;
 	cmdblock = (*frame)->cmdblk;
 	while (cmdblock->cmd[i])
 	{
+		var = ft_strdup(cmdblock->cmd[i]);
+		if (!var)
+			return (-1);
+		if (ft_strchr(var, '-'))
+		{
+			ft_putstr_fd("unset: no option for export ", 2);
+			ft_putendl_fd(var, 2);
+			free(var);
+			return (1);
+		}
 		if (ft_unset_var(frame, cmdblock->cmd[i]))
 			return (-1);
 		i++;
+		free(var);
 	}
 	return (0);
 }

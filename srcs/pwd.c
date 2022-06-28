@@ -1,9 +1,39 @@
-#include "minishell.h"
+#include <minishell.h>
 
-int	ft_pwd(void)
+static int opt_pwd(t_cmdblock *cmdblk)
 {
+	size_t	i;
+	char	*var;
+
+	i = 1;
+	while (cmdblk->cmd[i])
+	{
+		var = ft_strdup(cmdblk->cmd[i]);
+		if (!var)
+			return (-1);
+		if (ft_strchr(var, '-'))
+		{
+			ft_putstr_fd("pwd: no option for pwd ", 2);
+			ft_putendl_fd(var, 2);
+			free(var);
+			return (1);
+		}
+		i++;
+		free(var);
+	}
+	return (0);
+}
+
+int	ft_pwd(t_cmdblock *cmdblk)
+{
+	int		ret;
 	char	*cwd;
 
+	ret = opt_pwd(cmdblk);
+	if (ret)
+		return (1);
+	else if (ret < 0)
+		return (-1);
 	cwd = getcwd(NULL, PATH_MAX);
 	if (cwd)
 	{
