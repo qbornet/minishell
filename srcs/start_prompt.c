@@ -63,8 +63,7 @@ int	start_prompt(t_data **d_curr)
 		if (!str)
 			return (write(1, "exit\n", 5) && exit_group(d_curr));
 		ft_history(str);
-		if (lexer_parser_main(str, (*d_curr)->envp, d_curr) < 0)
-			return (exit_group(d_curr));
+		lexer_parser_main(str, (*d_curr)->envp, d_curr);
 		if (!g_exit_status)
 		{
 			if (start_expansion(d_curr) < 0)
