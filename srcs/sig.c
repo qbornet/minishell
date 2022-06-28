@@ -27,13 +27,6 @@ void	sigquit_handler(int signum)
 		return ;
 }
 
-int	term_isig(const struct termios *term)
-{
-	if (term->c_lflag & ISIG)
-		return (1);
-	return (0);
-}
-
 int	set_sig(struct sigaction *act_int, struct sigaction *act_quit)
 {
 	ft_memset(act_int, 0, sizeof(struct sigaction));
