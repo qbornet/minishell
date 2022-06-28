@@ -47,8 +47,13 @@ static int	ft_unset_var(t_data **d_curr, char *var)
 
 int	ft_unset(t_data **frame)
 {
+<<<<<<< HEAD
 	char		*var;
 	size_t		i;
+=======
+	int			i;
+	char		*var;
+>>>>>>> fixbin
 	t_cmdblock *cmdblock;
 
 	i = 1;

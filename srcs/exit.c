@@ -1,31 +1,38 @@
-#include "minishell.h"
+#include <minishell.h>
 
 /* :0 */
 
-void	ft_exit(t_data **d_curr, int status)
+static void	opt_exit(t_cmdblock *cmdblk)
 {
-	char		*var;
 	size_t		i;
-	t_cmdblock	*cmdblk;
+	size_t		j;
+	char		*str;
 
 	i = 0;
-	cmdblk = (*d_curr)->cmdblk;
-	while (cmdblk->cmd[i])
+	while (cmdblk->cmd[++i])
 	{
-		var = ft_strdup(cmdblk->cmd[i]);
-		if (!var)
-			exit_group(d_curr);
-		if (ft_strchr(var, '-'))
+		str = ft_strdup(cmdblk->cmd[i]);
+		if (!str)
+			return ;
+		j = -1;
+		while (str[++j])
 		{
-			ft_putstr_fd("exit: no option for exit ", 2);
-			ft_putendl_fd(var, 2);
-			free(var);
-			ft_free_all(d_curr);
-			exit(2);
+			if (!ft_isdigit(str[j]))
+			{
+				ft_putstr_fd("exit: numeric argumenet required '", 2);
+				ft_putstr_fd(str, 2);
+				ft_putendl_fd("'", 2);
+				free(str);
+				break ;
+			}
 		}
-		free(var);
-		i++;
+		free(str);
 	}
+}
+
+void	ft_exit(t_data **d_curr, int status)
+{
+	opt_exit((*d_curr)->cmdblk);
 	write(1, "exit\n", 5);
 	ft_free_all(d_curr);
 	exit(status);

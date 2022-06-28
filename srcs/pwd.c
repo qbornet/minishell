@@ -18,8 +18,8 @@ static int	opt_pwd(t_cmdblock *cmdblk)
 			free(var);
 			return (1);
 		}
-		free(var);
 		i++;
+		free(var);
 	}
 	return (0);
 }
@@ -30,10 +30,10 @@ int	ft_pwd(t_cmdblock *cmdblk)
 	char	*cwd;
 
 	ret = opt_pwd(cmdblk);
-	if (ret < 0)
-		return (-1);
-	else if (ret)
+	if (ret)
 		return (1);
+	else if (ret < 0)
+		return (-1);
 	cwd = getcwd(NULL, PATH_MAX);
 	if (cwd)
 	{
