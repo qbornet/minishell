@@ -9,7 +9,7 @@ int	is_builtin(t_cmdblock *cmdblock, t_data **frame)
 	if (!ft_strcmp("cd", cmdblock->cmd[0]))
 		return (ft_cd((*frame)->cmdblk, (*frame)->envp));
 	if (!ft_strcmp("pwd", cmdblock->cmd[0]))
-		return (ft_pwd());
+		return (ft_pwd(cmdblock));
 	if (!ft_strcmp("export", cmdblock->cmd[0]))
 		return (ft_export(frame));
 	if (!ft_strcmp("unset", cmdblock->cmd[0]))

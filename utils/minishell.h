@@ -318,7 +318,7 @@ int			ft_printerror(char *var);
 int			ft_recreate_envp(char ***envp, ssize_t index_envp);
 int			ft_recreate_vpool(char ***vpool, ssize_t index_vpool);
 int			ft_dup_error(char **arr);
-int			ft_pwd(void);
+int			ft_pwd(const t_cmdblock *cmdblock);
 int			ft_echo(const t_cmdblock *cmdblock);
 int			ft_cd(const t_cmdblock *cmdblock, char **envp);
 int			ft_export(t_data **frame);
