@@ -4,7 +4,7 @@ static t_token	*tokeninit(char **input, unsigned int qt)
 {
 	t_token	*token;
 
-	token = malloc(sizeof(t_token));
+	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
 		return (NULL);
 	token->lex = *input;
