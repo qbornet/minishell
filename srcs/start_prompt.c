@@ -54,6 +54,7 @@ int	start_prompt(t_data **d_curr)
 	struct sigaction	act_quit;
 
 	str = "";
+	ft_addlevel(&(*d_curr)->envp);
 	while (str && ft_check_tty() && term_isig(&term))
 	{
 		if (set_start(&term, &act_int, &act_quit) < 0)
