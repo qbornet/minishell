@@ -9,11 +9,15 @@ int	lexer_parser_main(char *input, char **envp, t_data **d_curr)
 	if (g_exit_status)
 	{
 		error_printer();
-		return (g_exit_status);
+		return (0);
 	}
 	frame->root = buildbtree(envp, frame->tokenlst);
 	if (ft_read_flow(frame->root, &frame->strlst) < 0)
-		return (-2);
+	{
+		g_exit_status = 506;
+		error_printer();
+		return (0);
+	}
 	*d_curr = frame;
 	return (0);
 }

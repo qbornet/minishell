@@ -10,6 +10,8 @@ static char	*error_message(int status)
 		return ("lexer error: something went wrong in token creation\n");
 	if (status == 505)
 		return ("Please make sure your quotes are closed\n");
+	if (status == 506)
+		return ("minishell: syntax error\n");
 	return (NULL);
 }
 
