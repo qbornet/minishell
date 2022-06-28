@@ -314,6 +314,8 @@ void	sigint_handler(int signum);
 void	sigquit_handler(int signum);
 
 /* BIN_H */
+int			ft_checkvar_name(char *var);
+int			ft_printerror(char *var);
 int			ft_recreate_envp(char ***envp, ssize_t index_envp);
 int			ft_recreate_vpool(char ***vpool, ssize_t index_vpool);
 int			ft_dup_error(char **arr);
