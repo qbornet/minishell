@@ -63,15 +63,13 @@ int	start_prompt(t_data **d_curr)
 		if (!str)
 			return (write(1, "exit\n", 5) && exit_group(d_curr));
 		ft_history(str);
-		lexer_parser_main(str, (*d_curr)->envp, d_curr);
-		if (!g_exit_status)
-		{
-			if (start_expansion(d_curr) < 0)
-				return (exit_group(d_curr));
-			g_exit_status = run_exec(d_curr);
-			if (g_exit_status < 0)
-				return (exit_group(d_curr));
-		}
+		if (lexer_parser_main(str, (*d_curr)->envp, d_curr) < 0)
+			return (exit_group(d_curr));
+		if (start_expansion(d_curr) < 0)
+			return (exit_group(d_curr));
+		g_exit_status = run_exec(d_curr);
+		if (g_exit_status < 0)
+			return (exit_group(d_curr));
 		free_redoo(d_curr, str);
 	}
 	return (write(1, "exit\n", 5) && exit_group(d_curr));

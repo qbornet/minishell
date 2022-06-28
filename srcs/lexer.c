@@ -4,7 +4,7 @@ static t_token	*tokeninit(char **input, unsigned int qt)
 {
 	t_token	*token;
 
-	token = malloc(sizeof(t_token));
+	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
 		return (NULL);
 	token->lex = *input;
@@ -49,19 +49,19 @@ static t_token	*get_next_token(char **input, unsigned int qt)
 
 static int	ft_free_handler(t_token **token, t_tokenlist **lst)
 {
-	int	code;
-
-	code = g_exit_status;
 	if (!*lst)
-		code = 504;
+		g_exit_status = 504;
 	else
 		ft_tokenclear(lst, free);
 	if (!*token)
-		code = 503;
+	{
+		g_exit_status = 503;
+		return (-1);
+	}
 	else if ((*token)->error)
-		code = (*token)->error;
+		g_exit_status = (*token)->error;
 	free(*token);
-	return (code);
+	return (2);
 }
 
 /* Fonction pour generer une liste chaine de token
