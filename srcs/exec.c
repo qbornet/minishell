@@ -1,16 +1,15 @@
-#include "minishell.h"
+#include <minishell.h> // met toujours comme ca c'est pas pour faire le relou mais vue que notre .h est dans un dossier si je make ailleur que je creer mon propre .h je vais utiliser celui qui est dans le dir ou je make donc pas de '""' 🦊
 
-static void set_default(t_cmdblock *cmdblk)
+static int set_default(t_cmdblock *cmdblk)
 {
 	char				*str;
 	struct sigaction	sa;
 	struct sigaction	sa_int;
 	struct sigaction	sa_new;
 
-	/* Fix segfault mais je sais pas l'impact sur les sigaction en dessous) */
+	/* Fix segfault mais je sais pas l'impact sur les sigaction en dessous) ✔️ */
 	if (!cmdblk->cmd)
-		return ;
-	/**/
+		return (0);
 	str = cmdblk->cmd[0];
 	ft_memset(&sa, 0, sizeof(struct sigaction));
 	ft_memset(&sa_int, 0, sizeof(struct sigaction));
@@ -26,9 +25,7 @@ static void set_default(t_cmdblock *cmdblk)
 	sigaction(SIGQUIT, &sa, NULL);
 	sigaction(SIGSTOP, &sa, NULL);
 	sigaction(SIGTSTP, &sa, NULL);
-	sigaction(SIGTTIN, &sa, NULL);
-	sigaction(SIGTTOU, &sa, NULL);
-	sigaction(SIGCHLD, &sa, NULL);
+	return (0);
 }
 
 static int	exec_status(t_data **frame, t_process *pr)
@@ -92,7 +89,8 @@ int	run_exec(t_data **frame)
 	t_process	*pr;
 
 	pr = &(*frame)->pr;
-	set_default((*frame)->cmdblk);
+	if (set_default((*frame)->cmdblk) < 0)
+		return (-1);
 	pr->len_cmdb = ft_init_exec(frame);
 	if (pr->len_cmdb - 1 == 0)
 	{

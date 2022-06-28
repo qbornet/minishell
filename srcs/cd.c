@@ -34,7 +34,7 @@ int	ft_cd(const t_cmdblock *cmdblock, char **envp)
 	if (cmdblock->cmd[1] && cmdblock->cmd[2])
 	{
 		ft_putendl_fd("cd: too many arguments", 2);
-		return (-1);
+		return (1);
 	}
 	home = get_env_home(envp);
 	if (!home && !cmdblock->cmd[1])
