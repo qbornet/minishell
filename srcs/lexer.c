@@ -54,11 +54,14 @@ static int	ft_free_handler(t_token **token, t_tokenlist **lst)
 	else
 		ft_tokenclear(lst, free);
 	if (!*token)
+	{
 		g_exit_status = 503;
+		return (-1);
+	}
 	else if ((*token)->error)
 		g_exit_status = (*token)->error;
 	free(*token);
-	return (g_exit_status);
+	return (2);
 }
 
 /* Fonction pour generer une liste chaine de token
@@ -84,9 +87,7 @@ int	lexical_analysis(char *input, t_tokenlist **lst)
 			token = get_next_token(&input, ft_tokenlast(newlst)->token->qt);
 		else
 			token = get_next_token(&input, 0);
-		if (!token)
-			return (-1);
-		if (!token->lex)
+		if (!token || !token->lex)
 			return (ft_free_handler(&token, lst));
 		newlst = ft_tokennew(token);
 		if (!newlst)
