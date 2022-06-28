@@ -137,8 +137,7 @@ typedef	struct s_cmdblock
 {
 	int					len;
 	char				**cmd;
-	t_redirlist			*infile;
-	t_redirlist			*outfile;
+	t_redirlist			*fd;
 	t_termstd			*std_fd;
 	struct s_cmdblock	*next;
 }	t_cmdblock;
