@@ -35,6 +35,8 @@ static char	*expand_var(char **s, t_strlist **strlst, char **env, t_data *frame)
 
 	flag = 0;
 	result = NULL;
+	if (!(*s)[1] && (*s)[0] == '$')
+		return (ft_strdup("$"));
 	opt_expandvar(&flag, &tmp, env, s);
 	if (!tmp)
 		tmp = check_intab(frame->var_pool, *s + 1);
@@ -70,6 +72,24 @@ char	*check_intab(char **tab, char *var_name)
 	return (*tab);
 }
 
+static int	check_empty_dol(t_strlist *strlst, char **result)
+{
+	char	*tmp;
+
+	if ((*result)[0] == '$')
+	{
+		tmp = strlst->data;
+		strlst->data = ft_strjoin(strlst->data, "");
+		free(tmp);
+		free(*result);
+		return (1);
+	}
+	free(strlst->data);
+	strlst->data = *result;
+	return (0);
+}
+
+
 void	expand(t_strlist *strlst, char **env, t_data **frame)
 {
 	char	*s;
@@ -81,8 +101,10 @@ void	expand(t_strlist *strlst, char **env, t_data **frame)
 	while (*s)
 	{
 		result = expand_var(&s, &strlst, env, *frame);
-		free(strlst->data);
-		strlst->data = result;
+		if (!result)
+			return ;
+		if (check_empty_dol(strlst, &result))
+			return ;
 		s = (char *)strlst->data;
 		while (*s && *s != '$')
 			s++;

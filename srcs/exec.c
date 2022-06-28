@@ -7,6 +7,10 @@ static void set_default(t_cmdblock *cmdblk)
 	struct sigaction	sa_int;
 	struct sigaction	sa_new;
 
+	/* Fix segfault mais je sais pas l'impact sur les sigaction en dessous) */
+	if (!cmdblk->cmd)
+		return ;
+	/**/
 	str = cmdblk->cmd[0];
 	ft_memset(&sa, 0, sizeof(struct sigaction));
 	ft_memset(&sa_int, 0, sizeof(struct sigaction));
