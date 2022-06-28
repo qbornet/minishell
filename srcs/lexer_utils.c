@@ -29,8 +29,6 @@ int	is_special_token(char c, t_token *token)
 		return (0);
 	if (c == '&'
 		|| c == '|'
-		|| c == ';'
-		|| c == '\\'
 		|| c == '>'
 		|| c == '<'
 		|| c == ')'
@@ -116,9 +114,7 @@ int	is_token_1(char *input, t_token *token)
 		token->type = E_PIPE;
 	else if (*input == '('
 		|| *input == ')'
-		|| *input == '&'
-		|| *input == '\\'
-		|| *input == ';')
+		|| *input == '&')
 		token->type = E_ERROR;
 	if (token->type && !token->qt)
 	{

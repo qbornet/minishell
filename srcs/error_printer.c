@@ -3,7 +3,7 @@
 static char	*error_message(int status)
 {
 	if (status == 501)
-		return ("minishell: make sure not to use ) ( \\ ;\n");
+		return ("minishell: make sure not to use ) ( &\n");
 	if (status == 502)
 		return ("minishell: make sure not to use ||\n");
 	if (status == 503 || status ==  504)
