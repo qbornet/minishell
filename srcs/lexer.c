@@ -36,8 +36,12 @@ static t_token	*get_next_token(char **input, unsigned int qt)
 		return (NULL);
 	token->error = get_token(input, token);
 	*input += token->len;
+	if (token->qt)
+	{
+		token->type = E_ERROR;
+		g_exit_status = 505;
+	}
 	if (token->type == E_ERROR
-		|| (token->qt && token->type == E_EOI)
 		|| !token->type)
 		token->lex = NULL;
 	return (token);
@@ -47,6 +51,7 @@ static int	ft_free_handler(t_token **token, t_tokenlist **lst)
 {
 	int	code;
 
+	code = g_exit_status;
 	if (!*lst)
 		code = 504;
 	else
