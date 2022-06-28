@@ -12,7 +12,7 @@ UTILS_DIR = utils
 
 # Utils
 CC = clang
-CFLAGS = -MMD -Wall -Wextra -Werror -g3 #-fsanitize=address
+CFLAGS = -MMD -Wall -Wextra -Werror -g3 -fsanitize=address
 CPPFLAGS = -I ./$(UTILS_DIR) -I ./libft/utils
 LDFLAGS = -L ./libft
 RM = rm -rf
@@ -39,6 +39,7 @@ TOOLS = ft_tokenadd_back.c \
 	ft_tokensize.c \
 	free_str_utils.c \
 	free_int_utils.c \
+	error_printer.c \
 	ft_qsort.c
 
 # File to create lexer part
