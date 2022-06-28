@@ -13,7 +13,8 @@ int	lexer_parser_main(char *input, char **envp, t_data **d_curr)
 		return (g_exit_status);
 	}
 	frame->root = buildbtree(envp, frame->tokenlst);
-	if (!frame->root);
+	if (!frame->root)
+		return (-1);
 	if (ft_read_flow(frame->root, &frame->strlst) < 0)
 	{
 		g_exit_status = 506;

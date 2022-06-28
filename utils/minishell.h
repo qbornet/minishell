@@ -314,15 +314,16 @@ void	sigint_handler(int signum);
 void	sigquit_handler(int signum);
 
 /* BIN_H */
+int			ft_checkvar_name(char *var);
 int			ft_recreate_envp(char ***envp, ssize_t index_envp);
 int			ft_recreate_vpool(char ***vpool, ssize_t index_vpool);
 int			ft_dup_error(char **arr);
-int			ft_pwd(void);
+int			ft_pwd(t_cmdblock *cmdblock);
 int			ft_echo(const t_cmdblock *cmdblock);
 int			ft_cd(const t_cmdblock *cmdblock, char **envp);
 int			ft_export(t_data **frame);
 int			ft_unset(t_data **frame);
-int			ft_env(char **envp);
+int			ft_env(t_cmdblock *cmdblk, char **envp);
 void		ft_exit(t_data **d_curr, int status);
 int			print_error(t_error code);
 char		*search_varpool(char *var, char **var_pool);
