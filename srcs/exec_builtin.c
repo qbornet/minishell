@@ -28,7 +28,13 @@ int	exec_builtin_single(t_cmdblock *cmdblock, t_data **frame)
 
 	pr = &(*frame)->pr;
 	if (open_fd(pr, cmdblock, 0) == -1)
-		return (-1);
+	{
+		if (dup_out((*frame)->std_fd->stdout) == -1)
+			return (-1);
+		if (dup_in((*frame)->std_fd->stdin) == -1)
+			return (-1);
+		return (0);
+	}
 	exec_code = is_builtin(cmdblock, frame);
 	if (dup_out((*frame)->std_fd->stdout) == -1)
 		return (-1);

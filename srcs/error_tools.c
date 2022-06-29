@@ -6,7 +6,7 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 21:21:18 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/23 20:15:55 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/29 07:12:41 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 int	ft_unlink_tmpfiles(t_cmdblock *cmdblock)
 {
-	t_redirlist	*infile;
+	t_redirlist	*fd;
 
 	while (cmdblock)
 	{
-		infile = cmdblock->infile;
-		while (infile)
+		fd = cmdblock->fd;
+		while (fd)
 		{
-			if (infile->type == E_DLESS)
-				unlink(infile->str);
-			infile = infile->next;
+			if (fd->type == E_DLESS)
+				unlink(fd->str);
+			fd = fd->next;
 		}
 		cmdblock = cmdblock->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 16:46:50 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/23 19:28:51 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/29 07:51:52 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,28 +35,20 @@ int	close_pipe(int *pd)
 	return (0);
 }
 
-int	set_infile(t_redirlist *infile)
+int	set_fd(t_redirlist *fd)
 {
-	while (infile)
+	while (fd)
 	{
-		if (ft_redirection_less(infile->str) == -1)
-			return (-1);
-		infile = infile->next;
-	}
-	return (0);
-}
-
-int	set_outfile(t_redirlist *outfile)
-{
-	while (outfile)
-	{
-		if (outfile->type == E_GREAT)
-			if (ft_redirection_great(outfile->str) == -1)
+		if (fd->type == E_GREAT)
+			if (ft_redirection_great(fd->str) == -1)
 				return (-1);
-		if (outfile->type == E_DGREAT)
-			if (ft_redirection_dgreat(outfile->str) == -1)
+		if (fd->type == E_DGREAT)
+			if (ft_redirection_dgreat(fd->str) == -1)
 				return (-1);
-		outfile = outfile->next;
+		if (fd->type == E_LESS)
+			if (ft_redirection_less(fd->str) == -1)
+				return (-1);
+		fd = fd->next;
 	}
 	return (0);
 }

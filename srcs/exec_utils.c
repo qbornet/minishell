@@ -13,18 +13,18 @@ int	ft_len_cmdblk(t_cmdblock *cmdblock)
 	return (i);
 }
 
-static int	ft_call_heredoc(t_data **f, t_cmdblock **c, t_redirlist *infile)
+static int	ft_call_heredoc(t_data **f, t_cmdblock **c, t_redirlist *fd)
 {
-	while (infile)
+	while (fd)
 	{
-		if (infile->type == E_DLESS)
+		if (fd->type == E_DLESS)
 		{
-			if (here_doc(f, c, infile->str) < 0)
+			if (here_doc(f, c, fd->str) < 0)
 				return (-1);
 			dup2((*f)->std_fd->stdin, 0);
 			ioctl(STDIN_FILENO, TIOCSCTTY, 0);
 		}
-		infile = infile->next;
+		fd = fd->next;
 	}
 	return (0);
 }
@@ -38,7 +38,7 @@ int	ft_init_exec(t_data **frame)
 	len = ft_len_cmdblk(cmdblock);
 	while (cmdblock)
 	{
-		if (ft_call_heredoc(frame, &cmdblock, cmdblock->infile) < 0)
+		if (ft_call_heredoc(frame, &cmdblock, cmdblock->fd) < 0)
 			return (-1);
 		cmdblock->len = len;
 		cmdblock = cmdblock->next;

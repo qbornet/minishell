@@ -351,8 +351,7 @@ int			pipex(t_process *pr, t_data **frame, t_cmdblock *cmdblock);
 int			dup_in(int new_in);
 int			dup_out(int new_out);
 int			close_pipe(int *pd);
-int			set_outfile(t_redirlist *outfile);
-int			set_infile(t_redirlist *infile);
+int			set_fd(t_redirlist *fd);
 
 /* Pipes */
 int			ft_pipe(t_process *pr, t_data **frame);

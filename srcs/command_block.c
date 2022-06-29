@@ -31,7 +31,7 @@ static int	opt_insert_filedes(t_btree *r, t_cmdblock **cmd_curr)
 	t_token	*token;
 
 	if (r->node->type == E_GREAT || r->node->type == E_DGREAT
-			r->node->type == E_LESS || r->node->type == E_DLESS)
+		|| r->node->type == E_LESS || r->node->type == E_DLESS)
 	{
 			if (r->right && r->right->node->type == E_FD)
 				token = r->right->node->token;
@@ -50,13 +50,13 @@ static int	insert_filedes(t_btree *r, t_cmdblock **cmd_curr)
 {
 	if (r && r->node)
 	{
-		if (insert_outfile(r->left, cmd_curr) < 0)
+		if (insert_filedes(r->left, cmd_curr) < 0)
 			return (-1);
 		if (opt_insert_filedes(r, cmd_curr) < 0)
 			return (-1);
 		if (r->node->type == E_PIPE)
 			*cmd_curr = (*cmd_curr)->next;
-		if (insert_outfile(r->right, cmd_curr) < 0)
+		if (insert_filedes(r->right, cmd_curr) < 0)
 			return (-1);
 	}
 	return (0);
