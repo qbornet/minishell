@@ -308,7 +308,6 @@ size_t	ft_strjoin_len(char *str);
 /* SIG_H */
 /* sig.c */
 int		set_sig(struct sigaction *act_int, struct sigaction *act_quit);
-int		term_isig(const struct termios *term);
 void	new_handler(int signum);
 void	sigint_handler(int signum);
 void	sigquit_handler(int signum);
