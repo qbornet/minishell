@@ -79,6 +79,7 @@ int	lexical_analysis(char *input, t_tokenlist **lst)
 	t_token		*token;
 	t_tokenlist	*newlst;
 
+	g_exit_status = 0;
 	*lst = NULL;
 	newlst = NULL;
 	while (1)

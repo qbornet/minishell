@@ -54,12 +54,15 @@ int	get_cmd_tab(t_cmdblock *cmdblock, char **env)
 	cmd = cmdblock->cmd;
 	if (!*cmd)
 		return (-1);
+	if (!**cmd)
+	{
+		g_exit_status = 127;
+		return (-1);
+	}
 	path = get_path(env, cmd[0]);
 	if (!path)
 	{
-		ft_putstr_fd(cmd[0], 2);
-		ft_putendl_fd(": command not found", 2);
-		// pas besoin de free cmd[0] ou cmd je free tout dans strclear a la fin du pipe
+		g_exit_status = 127;
 		return (-1);
 	}
 	cmd[0] = path;

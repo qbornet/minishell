@@ -56,13 +56,14 @@ static int	exec(t_process *pr, t_data **frame, t_cmdblock *cmdblock)
 	if (get_cmd_tab(cmdblock, (*frame)->envp) < 0)
 	{
 		free_pipes_pids(pr->pipes, pr->pids, cmdblock->len, -1);
-		g_exit_status = 127;
+		error_printer();
 		return (-1);
 	}
 	if (exec_cmd(cmdblock, (*frame)->envp) < 0)
 	{
 		free_pipes_pids(pr->pipes, pr->pids, cmdblock->len, -1);
 		g_exit_status = 126;
+		error_printer();
 		return (-1);
 	}
 	exit(0);

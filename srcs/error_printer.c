@@ -2,6 +2,8 @@
 
 static char	*error_message(int status)
 {
+	if (status == 127)
+		return ("cmd not found\n");
 	if (status == 501)
 		return ("minishell: make sure not to use ) ( &\n");
 	if (status == 502)
