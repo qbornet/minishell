@@ -23,10 +23,8 @@ int	get_token(char **input, t_token *token)
  * @return: char
  * - Le char detecte, 0 sinon
  * */
-int	is_special_token(char c, t_token *token)
+int	is_special_token(char c)
 {
-	if (token->qt)
-		return (0);
 	if (c == '&'
 		|| c == '|'
 		|| c == '>'
@@ -66,7 +64,8 @@ void	word_token(char *input, t_token *token)
 		input++;
 	}
 	if (*input && !token->qt)
-		while (*input && *input != ' ' && *input != '\'' && *input != '\"')
+		while (*input && !is_special_token(*input)
+			&& *input != ' ' && *input != '\'' && *input != '\"')
 			input++;
 	else if (*input)
 		quotes_token(&input, token);
