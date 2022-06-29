@@ -18,8 +18,17 @@ static int	pipex_builtin(t_process *pr, t_data **frame, t_cmdblock *cmdblock)
 
 int	pipex(t_process *pr, t_data **frame, t_cmdblock *cmdblock)
 {
+	if (!cmdblock->cmd)
+		return (-1);
 	if (g_exit_status == 130)
 		exit(g_exit_status);
+	if (!cmdblock->fd)
+	{
+		if (dup_out((*frame)->std_fd->stdout) == -1)
+			return (-1);
+		if (dup_in((*frame)->std_fd->stdin) == -1)
+			return (-1);
+	}
 	if (pipex_builtin(pr, frame, cmdblock) < 0)	
 		return (-1);
 	if (get_cmd_tab(cmdblock, (*frame)->envp) < 0)
