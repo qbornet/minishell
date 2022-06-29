@@ -12,6 +12,12 @@ t_lenlist	*ft_lennew(int data)
 	return (lenlst);
 }
 
+int		ft_retlenclear(t_lenlist **len_curr)
+{
+	ft_lenclear(len_curr);
+	return (-1);
+}
+
 void	ft_lenclear(t_lenlist **len_curr)
 {
 	t_lenlist	*tmp;

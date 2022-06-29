@@ -70,11 +70,18 @@ static int	ft_strlst_len(t_btree *root, t_lenlist **len_curr)
 
 int	ft_create_join(t_data **d_curr)
 {
-	int total_cmd;
+	int			total_cmd;
+	int			tmp;
+	t_lenlist	*lenlst;
 	
 	total_cmd = 1;
+	lenlst = (*d_curr)->lenlst;
 	ft_cmd_node((*d_curr)->root, &total_cmd);
 	(*d_curr)->total_cmd = total_cmd;
+	tmp = total_cmd;
+	while (--tmp)
+		ft_lenadd_back(&lenlst, 0);
+	(*d_curr)->lenlst = lenlst;
 	(*d_curr)->cmd_pool = ft_calloc((total_cmd + 1), sizeof(char **));
 	if (!(*d_curr)->cmd_pool)
 		return (-1);
