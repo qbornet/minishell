@@ -44,7 +44,8 @@ TOOLS = ft_tokenadd_back.c \
 
 # File to create lexer part
 LEXER = lexer.c \
-	lexer_utils.c
+	lexer_utils.c \
+	quotes.c
 
 # File to create binary tree part
 BTREE = btreebuilder.c \
