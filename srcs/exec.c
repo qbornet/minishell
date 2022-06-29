@@ -95,7 +95,6 @@ int	run_exec(t_data **frame)
 	if (pr->len_cmdb - 1 == 0)
 	{
 		exec_code = exec_builtin_single((*frame)->cmdblk, frame);
-		printf("exec_code %d\n", exec_code);
 		if (!exec_code || exec_code < 0)
 			return (0);
 	}
