@@ -20,4 +20,5 @@ static char	*error_message(int status)
 void	error_printer(void)
 {
 	write(2, error_message(g_exit_status), ft_strlen(error_message(g_exit_status)));
+	g_exit_status = 2;
 }

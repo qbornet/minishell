@@ -1,5 +1,7 @@
 #include <minishell.h>
 
+int	g_exit_status;
+
 int	exit_group(t_data **d_curr)
 {
 	ft_free_all(d_curr);

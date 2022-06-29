@@ -5,18 +5,21 @@ int	lexer_parser_main(char *input, char **envp, t_data **d_curr)
 	t_data	*frame;
 
 	frame = *d_curr;
-	lexical_analysis(input, &frame->tokenlst);
+	if (lexical_analysis(input, &frame->tokenlst) < 0)
+		return (-1);
 	if (g_exit_status)
 	{
 		error_printer();
 		return (0);
 	}
 	frame->root = buildbtree(envp, frame->tokenlst);
+	if (!frame->root)
+		return (-1);
 	if (ft_read_flow(frame->root, &frame->strlst) < 0)
 	{
 		g_exit_status = 506;
 		error_printer();
-		return (0);
+		return (g_exit_status);
 	}
 	*d_curr = frame;
 	return (0);
