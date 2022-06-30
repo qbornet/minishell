@@ -1,4 +1,5 @@
 #include <minishell.h> // met toujours comme ca c'est pas pour faire le relou mais vue que notre .h est dans un dossier si je make ailleur que je creer mon propre .h je vais utiliser celui qui est dans le dir ou je make donc pas de '""' 🦊
+#define DEBUG 1
 
 static int set_default(t_cmdblock *cmdblk)
 {

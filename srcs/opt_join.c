@@ -1,26 +1,24 @@
 #include <minishell.h>
 
-int	opt_strlst(t_btree *root, t_lenlist **len_curr)
+int	opt_strlst(t_btree *r, t_lenlist **len_curr, int *cmd)
 {
 	int			i;
-	static int	flag;
 
-	if (root->node->type == E_VALID_FILE
-			|| root->node->type == E_VALID_BUILTIN
-			|| root->node->type == E_WORD)
+	if (r->node->type == E_VALID_FILE || r->node->type == E_VALID_BUILTIN
+			|| r->node->type == E_WORD)
 	{
-		i = ft_length_lst(root->node->tokenlst);
-		if (!flag)
+		i = ft_length_lst(r->node->tokenlst);
+		if (!*cmd)
 		{
 			(*len_curr)->length = i;
-			flag = 1;
+			*cmd = 1;
 		}
 		return (0);
 	}
-	if (root->node->type == E_PIPE)
+	if (r->node->type == E_PIPE)
 	{
 		*len_curr = (*len_curr)->next;
-		flag = 0;
+		*cmd = 0;
 	}
 	return (0);
 }

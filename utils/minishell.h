@@ -253,7 +253,7 @@ void		ft_print_tokenlist(t_tokenlist *lst);
 /* command_block.c ft_cmdblock.c */
 int			command_block(t_data **d_curr);
 int			start_expansion(t_data **d_curr);
-int			opt_strlst(t_btree *root, t_lenlist **len_curr);
+int			opt_strlst(t_btree *root, t_lenlist **len_curr, int *cmd);
 int			ft_length_lst(t_tokenlist *tokenlst);
 int			ft_retlenclear(t_lenlist **len_curr);
 int			ft_do_tilde(t_data	**d_curr);
