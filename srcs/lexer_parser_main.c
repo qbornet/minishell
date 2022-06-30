@@ -19,6 +19,7 @@ int	lexer_parser_main(char *input, char **envp, t_data **d_curr)
 	{
 		g_exit_status = 506;
 		ft_perror(NULL);
+		*d_curr = frame;
 		return (g_exit_status);
 	}
 	*d_curr = frame;
