@@ -1,21 +1,5 @@
 #include <minishell.h>
 
-static int	is_metachar(char c)
-{
-	if (c == '(' || c == ')'
-			|| c == '?'
-			|| c == '$'
-			|| c == '.'
-			|| c == '-'
-			|| c == '\\'
-			|| c == '!'
-			|| c == '\"'
-			|| c == '\''
-			|| (c >= 9 && c <= 13))
-		return (1);
-	return (0);
-}
-
 int	ft_dup_error(char **arr)
 {
 	size_t	i;
@@ -32,11 +16,14 @@ int	ft_checkvar_name(char *var)
 	int		flag;
 	size_t	i;
 
-	i = 0;
-	while (var[i])
-		if (is_metachar(var[i]))
+	i = -1;
+	flag = 0;
+	while (var[++i])
+		if (var[i] == '_')
 			flag = 1;
-	if (((ft_strchr(var, '=') || !ft_strchr(var, '=')) && var[0] != '=') && !flag)
+	if (ft_isalnum(var) && flag)
+		return (1);
+	else if (ft_isalnum(var) || flag)
 		return (1);
 	return (0);
 }
