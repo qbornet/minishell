@@ -84,7 +84,7 @@ static int	ft_export_var(char *var, t_data **d_curr)
 		if (!new[i])
 			return (ft_dup_error(new));
 	}
-	new[i++] = var;
+	new[i] = var;
 	(*d_curr)->envp = new;
 	return (ft_free_env(temp));
 }
