@@ -71,6 +71,7 @@ EXPAN = expansion.c \
 		expansion_error.c \
 		expansion_check.c \
 		expansion_tilde.c \
+		opt_join.c \
 		ft_create_cmd.c \
 		ft_create_join.c \
 		ft_lenlist.c \
