@@ -11,9 +11,7 @@ int	exit_group(t_data **d_curr)
 void	ft_null_reset(t_data **d_curr)
 {
 	t_data		*frame;
-	static int	flag;
 
-	flag = 0;
 	frame = *d_curr;
 	frame->lenlst = NULL;
 	frame->cmdblk = NULL;
