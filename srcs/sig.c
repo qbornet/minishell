@@ -1,12 +1,23 @@
 #include <minishell.h>
 
-void	new_handler(int signum)
+void	nint_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
 		close(STDIN_FILENO);
 		write(1, "^C\n", 3);
 		g_exit_status = 130;
+	}
+}
+
+void	nquit_handler(int signum)
+{
+	if (signum == SIGQUIT)
+	{
+		write(1, "\\^", 2);
+		write(2, "Quit (core dumped)\n", 19);
+		g_exit_status = 131;
+		close(STDIN_FILENO);
 	}
 }
 
@@ -18,6 +29,7 @@ void	sigint_handler(int signum)
 		rl_on_new_line();
 		write(1, "^C\n", 3);
 		rl_redisplay();
+		g_exit_status = 130;
 	}
 }
 

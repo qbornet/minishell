@@ -312,7 +312,8 @@ size_t	ft_strjoin_len(char *str);
 /* SIG_H */
 /* sig.c */
 int		set_sig(struct sigaction *act_int, struct sigaction *act_quit);
-void	new_handler(int signum);
+void	nquit_handler(int signum);
+void	nint_handler(int signum);
 void	sigint_handler(int signum);
 void	sigquit_handler(int signum);
 
@@ -394,6 +395,6 @@ int		ft_unlink_tmpfiles(t_cmdblock *cmdblock);
 /* Error printer */
 void	error_printer(void);
 
-extern int		g_exit_status;
+extern int	g_exit_status;
 
 #endif
