@@ -39,7 +39,7 @@ TOOLS = ft_tokenadd_back.c \
 	ft_tokensize.c \
 	free_str_utils.c \
 	free_int_utils.c \
-	error_printer.c \
+	ft_perror.c \
 	ft_qsort.c
 
 # File to create lexer part

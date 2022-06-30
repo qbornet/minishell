@@ -3,7 +3,7 @@
 static char	*error_message(int status)
 {
 	if (status == 127)
-		return ("cmd not found\n");
+		return ("command not found\n");
 	if (status == 501)
 		return ("minishell: make sure not to use ) ( &\n");
 	if (status == 502)
@@ -17,8 +17,18 @@ static char	*error_message(int status)
 	return (NULL);
 }
 
-void	error_printer(void)
+void	ft_perror(const char *s)
 {
+	if (!s)
+		write(2, "minishell", 10);
+	else
+		write(2, s, ft_strlen(s));
+	write(2, ": ", 2);
 	write(2, error_message(g_exit_status), ft_strlen(error_message(g_exit_status)));
 	g_exit_status = 2;
+}
+
+void	ft_pcustom_error(const char *s, int code)
+{
+
 }
