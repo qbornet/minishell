@@ -1,5 +1,12 @@
 #include <minishell.h>
 
+static int	ft_isword(int c)
+{
+	if (ft_isalnum(c) || c== '_')
+		return (1);
+	return (0);
+}
+
 static int	ft_checkalnum(char *var)
 {
 	char	*sub;
@@ -13,10 +20,9 @@ static int	ft_checkalnum(char *var)
 		return (-1);
 	else if (!sub[0])
 		return (0);
-	printf("substr: %s\n", sub);
 	i = -1;
 	while (sub[++i])
-		if (!ft_isalnum(sub[i]) || sub[i] != '_')
+		if (!ft_isword(sub[i]))
 			return (0);
 	return (1);
 }
