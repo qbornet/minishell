@@ -38,6 +38,8 @@ static int	set_start(struct termios *t, struct sigaction *act_int, struct sigact
 			return (ret_perror("tcgetattr() "));
 		if (t->c_lflag & ECHOCTL)
 			t->c_lflag &= ~ECHOCTL;
+		if (t->c_lflag & TOSTOP)
+			t->c_lflag &= ~TOSTOP;
 		if (tcsetattr(STDIN_FILENO, TCSANOW, t) < 0)
 			return (ret_perror("tsetattr() "));
 	}
@@ -52,10 +54,11 @@ int	start_prompt(t_data **d_curr)
 	struct sigaction	act_quit;
 
 	str = "";
-	if (set_start(&term, &act_int, &act_quit) < 0)
-		return (exit_group(d_curr));
-	while (str && ft_check_tty() && term_isig(&term))
+	ft_addlevel(&(*d_curr)->envp);
+	while (str && ft_check_tty())
 	{
+		if (set_start(&term, &act_int, &act_quit) < 0)
+			return (exit_group(d_curr));
 		str = readline(PROMPT);
 		if (!str)
 			return (write(1, "exit\n", 5) && exit_group(d_curr));
@@ -64,7 +67,8 @@ int	start_prompt(t_data **d_curr)
 			return (exit_group(d_curr));
 		if (start_expansion(d_curr) < 0)
 			return (exit_group(d_curr));
-		if (ft_pipe(d_curr, (*d_curr)->envp) < 0)
+		g_exit_status = run_exec(d_curr);
+		if (g_exit_status < 0)
 			return (exit_group(d_curr));
 		free_redoo(d_curr, str);
 	}

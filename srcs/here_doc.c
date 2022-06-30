@@ -1,14 +1,14 @@
 #include <minishell.h>
 
-static int	ret_res(t_termstd *fd, char *res)
+static int	ret_res(t_cmdblock **c_curr, char *res, char *word)
 {
-	int		fd_val;
-	char	*str;
+	int			fd_val;
+	char		*str;
 
 	str = ft_random_str("/tmp/heredoc-", 8);
 	if (!str)
 		return (-1);
-	fd_val = open(str, O_CREAT | O_EXCL | O_TRUNC | O_RDWR , 0644);
+	fd_val = open(str, O_CREAT | O_EXCL | O_RDWR , 0644);
 	if (fd_val == -1)
 	{
 		free(res);
@@ -17,14 +17,7 @@ static int	ret_res(t_termstd *fd, char *res)
 	write(fd_val, res, ft_null(res));
 	close(fd_val);
 	free(res);
-	fd_val = open(str, O_RDONLY);
-	unlink(str);
-	free(str);
-	if (fd_val == -1)
-		return (-1);
-	(void)fd;
-	dup2(fd_val, STDIN_FILENO);
-	return (close(fd_val));
+	return (ft_replace_node(&(*c_curr)->fd, word, str));
 }
 
 static char	*ft_strjoin_here(char *s1, char *s2)
@@ -81,7 +74,9 @@ static char	*ft_strendl(char *str)
 static char	*opt_here_doc(t_data **d_curr, char *str, int flag)
 {
 	int		to_do;
+	size_t	i;
 
+	i = 0;
 	if (flag)
 	{
 		to_do = ft_num_expand(str);
@@ -91,11 +86,12 @@ static char	*opt_here_doc(t_data **d_curr, char *str, int flag)
 			if (!str)
 				return (ft_error_malloc(((char *[]){str, NULL})));
 		}
+		opt_find_dollars(&str, &i);
 	}
 	return (str);
 }
 
-int	here_doc(t_data **d_curr, char *word)
+int	here_doc(t_data **d_curr, t_cmdblock **c_curr, char *word)
 {
 	int		flag;
 	char	*res;
@@ -120,5 +116,5 @@ int	here_doc(t_data **d_curr, char *word)
 		free(str);
 		str = NULL;
 	}
-	return (ret_res((*d_curr)->std_fd, res));
+	return (ret_res(c_curr, res, word));
 }

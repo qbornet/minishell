@@ -39,11 +39,6 @@ static int	ft_var(char *str, t_data **d_curr)
 {
 	int	res;
 
-	res = ft_ret_index(str, (*d_curr)->envp);
-	if (res == -2)
-		return (-1);
-	if (ft_check_pool(str, (*d_curr)->envp, res))
-		return (1);
 	res = ft_ret_index(str, (*d_curr)->var_pool);
 	if (res == -2)
 		return (-1);
@@ -79,12 +74,28 @@ static int	ft_search_expansion(t_data **d_curr)
 	return (0);
 }
 
+void	print_strlst(t_strlist *strlst)
+{
+
+	printf("strlst: ");
+	while (strlst)
+	{
+		printf("%s:%d->", (char *)strlst->data, strlst->s_id);
+		strlst = strlst->next;
+	}
+	printf("NULL\n");
+}
+
 int	start_expansion(t_data **d_curr)
 {
 	if (ft_search_expansion(d_curr) < 0)
 		return (-1);
 	ft_do_varexp(d_curr);
+	if (ft_do_tilde(d_curr) < 0)
+		return (ft_free_expan_error(d_curr));
 	if (ft_do_starexp(d_curr) < 0)
+		return (ft_free_expan_error(d_curr));
+	if (ft_do_quotes(d_curr) < 0)
 		return (ft_free_expan_error(d_curr));
 	if (ft_create_join(d_curr) < 0)
 		return (ft_free_expan_error(d_curr));
@@ -92,7 +103,6 @@ int	start_expansion(t_data **d_curr)
 		return (ft_free_expan_error(d_curr));
 	return (0);
 }
-
 
 /*
 char	**ft_dup_envp(char **envp)
@@ -124,17 +134,6 @@ char	**ft_dup_envp(char **envp)
 	return (new_env);
 }
 
-void	print_strlst(t_strlist *strlst)
-{
-
-	printf("strlst: ");
-	while (strlst)
-	{
-		printf("%s:%d->", (char *)strlst->data, strlst->s_id);
-		strlst = strlst->next;
-	}
-	printf("NULL\n");
-}
 
 void	ft_get_word(t_data **d_curr, t_btree *root)
 {

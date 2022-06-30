@@ -1,5 +1,15 @@
 #include <minishell.h>
 
+void	new_handler(int signum)
+{
+	if (signum == SIGINT)
+	{
+		close(STDIN_FILENO);
+		write(1, "^C\n", 3);
+		g_exit_status = 130;
+	}
+}
+
 void	sigint_handler(int signum)
 {
 	if (signum == SIGINT)
@@ -15,13 +25,6 @@ void	sigquit_handler(int signum)
 {
 	if (signum == SIGQUIT)
 		return ;
-}
-
-int	term_isig(const struct termios *term)
-{
-	if (term->c_lflag & ISIG)
-		return (1);
-	return (0);
 }
 
 int	set_sig(struct sigaction *act_int, struct sigaction *act_quit)

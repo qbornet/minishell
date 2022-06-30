@@ -1,24 +1,5 @@
-#include "minishell.h"
+#include <minishell.h>
 
-static char	*check_intab(char **tab, char *var_name)
-{
-	size_t	len;
-	size_t	var_len;
-
-	if (!tab)
-		return (NULL);
-	var_len = ft_len_metachar(var_name);
-	while (*tab)
-	{
-		len = ft_len_onechar(*tab, '=');
-		if (len < var_len)
-			len = var_len;
-		if (!ft_strncmp(*tab, var_name, len))
-			break ;
-		tab++;
-	}
-	return (*tab);
-}
 
 static void	new_data(char *tmp, t_strlist **strlst, char *result)
 {
@@ -48,25 +29,66 @@ static void	new_data(char *tmp, t_strlist **strlst, char *result)
 static char	*expand_var(char **s, t_strlist **strlst, char **env, t_data *frame)
 {
 	int		len;
+	int		flag;
 	char	*tmp;
 	char	*result;
 
+	flag = 0;
 	result = NULL;
-		tmp = check_intab(env, *s + 1);
+	if (!(*s)[1] && (*s)[0] == '$')
+		return (ft_strdup("$"));
+	opt_expandvar(&flag, &tmp, env, s);
 	if (!tmp)
 		tmp = check_intab(frame->var_pool, *s + 1);
-	while (tmp && *tmp && *tmp != '=')
+	while (!flag && tmp && *tmp && *tmp != '=')
 		tmp++;
-	if (tmp)
+	if (!flag && tmp)
 		tmp++;
-	len = ft_strlen(tmp) + ft_strlen((char *)(*strlst)->data)
-		- ft_len_metachar(*s);
+	len = ft_strlen(tmp) + ft_strlen((*strlst)->data) - ft_len_metachar(*s);
 	result = ft_calloc(len + 1, sizeof(char));
 	if (!result)
 		return (NULL);
 	new_data(tmp, strlst, result);
 	return (result);
 }
+
+char	*check_intab(char **tab, char *var_name)
+{
+	size_t	len;
+	size_t	var_len;
+
+	if (!tab)
+		return (NULL);
+	var_len = ft_len_metachar(var_name);
+	while (*tab)
+	{
+		len = ft_len_onechar(*tab, '=');
+		if (len < var_len)
+			len = var_len;
+		if (!ft_strncmp(*tab, var_name, len))
+			break ;
+		tab++;
+	}
+	return (*tab);
+}
+
+static int	check_empty_dol(t_strlist *strlst, char **result)
+{
+	char	*tmp;
+
+	if ((*result)[0] == '$')
+	{
+		tmp = strlst->data;
+		strlst->data = ft_strjoin(strlst->data, "");
+		free(tmp);
+		free(*result);
+		return (1);
+	}
+	free(strlst->data);
+	strlst->data = *result;
+	return (0);
+}
+
 
 void	expand(t_strlist *strlst, char **env, t_data **frame)
 {
@@ -79,8 +101,10 @@ void	expand(t_strlist *strlst, char **env, t_data **frame)
 	while (*s)
 	{
 		result = expand_var(&s, &strlst, env, *frame);
-		free(strlst->data);
-		strlst->data = result;
+		if (!result)
+			return ;
+		if (check_empty_dol(strlst, &result))
+			return ;
 		s = (char *)strlst->data;
 		while (*s && *s != '$')
 			s++;

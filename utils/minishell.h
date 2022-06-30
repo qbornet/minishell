@@ -19,10 +19,12 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+# define BIN_NAME "start"
+# define DFL_HOME "/home"
 # define OPEN_MAX 1024
-# define HEREDOC_PROMPT "\e[1;38;5;11m?>\e[0m "
+# define HEREDOC_PROMPT "\1\e[1;38;5;11m\2?>\1\e[0m\2 "
 # define DEFAULT_PATH "PATH=/usr/local/bin:/usr/bin:/bin"
-# define PROMPT "\e[1;38;5;12mminishell:>\e[0m "
+# define PROMPT "\1\e[1;38;5;12m\2minishell:>\1\e[0m\2 "
 # define ERR_PARSER "Error: Syntax error\n"
 # define ERR_COMMAND "Error: command not found\n"
 # define ERR_FILE "Error: no such file\n"
@@ -68,6 +70,7 @@ enum e_quote
 };
 
 typedef struct s_token {
+	int				error;
 	char			*lex;
 	size_t			len;
 	enum e_token	type;	
@@ -134,16 +137,25 @@ typedef	struct s_cmdblock
 {
 	int					len;
 	char				**cmd;
-	t_redirlist			*infile;
-	t_redirlist			*outfile;
+	t_redirlist			*fd;
 	t_termstd			*std_fd;
 	struct s_cmdblock	*next;
 }	t_cmdblock;
 
+typedef struct s_process
+{
+	int		**pipes;
+	int		*pids;
+	int		len_cmdb;
+	pid_t	pgrp;
+	pid_t	sid;
+} t_process;
+
 // Notre struct "foure tout"
 typedef struct s_data
 {
-	char		**envp; // pas oublier a strdup le envp au debut
+	int			total_cmd;
+	char		**envp;
 	char		**var_pool;
 	char		***cmd_pool;
 	t_btree		*root;
@@ -152,14 +164,16 @@ typedef struct s_data
 	t_lenlist	*lenlst;
 	t_cmdblock	*cmdblk;
 	t_tokenlist	*tokenlst;
+	t_process	pr;
 }	t_data;
 
 /* START_H */
-/* exit_free.c start.c start_prompt.c */
+/* exit_free.c start.c start_prompt.c stat_utils.c */
 
 int		exit_group(t_data **d_curr);
 int		start_prompt(t_data **d_curr);
 int		free_redoo(t_data **d_curr, char *str);
+int		ft_addlevel(char ***envp_curr);
 char	**ft_envp(char **envp);
 void	ft_free_all(t_data **d_curr);
 void	ft_free_envp(char **envp);
@@ -181,9 +195,10 @@ t_tokenlist	*ft_tokennew(void *content);
 t_tokenlist	*ft_tokenlast(t_tokenlist *lst);
 
 // Lexer utils
-int			is_special_token(char c, t_token *token);
+int			is_special_token(char c);
 void		word_token(char *input, t_token *token);
-int			is_eoi(char c, t_token *token);
+void		quotes_token(char **input, t_token *token);
+int			get_token(char **input, t_token *token);
 int			is_token_1(char *input, t_token *token);
 int			is_token_2(char *input, t_token *token);
 //void		sep_token(char *input, t_token *token);
@@ -233,11 +248,16 @@ void		ft_treeprint(t_btree *tree, int type);
 void		ft_print_tokenlist(t_tokenlist *lst);
 
 /* EXPANSION_H */
-/* expansion.c expansion_utils.c expansion_error.c expansion_check.c */
+/* expansion.c expansion_utils.c expansion_error.c expansion_check.c expansion_tidle.c*/
 /* ft_create_join.c ft_create_cmd.c ft_lenlst.c */
 /* command_block.c ft_cmdblock.c */
 int			command_block(t_data **d_curr);
 int			start_expansion(t_data **d_curr);
+int			opt_strlst(t_btree *root, t_lenlist **len_curr);
+int			ft_length_lst(t_tokenlist *tokenlst);
+int			ft_retlenclear(t_lenlist **len_curr);
+int			ft_do_tilde(t_data	**d_curr);
+int			ft_do_quotes(t_data	**d_curr);
 int			ft_create_cmd(t_data **d_curr, int total_cmd);
 int			ft_create_join(t_data **d_curr);
 int			ft_check_pool(char  *str, char **pool, int res);
@@ -262,14 +282,19 @@ int			ft_starcmp(const char *s1, const char *s2);
 
 /* VAREXP_H */
 /* varexp.c varexp_utils.c */
+int			ft_isexit(char *s);
+char		*check_intab(char **tab, char *var_name);
+void		opt_expandvar(int *flag, char **tmp, char **envp, char **s);
 void		expand(t_strlist *strlst, char **env, t_data **frame);
 size_t		ft_len_onechar(char *s, char a);
 size_t		ft_len_metachar(char *s);
 
 /* HERE_DOC_H */
 /* heredoc_str.c heredoc_utils.c heredoc_error.c here_doc.c */
-int		here_doc(t_data **d_curr, char *word);
+int		here_doc(t_data **d_curr, t_cmdblock **c_curr, char *word);
+int		ft_isexit_heredoc(char *str);
 int		opt_word(char **w_curr);
+int		ft_replace_node(t_redirlist **r_curr, char *word, char *tempfile);
 int		ft_error_here(char *word);
 int		ft_strcmp_here(char *s1, char *s2);
 char	*do_expand(t_data **d_curr, char *str);
@@ -277,6 +302,7 @@ char	*ft_varexp(char *var, char **envp, char **var_pool);
 char	*ft_error_ret(char *s1);
 char	*ft_error_malloc(char **arr);
 char	*ft_random_str(char *pathname, int bytes);
+void	heredoc_handler(int signum);
 void	opt_free_doexpand(char *str, char *begin_str, char *end_str);
 void	opt_find_dollars(char **s_curr, size_t *i);
 size_t	ft_num_expand(char *str);
@@ -286,50 +312,67 @@ size_t	ft_strjoin_len(char *str);
 /* SIG_H */
 /* sig.c */
 int		set_sig(struct sigaction *act_int, struct sigaction *act_quit);
-int		term_isig(const struct termios *term);
+void	new_handler(int signum);
 void	sigint_handler(int signum);
 void	sigquit_handler(int signum);
 
 /* BIN_H */
-int			ft_free_err(char **old, char **new);
-int			ft_pwd(void);
-int			ft_echo(const char *s, int flag);
-int			ft_cd(const char *path);
-int			ft_export(char *var, char ***env_curr);
-int			ft_unset(char *var, char ***env_curr);
-int			ft_env(char **envp);
+int			ft_checkvar_name(char *var);
+int			ft_printerror(char *var);
+int			ft_recreate_envp(char ***envp, ssize_t index_envp);
+int			ft_recreate_vpool(char ***vpool, ssize_t index_vpool);
+int			ft_dup_error(char **arr);
+int			ft_pwd(t_cmdblock *cmdblock);
+int			ft_echo(const t_cmdblock *cmdblock);
+int			ft_cd(const t_cmdblock *cmdblock, char **envp);
+int			ft_export(t_data **frame);
+int			ft_unset(t_data **frame);
+int			ft_env(t_cmdblock *cmdblk, char **envp);
+void		ft_exit(t_data **d_curr, int status);
 int			print_error(t_error code);
+char		*search_varpool(char *var, char **var_pool);
+
+/* EXEC_H */
+/* Exec */
+int			run_exec(t_data **frame);
+
+/* Exec utils */
+int			ft_len_cmdblk(t_cmdblock *cmdblock);
+int			ft_init_exec(t_data **frame);
+int			get_cmd_tab(t_cmdblock *cmdblock, char **env);
+int			exec_cmd(t_cmdblock *cmdblock, char **env);
+
+/* Builtin exec */
+int			is_builtin(t_cmdblock *cmdblock, t_data **frame);
+int			exec_builtin_single(t_cmdblock *cmdblock, t_data **frame);
 
 /* PIPE_H */
 /* Pipex */
-int		get_cmd_tab(t_cmdblock *cmdblock, char **env);
-int		exec_cmd(t_cmdblock *cmdblock, char **env);
-int		pipex(int **pipes, int *pids, char **envp, t_cmdblock *cmdblock);
+int			pipex(t_process *pr, t_data **frame, t_cmdblock *cmdblock);
 
 /* Pipex tools */
-int		dup_in(int new_in);
-int		dup_out(int new_out);
-int		close_pipe(int *pd);
-int		set_outfile(t_redirlist *outfile);
-int		set_infile(t_data **frame, t_redirlist *infile);
+int			dup_in(int new_in);
+int			dup_out(int new_out);
+int			close_pipe(int *pd);
+int			set_fd(t_redirlist *fd);
 
 /* Pipes */
-int			ft_pipe(t_data **frame, char **envp);
+int			ft_pipe(t_process *pr, t_data **frame);
 t_cmdblock	*next_cmdb(int i, t_cmdblock **curr);
 
 /* Pipe utils 0 */
-int		open_fd(int **pipes, t_data **frame, int pipes_len, int i);
+int			open_fd(t_process *pr, t_cmdblock *cmdblock, int i);
 
 /* Redirection */
-int		ft_redirection_less(char *infile);
-int		ft_redirection_great(char *outfile);
-int		ft_redirection_dgreat(char *outfile);
-int		ft_redirection_pipe_in(int *pd, int pid);
-int		ft_redirection_pipe_out(int *pd, int pid);
+int			ft_redirection_less(char *infile);
+int			ft_redirection_great(char *outfile);
+int			ft_redirection_dgreat(char *outfile);
+int			ft_redirection_pipe_in(int *pd, int pid);
+int			ft_redirection_pipe_out(int *pd, int pid);
 
 /* Pipe utils 1 */
-int		close_pipes(int **pipes, int pipes_len, int *pids, int i);
-int		alloc_pipes_pids(int ***pipes, int **pids, int pipes_len);
+int			close_pipes(t_process *pr, int i);
+int			alloc_pipes_pids(t_process *pr);
 
 /* Free tools */
 char	*free_str(char *str);
@@ -339,12 +382,18 @@ char	*free_str_tab(char **tab, int index);
 void	*free_int_tab(int **tab, int i);
 void	*free_int(int *tab);
 int		free_pipes_pids(int **tab1, int *tab2, int pipes_len, int return_val);
-int		free_and_msg(int **tab1, int *tab2, int index, char *msg);
+int		free_and_msg(int **tab1, int *tab2, int pipes_len, char *msg);
 
 /* Error tools */
 int		standard_error(char *str);
 int		main_error(char *str);
 int		error(char *str);
-int		pipex_status(int pipes_len, int **pipes, int *pids);
+int		pipex_status(t_data **frame, t_process *pr);
+int		ft_unlink_tmpfiles(t_cmdblock *cmdblock);
+
+/* Error printer */
+void	error_printer(void);
+
+extern int		g_exit_status;
 
 #endif

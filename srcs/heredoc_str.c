@@ -33,10 +33,9 @@ char	*get_end_exp(t_data **d_curr, char *end_str)
 	size_t	i;
 
 	i = 1;
-	while (end_str[i] && ft_isalnum(end_str[i]))
+	while (end_str[i] && (ft_isalnum(end_str[i]) || end_str[i] == '?'))
 		i++;
 	var = ft_substr(end_str, 1, (i - 1));
-	printf("res: %s\n", var);
 	if (!*var)
 		return (var);
 	if (!var)

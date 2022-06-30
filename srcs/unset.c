@@ -1,82 +1,80 @@
-#include "bin.h"
-#include "libft/utils/libft.h"
+#include "minishell.h"
 
-/* TODO:
+/* TODO: ✔️ 
  * - Doit unset toute les variables qui ont le meme nom dans var_pool et envp */
 
-static long	ft_len(char **envp)
+static long	index_match(char *var, char **envp)
 {
-	long	i;
-
-	i = 0;
-	while (envp[i])
-		i++;
-	return (i);
-}
-
-/* Compare cmp_var et envp[i];
- * Retourne la position de var dans envp, -1 sinon */
-
-static int	index_match(char *var, char **envp)
-{
-	char	*cmp_var;
 	int		i;
 
 	i = 0;
-	cmp_var = ft_strjoin(var, "=");
 	while (envp[i])
 	{
-		if (!ft_strncmp(cmp_var, envp[i], ft_strlen(var) + 1))
-		{
-			free(cmp_var);
+		if (!ft_strncmp(var, envp[i], ft_strlen(var)))
 			return (i);
-		}
 		i++;
 	}
-	free(cmp_var);
 	return (-1);
 }
 
-static int	free_str_tab(char **new, int last)
-{
-	while (last--)
-		free(new[last]);
-	return (-1);
-}
-
-/* Prend env, regarde pour var dans env et le retire.
- * Alloue de la memoire de facon approprie */
-
-int	ft_unset(char *var, char ***env_curr)
+static long	index_match_vpool(char *var, char **var_pool)
 {
 	int		i;
-	char	**envp;
-	char	**new;
-	int		index_to_unset;
 
-	envp = *env_curr;
-	new = (char **)malloc(sizeof(char *) * ft_len(envp));
-	if (!new)
-		return (1);
-	index_to_unset = index_match(var, envp);
-	if (index_to_unset == -1)
-		return (2);
 	i = 0;
-	while (*envp)
+	while (var_pool[i])
 	{
-		if (i == index_to_unset)
-			envp++;
-		new[i] = ft_strdup(*envp++);
-		if (!new[i])
-			return (free_str_tab(new, i));
+		if (!ft_strncmp(var, var_pool[i], ft_strlen(var)))
+			return (i);
 		i++;
 	}
-	new[i] = NULL;
-	*env_curr = new;
+	return (-1);
+}
+
+static int	ft_unset_var(t_data **d_curr, char *var)
+{
+	long	index_envp;
+	long	index_vpool;
+
+	index_envp = index_match(var, (*d_curr)->envp);
+	index_vpool = index_match_vpool(var, (*d_curr)->var_pool);
+	if (ft_recreate_envp(&(*d_curr)->envp, index_envp) < 0)
+		return (1);
+	if (ft_recreate_vpool(&(*d_curr)->var_pool, index_vpool) < 0)
+		return (1);
+	return (0);
+}
+
+int	ft_unset(t_data **frame)
+{
+	int			i;
+	char		*var;
+	t_cmdblock *cmdblock;
+
+	i = 1;
+	cmdblock = (*frame)->cmdblk;
+	while (cmdblock->cmd[i])
+	{
+		var = ft_strdup(cmdblock->cmd[i]);
+		if (!var)
+			return (-1);
+		if (ft_strchr(var, '-'))
+		{
+			ft_putstr_fd("unset: no option for unset ", 2);
+			ft_putendl_fd(var, 2);
+			free(var);
+			return (1);
+		}
+		if (ft_unset_var(frame, cmdblock->cmd[i]))
+			return (-1);
+		i++;
+		free(var);
+	}
 	return (0);
 }
 
 /*
+
 int	main(int ac, char **av, char **envp)
 {
 	char	*str;

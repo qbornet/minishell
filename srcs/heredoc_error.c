@@ -21,3 +21,19 @@ char	*ft_error_malloc(char **arr)
 		free(arr[i]);
 	return (NULL);
 }
+
+void	heredoc_handler(int signum)
+{
+	struct sigaction	act;
+
+	if (signum == SIGINT)
+	{
+		ft_memset(&act, 0, sizeof(struct sigaction));
+		close(0);
+		write(1, "^C", 2);
+		sigaddset(&act.sa_mask, SIGINT);
+		act.sa_handler = &sigint_handler;
+		sigaction(SIGINT, &act, NULL);
+		g_exit_status = 130;
+	}
+}

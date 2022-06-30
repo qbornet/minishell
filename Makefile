@@ -1,6 +1,6 @@
 # Configuration
 #---------------------------------------------------
-# main is in expansion.c
+# main is in start.c
 
 # Output 
 NAME = minishell
@@ -26,6 +26,7 @@ SRCS = 	env_utils.c \
 	sig.c \
 	exit_free.c \
 	start_prompt.c \
+	start_utils.c \
 	start.c 
 
 # Tools
@@ -38,11 +39,13 @@ TOOLS = ft_tokenadd_back.c \
 	ft_tokensize.c \
 	free_str_utils.c \
 	free_int_utils.c \
+	error_printer.c \
 	ft_qsort.c
 
 # File to create lexer part
 LEXER = lexer.c \
-	lexer_utils.c
+	lexer_utils.c \
+	quotes.c
 
 # File to create binary tree part
 BTREE = btreebuilder.c \
@@ -67,6 +70,8 @@ EXPAN = expansion.c \
 		expansion_utils.c \
 		expansion_error.c \
 		expansion_check.c \
+		expansion_tilde.c \
+		opt_join.c \
 		ft_create_cmd.c \
 		ft_create_join.c \
 		ft_lenlist.c \
@@ -88,6 +93,19 @@ PIPE = pipe.c \
 	pipex.c \
 	pipex_utils.c \
 	ft_redirection.c \
+	exec.c \
+	exec_utils.c \
+	exec_builtin.c \
+	export.c \
+	export_error.c \
+	export_vpool.c \
+	echo.c \
+	cd.c \
+	pwd.c \
+	unset.c \
+	unset_utils.c \
+	env.c \
+	exit.c \
 	error_tools.c
 
 

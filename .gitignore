@@ -6,3 +6,6 @@
 tags
 lexer
 objs
+start
+minishell
+pipe

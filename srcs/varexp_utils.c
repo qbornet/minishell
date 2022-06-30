@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include <minishell.h>
 
 size_t	ft_len_onechar(char *s, char a)
 {
@@ -23,6 +23,7 @@ int	is_metachar(char c)
 		|| c == ')'
 		|| c == '<'
 		|| c == '>'
+		|| c == '/'
 		|| c == '$' 
 		|| c == '*'
 		|| c == '\''
@@ -43,4 +44,20 @@ size_t	ft_len_metachar(char *s)
 	return (s - tmp);
 }
 
+int		ft_isexit(char *s)
+{
+	if (s[1] == '?' && s[2] == '\0')
+		return (1);
+	return (0);
+}
 
+void	opt_expandvar(int *flag, char **tmp, char **env, char **s)
+{
+	if (ft_isexit(*s))
+	{
+		*tmp = ft_itoa(g_exit_status);
+		*flag = 1;
+	}
+	else
+		*tmp = check_intab(env, *s + 1);
+}

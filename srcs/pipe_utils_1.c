@@ -6,18 +6,18 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:04:52 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/15 18:41:07 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/06/23 17:28:27 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	close_pipes(int **pipes, int pipes_len, int *pids, int i)
+int	close_pipes(t_process *pr, int i)
 {
+	int	pipes_len;
 	int	j;
 
-	if (pipes_len == 0)
-		return (0);
+	pipes_len = pr->len_cmdb - 1;
 	j = -1;
 	if (i == 0)
 		j = 0;
@@ -27,9 +27,9 @@ int	close_pipes(int **pipes, int pipes_len, int *pids, int i)
 	{
 		if (i == 0 || i == pipes_len || (j != i && j != i - 1))
 		{
-			if (close_pipe(pipes[j]) == -1)
+			if (close_pipe(pr->pipes[j]) == -1)
 			{	
-				free_pipes_pids(pipes, pids, pipes_len, 1);
+				free_pipes_pids(pr->pipes, pr->pids, pipes_len, 1);
 				ft_putendl_fd("close_pipes: error", 2);
 				return (-1);
 			}
@@ -57,18 +57,18 @@ static int	**malloc_and_open_pipes(int len)
 	return (p);
 }
 
-int	alloc_pipes_pids(int ***pipes, int **pids, int pipes_len)
+int	alloc_pipes_pids(t_process *pr)
 {
-	if (pipes_len > 0)
+	if (pr->len_cmdb> 0)
 	{
-		*pipes = malloc_and_open_pipes(pipes_len - 1);
-		if (!*pipes)
+		pr->pipes = malloc_and_open_pipes(pr->len_cmdb - 1);
+		if (!pr->pipes)
 			return (error("malloc_pipes: error"));
 	}
-	*pids = malloc(sizeof(int) * pipes_len);
-	if (!*pids)
+	pr->pids = malloc(sizeof(int) * pr->len_cmdb);
+	if (!pr->pids)
 	{
-		free_int_tab(*pipes, 0);
+		free_int_tab(pr->pipes, 0);
 		return (error("malloc pids: error"));
 	}
 	return (0);

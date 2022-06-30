@@ -4,60 +4,35 @@ static int	insert_cmd(t_data **d_curr)
 {
 	size_t		i;
 	char		***cpool;
+	int			total_cmd;
 
-	i = -1;
+	i = 0;
+	total_cmd = (*d_curr)->total_cmd;
 	cpool = (*d_curr)->cmd_pool;
-	while (cpool[++i])
-		if (ft_blockadd_back(\
-					&(*d_curr)->cmdblk, (*d_curr)->std_fd, cpool[i]) < 0)
-			return (-1);
-	if (!cpool[0])
-		if (ft_blockadd_back(\
-					&(*d_curr)->cmdblk, (*d_curr)->std_fd, NULL) < 0)
-			return (-1);
-	return (0);
-}
-
-static int	insert_outfile(t_btree *r, t_cmdblock **cmd_curr)
-{
-	char			*str;
-	t_token			*token;
-
-	if (r && r->node)
+	while (total_cmd--)
 	{
-		if (insert_outfile(r->left, cmd_curr) < 0)
-			return (-1);
-		if (r->node->type == E_GREAT || r->node->type == E_DGREAT)
+		if (!cpool[i])
 		{
-			if (r->right && r->right->node->type == E_FD)
-				token = r->right->node->token;
-			if (r->right->left && r->right->left->node->type == E_FD)
-				token = r->right->left->node->token;
-			str = ft_create_str(token->lex, token->len);
-			if (!str)
-				return (-1);
-			if (ft_rediradd_back(&(*cmd_curr)->outfile, str, r->node->type) < 0)
+			if (ft_blockadd_back(\
+						&(*d_curr)->cmdblk, (*d_curr)->std_fd, NULL) < 0)
 				return (-1);
 		}
-		if (r->node->type == E_PIPE)
-			*cmd_curr = (*cmd_curr)->next;
-		if (insert_outfile(r->right, cmd_curr) < 0)
+		else if (ft_blockadd_back(\
+					&(*d_curr)->cmdblk, (*d_curr)->std_fd, cpool[i]) < 0)
 			return (-1);
+		i++;
 	}
 	return (0);
 }
 
-static int	insert_infile(t_btree *r, t_cmdblock **cmd_curr)
+static int	opt_insert_filedes(t_btree *r, t_cmdblock **cmd_curr)
 {
-	char		*str;
-	t_token		*token;
+	char	*str;
+	t_token	*token;
 
-	if (r && r->node)
+	if (r->node->type == E_GREAT || r->node->type == E_DGREAT
+		|| r->node->type == E_LESS || r->node->type == E_DLESS)
 	{
-		if (insert_infile(r->left, cmd_curr) < 0)
-			return (-1);
-		if (r->node->type == E_LESS || r->node->type == E_DLESS)
-		{
 			if (r->right && r->right->node->type == E_FD)
 				token = r->right->node->token;
 			if (r->right->left && r->right->left->node->type == E_FD)
@@ -65,12 +40,23 @@ static int	insert_infile(t_btree *r, t_cmdblock **cmd_curr)
 			str = ft_create_str(token->lex, token->len);
 			if (!str)
 				return (-1);
-			if (ft_rediradd_back(&(*cmd_curr)->infile, str, r->node->type) < 0)
+			if (ft_rediradd_back(&(*cmd_curr)->fd, str, r->node->type) < 0)
 				return (-1);
-		}
+	}
+	return (0);
+}
+
+static int	insert_filedes(t_btree *r, t_cmdblock **cmd_curr)
+{
+	if (r && r->node)
+	{
+		if (insert_filedes(r->left, cmd_curr) < 0)
+			return (-1);
+		if (opt_insert_filedes(r, cmd_curr) < 0)
+			return (-1);
 		if (r->node->type == E_PIPE)
 			*cmd_curr = (*cmd_curr)->next;
-		if (insert_infile(r->right, cmd_curr) < 0)
+		if (insert_filedes(r->right, cmd_curr) < 0)
 			return (-1);
 	}
 	return (0);
@@ -83,11 +69,7 @@ int	command_block(t_data **d_curr)
 	if (insert_cmd(d_curr) < 0)
 		return (-1);
 	tmp = (*d_curr)->cmdblk;
-	if (insert_outfile((*d_curr)->root, &(*d_curr)->cmdblk) < 0)
-		return (-1);
-	(*d_curr)->cmdblk = tmp;
-	tmp = (*d_curr)->cmdblk;
-	if (insert_infile((*d_curr)->root, &(*d_curr)->cmdblk) < 0)
+	if (insert_filedes((*d_curr)->root, &(*d_curr)->cmdblk) < 0)
 		return (-1);
 	(*d_curr)->cmdblk = tmp;
 	return (0);
