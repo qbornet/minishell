@@ -227,6 +227,7 @@ char		*free_str(char *str);
 char		*free_tab(char **tab);
 char		*free_elt_tab(char **tab);
 char		*free_str_tab(char **tab, int index);
+char		*ft_last_level(char *str);
 /* AST_H */
 /* ft_strlist.c ft_read_flow.c */
 int			lexer_parser_main(char *input, char **envp, t_data **d_curr);
