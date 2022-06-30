@@ -55,7 +55,7 @@ static int	replace_env(char *var, char ***env_curr)
 		return (1);
 	envp = *env_curr;
 	free(envp[start]);
-	envp[start] = var;
+	envp[start] = ft_strdup(var);
 	*env_curr = envp;
 	return (0);
 }

@@ -43,11 +43,10 @@ char	*search_varpool(char *var, char **var_pool)
 		return (NULL);
 	if (ft_search_equals(dup))
 		return (dup);
-	if (ft_replace_var(&var, var_pool) < 0)
+	if (ft_replace_var(&dup, var_pool) < 0)
 	{
 		free(dup);
 		return (NULL);
 	}
-	free(dup);
-	return (var);
+	return (dup);
 }
