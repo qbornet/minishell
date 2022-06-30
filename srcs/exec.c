@@ -3,25 +3,21 @@
 static int set_default(t_cmdblock *cmdblk)
 {
 	char				*str;
-	struct sigaction	sa;
 	struct sigaction	sa_int;
 	struct sigaction	sa_new;
 	struct sigaction	sa_quit;
 
-	/* Fix segfault mais je sais pas l'impact sur les sigaction en dessous) ✔️ */
 	if (!cmdblk->cmd)
 		str = "";
 	else
 		str = cmdblk->cmd[0];
-	ft_memset(&sa, 0, sizeof(struct sigaction));
 	ft_memset(&sa_int, 0, sizeof(struct sigaction));
 	ft_memset(&sa_new, 0, sizeof(struct sigaction));
 	ft_memset(&sa_quit, 0, sizeof(struct sigaction));
-	sa.sa_handler = SIG_DFL;
 	sa_int.sa_handler = SIG_IGN;
 	sa_new.sa_handler = &nint_handler;
 	sa_quit.sa_handler = &nquit_handler;
-	if (str && *str && ft_strnstr(str, BIN_NAME, ft_strlen(BIN_NAME)))
+	if (str && *str && !ft_strncmp(ft_last_level(str), BIN_NAME, ft_strlen(BIN_NAME)))
 		sigaction(SIGINT, &sa_int, NULL);
 	else
 		sigaction(SIGINT, &sa_new, NULL);
