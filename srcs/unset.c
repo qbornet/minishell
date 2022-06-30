@@ -36,6 +36,8 @@ static int	ft_unset_var(t_data **d_curr, char *var)
 	long	index_envp;
 	long	index_vpool;
 
+	if (!*var)
+		return (0);
 	index_envp = index_match(var, (*d_curr)->envp);
 	index_vpool = index_match_vpool(var, (*d_curr)->var_pool);
 	if (ft_recreate_envp(&(*d_curr)->envp, index_envp) < 0)
