@@ -83,8 +83,12 @@ int	ft_do_tilde(t_data **d_curr)
 	while (strlst)
 	{
 		str = strlst->data;
+		if (!str)
+			return (0);
 		ret = ft_strchr(str, '~');
-		if (ret && !ft_isalnum(*(ret + 1)) && !ft_isalnum(*(ret - 1)) && !ft_findquotes(str))
+		if (!ret)
+			return (0);
+		else if (ret && !ft_isalnum(*(ret + 1)) && !ft_isalnum(*(ret - 1)) && !ft_findquotes(str))
 		{
 			strlst->data = ft_add_homes(&str, (*d_curr)->envp);
 			if (!strlst->data)
