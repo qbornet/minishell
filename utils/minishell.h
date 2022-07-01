@@ -37,6 +37,7 @@ typedef enum e_error
 	E_FORBIDDEN_1,
 	E_UNC_QUO,
 	E_TOK_CREA,
+	E_SYNTAX,
 }	t_error;
 
 enum e_token

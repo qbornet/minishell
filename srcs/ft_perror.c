@@ -11,8 +11,8 @@ static char	*internal_error(const int status)
 		return ("something went wrong in token creation\n");
 	if (status == E_UNC_QUO)
 		return ("unclosed quotes\n");
-	if (status == 506)
-		return ("syntax error\n");
+	if (status == E_SYNTAX)
+		return ("syntax error near unexpected token ");
 	return (NULL);
 }
 
@@ -24,12 +24,18 @@ void	ft_perror(const char *s, const int code)
 		status = code;
 	else
 		status = g_exit_status;
-	if (!s)
+	if (!s || status == E_SYNTAX)
 		write(2, "minishell", 10);
 	else
 		write(2, s, ft_strlen(s));
 	write(2, ": ", 2);
 	write(2, internal_error(status), ft_strlen(internal_error(status)));
+	if (status == E_SYNTAX)
+	{
+		write(2, "`", 1);
+		write(2, s, ft_strlen(s));
+		write(2, "'\n", 2);
+	}
 }
 
 int	ft_perror_ret(const char *s, const int code, const int rvalue)

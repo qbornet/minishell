@@ -42,7 +42,6 @@ char	*ft_create_str(char *lex, size_t len)
 	return (str);
 }
 
-
 int	ft_find_operator(t_btree *tree)
 {
 	if (tree && tree->node)
@@ -58,6 +57,30 @@ int	ft_find_operator(t_btree *tree)
 		else if (tree->node->type == E_DLESS)
 			return (5);
 	}
+	return (0);
+}
+
+static int	is_operator(t_btree *tree)
+{
+	char			*err_msg;
+	t_token			*token;
+	enum e_token	type;
+
+	token = tree->node->tokenlst->next->token;
+	type = token->type;
+	if (type == E_GREAT || type == E_LESS || type == E_DGREAT
+		|| type == E_DLESS || type == E_PIPE)
+	{
+		err_msg = ft_calloc(token->len + 1, sizeof(char));
+		if (!err_msg)
+			return (-1);
+		ft_strlcpy(err_msg, token->lex, token->len + 1);
+		ft_perror(err_msg, E_SYNTAX);
+		free(err_msg);
+		return (1);
+	}
+	else if (!tree->right)
+		return (ft_perror_ret("newline", E_SYNTAX, 1));
 	return (0);
 }
 
@@ -82,7 +105,7 @@ int	ft_read_flow(t_btree *tree, t_strlist **s_curr)
 			return (-1);
 		res = ft_find_operator(tree);
 		if (res)
-			if (!tree->right)
+			if (is_operator(tree))
 				return (-1);
 		if (ft_read_flow(tree->right, s_curr) < 0)
 			return (-1);
