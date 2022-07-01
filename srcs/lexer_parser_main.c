@@ -6,8 +6,6 @@ int	lexer_parser_main(char *input, char **envp, t_data **d_curr)
 
 	frame = *d_curr;
 	if (lexical_analysis(input, &frame->tokenlst) < 0)
-		return (-1);
-	if (g_exit_status)
 		return (0);
 	frame->root = buildbtree(envp, frame->tokenlst);
 	if (!frame->root)

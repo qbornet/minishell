@@ -36,6 +36,7 @@ typedef enum e_error
 	E_FORBIDDEN_0 = 1,
 	E_FORBIDDEN_1,
 	E_UNC_QUO,
+	E_TOK_CREA,
 }	t_error;
 
 enum e_token
@@ -69,7 +70,6 @@ enum e_quote
 };
 
 typedef struct s_token {
-	int				error;
 	char			*lex;
 	size_t			len;
 	enum e_token	type;	
@@ -394,6 +394,7 @@ int		ft_unlink_tmpfiles(t_cmdblock *cmdblock);
 
 /* Error printer */
 void	ft_perror(const char *s, const int code);
+int		ft_perror_ret(const char *s, const int code, const int rvalue);
 
 extern int	g_exit_status;
 

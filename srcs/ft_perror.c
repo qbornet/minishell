@@ -3,11 +3,11 @@
 static char	*internal_error(const int status)
 {
 	g_exit_status = 2;
-	if (status == 501)
+	if (status == E_FORBIDDEN_0)
 		return ("make sure not to use ) ( &\n");
-	if (status == 502)
+	if (status == E_FORBIDDEN_1)
 		return ("make sure not to use ||\n");
-	if (status == 503 || status ==  504)
+	if (status == E_TOK_CREA)
 		return ("something went wrong in token creation\n");
 	if (status == E_UNC_QUO)
 		return ("unclosed quotes\n");
@@ -30,4 +30,10 @@ void	ft_perror(const char *s, const int code)
 		write(2, s, ft_strlen(s));
 	write(2, ": ", 2);
 	write(2, internal_error(status), ft_strlen(internal_error(status)));
+}
+
+int	ft_perror_ret(const char *s, const int code, const int rvalue)
+{
+	ft_perror(s, code);
+	return (rvalue);
 }

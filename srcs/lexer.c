@@ -10,7 +10,6 @@ static t_token	*tokeninit(char **input, unsigned int qt)
 	token->lex = *input;
 	token->type = 0;
 	token->qt = qt;
-	token->error = 0;
 	token->len = 0;
 	return (token);
 }
@@ -34,34 +33,17 @@ static t_token	*get_next_token(char **input, unsigned int qt)
 	token = tokeninit(input, qt);
 	if (!token)
 		return (NULL);
-	token->error = get_token(input, token);
+	get_token(input, token);
 	*input += token->len;
 	if (token->qt)
 	{
 		token->type = E_ERROR;
-		ft_perror(NULL, E_QUO_UNC); 
+		ft_perror(NULL, E_UNC_QUO);
 	}
 	if (token->type == E_ERROR
 		|| !token->type)
 		token->lex = NULL;
 	return (token);
-}
-
-static int	ft_free_handler(t_token **token, t_tokenlist **lst)
-{
-	if (!*lst)
-		g_exit_status = 504;
-	else
-		ft_tokenclear(lst, free);
-	if (!*token)
-	{
-		g_exit_status = 503;
-		return (-1);
-	}
-	else if ((*token)->error)
-		g_exit_status = (*token)->error;
-	free(*token);
-	return (2);
 }
 
 /* Fonction pour generer une liste chaine de token
@@ -88,11 +70,13 @@ int	lexical_analysis(char *input, t_tokenlist **lst)
 			token = get_next_token(&input, ft_tokenlast(newlst)->token->qt);
 		else
 			token = get_next_token(&input, 0);
+		if (!token)
+			ft_perror(NULL, E_TOK_CREA);
 		if (!token || !token->lex)
-			return (ft_free_handler(&token, lst));
+			return (-1);
 		newlst = ft_tokennew(token);
 		if (!newlst)
-			return (ft_free_handler(&token, lst));
+			return (ft_perror_ret(NULL, E_TOK_CREA, -1));
 		ft_tokenadd_back(lst, newlst);
 		if (token->type == E_EOI)
 			break ;

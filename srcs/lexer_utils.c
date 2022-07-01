@@ -2,17 +2,27 @@
 
 int	get_token(char **input, t_token *token)
 {
+	int	t1;
+	int	t2;
+
 	if (!**input)
 	{
 		token->type = E_EOI;
 		token->len = 0;
+		return (0);
 	}
-	if (is_token_2(*input, token))
-		return (502);
-	if (is_token_1(*input, token))
-		return (501);
+	t2 = is_token_2(*input, token);
+	if (t2 < 0)
+		return (ft_perror_ret(NULL, E_FORBIDDEN_1, -1));
+	if (t2)
+		return (2);
+	t1 = is_token_1(*input, token);
+	if (t1 < 0)
+		return (ft_perror_ret(NULL, E_FORBIDDEN_0, -1));
+	if (t1)
+		return (1);
 	word_token(*input, token);
-	return (0);
+	return (3);
 }
 
 /* Fonction pour detecter un char qui pourrait
@@ -118,8 +128,12 @@ int	is_token_1(char *input, t_token *token)
 	else if (*input == '('
 		|| *input == ')'
 		|| *input == '&')
+	{
 		token->type = E_ERROR;
-	if (token->type && !token->qt)
+		token->len = 1;
+		return (-1);
+	}
+	if ((token->type && !token->qt))
 	{
 		token->len = 1;
 		return (1);
@@ -130,15 +144,19 @@ int	is_token_1(char *input, t_token *token)
 int	is_token_2(char *input, t_token *token)
 {
 	if (!ft_strncmp("||", input, 2))
+	{
 		token->type = E_ERROR;
+		token->len = 2;
+		return (-1);
+	}
 	else if (!ft_strncmp("<<", input, 2))
 		token->type = E_DLESS;
 	else if (!ft_strncmp(">>", input, 2))
 		token->type = E_DGREAT;
-	if (token->type && !token->qt)
+	if ((token->type && !token->qt))
 	{
 		token->len = 2;
-		return (2);
+		return (1);
 	}
 	return (0);
 }
