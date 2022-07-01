@@ -394,7 +394,7 @@ int		pipex_status(t_data **frame, t_process *pr);
 int		ft_unlink_tmpfiles(t_cmdblock *cmdblock);
 
 /* Error printer */
-void	ft_perror(const char *s);
+void	ft_perror(const char *s, const int code);
 
 extern int	g_exit_status;
 

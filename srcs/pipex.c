@@ -29,7 +29,7 @@ int	pipex(t_process *pr, t_data **frame, t_cmdblock *cmdblock)
 		free_pipes_pids(pr->pipes, pr->pids, cmdblock->len, -1);
 		g_exit_status = 127;
 		if (cmdblock->cmd)
-			ft_perror(cmdblock->cmd[0]);
+			ft_perror(cmdblock->cmd[0], 0);
 		return (-1);
 	}
 	if (exec_cmd(cmdblock, (*frame)->envp) < 0)
@@ -37,7 +37,7 @@ int	pipex(t_process *pr, t_data **frame, t_cmdblock *cmdblock)
 		free_pipes_pids(pr->pipes, pr->pids, cmdblock->len, -1);
 		g_exit_status = 126;
 		if (cmdblock->cmd)
-			ft_perror(cmdblock->cmd[0]);
+			ft_perror(cmdblock->cmd[0], 0);
 		return (-1);
 	}
 	exit(0);

@@ -9,7 +9,7 @@ int	lexer_parser_main(char *input, char **envp, t_data **d_curr)
 		return (-1);
 	if (g_exit_status)
 	{
-		ft_perror(NULL);
+		ft_perror(NULL, 0);
 		return (0);
 	}
 	frame->root = buildbtree(envp, frame->tokenlst);
@@ -18,7 +18,7 @@ int	lexer_parser_main(char *input, char **envp, t_data **d_curr)
 	if (ft_read_flow(frame->root, &frame->strlst) < 0)
 	{
 		g_exit_status = 506;
-		ft_perror(NULL);
+		ft_perror(NULL, 0);
 		*d_curr = frame;
 		return (g_exit_status);
 	}
