@@ -21,6 +21,7 @@ void	ft_free_all(t_data **d_curr)
 int	ft_addlevel(char ***envp_curr)
 {
 	int		num;
+	char	*s;
 	char	**envp;
 	size_t	i;
 	size_t	j;
@@ -36,9 +37,10 @@ int	ft_addlevel(char ***envp_curr)
 	while (envp[i][j] != '=')
 		j++;
 	num = ft_atoi(&envp[i][++j]);
-	num++;
 	free(envp[i]);
-	envp[i] = ft_strjoin("SHLVL=", ft_itoa(num));
+	s = ft_itoa(++num);
+	envp[i] = ft_strjoin("SHLVL=", s);
+	free(s);
 	if (!envp[i])
 		return (-1);
 	*envp_curr = envp;
