@@ -46,25 +46,14 @@ static int	exec_status(t_data **frame, t_process *pr)
 	return (status_code);
 }
 
-static int	exec(t_process *pr, t_data **frame, t_cmdblock *cmdblock)
+static int	exec(t_data **frame, t_cmdblock *cmdblock)
 {
 	if (g_exit_status == 130)
 		exit(g_exit_status);
 	if (get_cmd_tab(cmdblock, (*frame)->envp) < 0)
-	{
-		free_pipes_pids(pr->pipes, pr->pids, cmdblock->len, -1);
-		if (cmdblock->cmd)
-			ft_perror(cmdblock->cmd[0], 0);
 		return (-1);
-	}
 	if (exec_cmd(cmdblock, (*frame)->envp) < 0)
-	{
-		free_pipes_pids(pr->pipes, pr->pids, cmdblock->len, -1);
-		g_exit_status = 126;
-		if (cmdblock->cmd)
-			ft_perror(cmdblock->cmd[0], 0);
 		return (-1);
-	}
 	exit(0);
 }
 
@@ -76,8 +65,8 @@ static int	exec_single(t_process *pr, t_data **frame)
 	if (pr->pids[0] == 0)
 	{
 		if (open_fd(pr, (*frame)->cmdblk, 0) == -1)
-			return (free_pipes_pids(pr->pipes, pr->pids, pr->len_cmdb - 1, -1));
-		if (exec(pr, frame, (*frame)->cmdblk) == -1)
+			return (-1);
+		if (exec(frame, (*frame)->cmdblk) == -1)
 			return (-1);
 	}
 	return (exec_status(frame, pr));

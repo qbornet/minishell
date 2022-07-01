@@ -52,19 +52,11 @@ int	get_cmd_tab(t_cmdblock *cmdblock, char **env)
 	char	**cmd;
 
 	cmd = cmdblock->cmd;
-	if (!*cmd)
+	if (!*cmd || !**cmd)
 		return (-1);
-	if (!**cmd)
-	{
-		g_exit_status = 127;
-		return (-1);
-	}
 	path = get_path(env, cmd[0]);
 	if (!path)
-	{
-		g_exit_status = 127;
 		return (-1);
-	}
 	cmd[0] = path;
 	cmdblock->cmd = cmd;
 	return (0);
@@ -74,8 +66,7 @@ int	exec_cmd(t_cmdblock *cmdblock, char **env)
 {
 	if (access((cmdblock->cmd)[0], X_OK) == -1)
 	{
-		perror((cmdblock->cmd)[0]);
-		free_str_tab(cmdblock->cmd, 0);
+		ft_perror((cmdblock->cmd)[0], E_DENIED);
 		exit(127);
 	}
 	execve((cmdblock->cmd)[0], cmdblock->cmd, env);
