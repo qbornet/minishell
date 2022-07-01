@@ -33,10 +33,9 @@ typedef struct t_list	t_garbage;
 
 typedef enum e_error
 {
-	E_FILE = 1,
-	E_PARSER,
-	E_COMMAND = 127,
-	E_MAX
+	E_FORBIDDEN_0 = 1,
+	E_FORBIDDEN_1,
+	E_UNC_QUO,
 }	t_error;
 
 enum e_token

@@ -39,7 +39,7 @@ static t_token	*get_next_token(char **input, unsigned int qt)
 	if (token->qt)
 	{
 		token->type = E_ERROR;
-		g_exit_status = 505;
+		ft_perror(NULL, E_QUO_UNC); 
 	}
 	if (token->type == E_ERROR
 		|| !token->type)
