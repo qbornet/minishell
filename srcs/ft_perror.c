@@ -1,7 +1,16 @@
 #include "minishell.h"
 
+static char	*classic_error(const char status)
+{
+	if (status == 127)
+		return ("command not found\n");
+	return (NULL);
+}
+
 static char	*internal_error(const int status)
 {
+	if (status < 128)
+		return (classic_error((char)status));
 	g_exit_status = 2;
 	if (status == E_FORBIDDEN_0)
 		return ("make sure not to use ) ( &\n");
