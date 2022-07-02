@@ -40,6 +40,7 @@ TOOLS = ft_tokenadd_back.c \
 	free_str_utils.c \
 	free_int_utils.c \
 	ft_perror.c \
+	ft_perror_utils.c \
 	ft_qsort.c
 
 # File to create lexer part

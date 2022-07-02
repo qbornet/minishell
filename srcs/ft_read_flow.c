@@ -62,21 +62,24 @@ int	ft_find_operator(t_btree *tree)
 
 static int	is_operator(t_btree *tree)
 {
-	char			*err_msg;
+	t_token			*next;
 	t_token			*token;
 	enum e_token	type;
 
-	token = tree->node->tokenlst->next->token;
-	type = token->type;
+	token = tree->node->tokenlst->token;
+	next = tree->node->tokenlst->next->token;
+	type = next->type;
+	if ((!tree->left && token->type == E_PIPE))
+	{
+		if (err_msg(token->lex, token->len) < 0)
+			return (-1);
+		return (1);
+	}
 	if (type == E_GREAT || type == E_LESS || type == E_DGREAT
 		|| type == E_DLESS || type == E_PIPE)
 	{
-		err_msg = ft_calloc(token->len + 1, sizeof(char));
-		if (!err_msg)
+		if (err_msg(next->lex, token->len) < 0)
 			return (-1);
-		ft_strlcpy(err_msg, token->lex, token->len + 1);
-		ft_perror(err_msg, E_SYNTAX);
-		free(err_msg);
 		return (1);
 	}
 	else if (!tree->right)
