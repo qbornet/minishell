@@ -71,14 +71,14 @@ static int	is_operator(t_btree *tree)
 	type = next->type;
 	if ((!tree->left && token->type == E_PIPE))
 	{
-		if (err_msg(token->lex, token->len) < 0)
+		if (err_msg(token->lex, token->len, E_SYNTAX) < 0)
 			return (-1);
 		return (1);
 	}
 	if (type == E_GREAT || type == E_LESS || type == E_DGREAT
 		|| type == E_DLESS || type == E_PIPE)
 	{
-		if (err_msg(next->lex, token->len) < 0)
+		if (err_msg(next->lex, next->len, E_SYNTAX) < 0)
 			return (-1);
 		return (1);
 	}
@@ -104,8 +104,6 @@ int	ft_read_flow(t_btree *tree, t_strlist **s_curr)
 			if (!*s_curr)
 				return (-1);
 		}
-		else if (tree && tree->node->type == E_ERROR)
-			return (-1);
 		res = ft_find_operator(tree);
 		if (res)
 			if (is_operator(tree))

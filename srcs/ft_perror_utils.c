@@ -32,7 +32,7 @@ char	*internal_error(const int status)
 	return (NULL);
 }
 
-int	err_msg(const char *s, const int len)
+int	err_msg(const char *s, const int len, const int code)
 {
 	char			*err_msg;
 
@@ -40,7 +40,7 @@ int	err_msg(const char *s, const int len)
 	if (!err_msg)
 		return (-1);
 	ft_strlcpy(err_msg, s, len + 1);
-	ft_perror(err_msg, E_SYNTAX);
+	ft_perror(err_msg, code);
 	free(err_msg);
 	return (1);
 }

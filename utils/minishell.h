@@ -403,7 +403,7 @@ int		ft_perror_ret(const char *s, const int code, const int rvalue);
 void	*ft_perror_ptr(const char *s, const int code, void *rvalue);
 
 /* Error printer utils */
-int		err_msg(const char *s, const int len);
+int		err_msg(const char *s, const int len, const int code);
 char	*internal_error(const int status);
 
 extern int	g_exit_status;
