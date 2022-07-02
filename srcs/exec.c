@@ -65,9 +65,15 @@ static int	exec_single(t_process *pr, t_data **frame)
 	if (pr->pids[0] == 0)
 	{
 		if (open_fd(pr, (*frame)->cmdblk, 0) == -1)
+		{
+			free_pipes_pids(pr->pipes, pr->pids, (*frame)->cmdblk->len, -1);
 			return (-1);
+		}
 		if (exec(frame, (*frame)->cmdblk) == -1)
+		{
+			free_pipes_pids(pr->pipes, pr->pids, (*frame)->cmdblk->len, -1);
 			return (-1);
+		}
 	}
 	return (exec_status(frame, pr));
 }

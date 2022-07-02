@@ -354,7 +354,7 @@ int			exec_builtin_single(t_cmdblock *cmdblock, t_data **frame);
 
 /* PIPE_H */
 /* Pipex */
-int			pipex(t_data **frame, t_cmdblock *cmdblock);
+int			pipex(t_process *pr, t_data **frame, t_cmdblock *cmdblock);
 
 /* Pipex tools */
 int			dup_in(int new_in);

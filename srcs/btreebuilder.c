@@ -12,14 +12,17 @@ int	is_redirection(int type)
 
 void	next_step(char **envp, t_btree *root, t_tokenlist **lst)
 {
+	(void)envp;
 	if (!is_redirection(root->node->type)
 		&& (root->node->type == E_WORD
 		|| (root->right && root->right->node->type == E_WORD)))
 	{
+		/*
 		if (root && root->right && root->right->node->type == E_WORD)
 			check_cmd(root->right->node, envp);
 		else
 			check_cmd(root->node, envp);
+			*/
 		*lst = (*lst)->next;
 		while (*lst && (*lst)->token->type == E_WORD)
 			*lst = (*lst)->next;
