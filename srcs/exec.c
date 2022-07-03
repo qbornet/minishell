@@ -41,7 +41,7 @@ static int	exec_status(t_data **frame, t_process *pr)
 	 * genre test cat | cat
 	 * */
 	dup2((*frame)->std_fd->stdin, STDIN_FILENO);
-	free_pipes_pids(pr->pipes, pr->pids, 0, 0);
+	free_pipes_pids(pr->pipes, pr->pids, 0);
 	ft_unlink_tmpfiles((*frame)->cmdblk);
 	return (status_code);
 }
@@ -61,19 +61,13 @@ static int	exec_single(t_process *pr, t_data **frame)
 {
 	pr->pids[0] = fork();
 	if (pr->pids[0] == -1)
-		return (free_and_msg(pr->pipes, pr->pids, pr->len_cmdb - 1, "fork"));
+		return (free_and_msg(pr->pipes, pr->pids, "fork"));
 	if (pr->pids[0] == 0)
 	{
 		if (open_fd(pr, (*frame)->cmdblk, 0) == -1)
-		{
-			free_pipes_pids(pr->pipes, pr->pids, (*frame)->cmdblk->len, -1);
 			return (-1);
-		}
 		if (exec(frame, (*frame)->cmdblk) == -1)
-		{
-			free_pipes_pids(pr->pipes, pr->pids, (*frame)->cmdblk->len, -1);
 			return (-1);
-		}
 	}
 	return (exec_status(frame, pr));
 }

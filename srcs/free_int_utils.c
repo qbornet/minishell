@@ -6,7 +6,7 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 12:52:49 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/16 07:17:16 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/03 12:33:08 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	*free_int_tab(int **tab, int i)
 {
 	if (i < 0)
 		return (NULL);
-	while (tab[i])
+	while (tab && tab[i])
 	{
 		free_int(tab[i]);
 		i++;
@@ -33,16 +33,15 @@ void	*free_int_tab(int **tab, int i)
 	return (NULL);
 }
 
-int	free_pipes_pids(int **tab1, int *tab2, int p_len, int return_val)
+int	free_pipes_pids(int **tab1, int *tab2, int return_val)
 {
-	if (p_len)
-		free_int_tab(tab1, 0);
+	free_int_tab(tab1, 0);
 	free_int(tab2);
 	return (return_val);
 }
 
-int	free_and_msg(int **tab1, int *tab2, int p_len, char *msg)
+int	free_and_msg(int **tab1, int *tab2, char *msg)
 {
-	free_pipes_pids(tab1, tab2, p_len, -1);
+	free_pipes_pids(tab1, tab2, -1);
 	return (error(msg));
 }

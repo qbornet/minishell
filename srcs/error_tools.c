@@ -6,7 +6,7 @@
 /*   By: jfrancai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 21:21:18 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/02 19:19:23 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/03 12:38:45 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,17 @@ int	pipex_status(t_data **frame, t_process *pr)
 	int			pipes_len;
 	int			wstatus;
 
-	pipes_len = pr->len_cmdb - 1;
 	i = -1;
+	pipes_len = pr->len_cmdb - 1;
 	while (++i < pipes_len)
+	{
 		if (close_pipe(pr->pipes[i]) == -1)
+		{
+			ft_unlink_tmpfiles((*frame)->cmdblk);
 			return (free_and_msg(pr->pipes,
-				pr->pids, pipes_len, "pipes[i]: close error"));
+				pr->pids, "pipes[i]: close error"));
+		}
+	}
 	i = -1;
 	while (++i < pipes_len + 1)
 	{
@@ -49,7 +54,7 @@ int	pipex_status(t_data **frame, t_process *pr)
 		if (WIFEXITED(wstatus))
 			g_exit_status = WEXITSTATUS(wstatus);
 	}
-	free_pipes_pids(pr->pipes, pr->pids, pipes_len, 0);
+	free_pipes_pids(pr->pipes, pr->pids, 0);
 	ft_unlink_tmpfiles((*frame)->cmdblk);
 	return (g_exit_status);
 }
