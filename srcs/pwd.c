@@ -16,7 +16,7 @@ static int	opt_pwd(t_cmdblock *cmdblk)
 			ft_putstr_fd("pwd: no option for pwd ", 2);
 			ft_putendl_fd(var, 2);
 			free(var);
-			return (1);
+			return (-1);
 		}
 		i++;
 		free(var);
@@ -30,9 +30,7 @@ int	ft_pwd(t_cmdblock *cmdblk)
 	char	*cwd;
 
 	ret = opt_pwd(cmdblk);
-	if (ret)
-		return (1);
-	else if (ret < 0)
+	if (ret < 0)
 		return (-1);
 	cwd = getcwd(NULL, PATH_MAX);
 	if (cwd)

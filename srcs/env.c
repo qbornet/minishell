@@ -7,10 +7,7 @@ int	ft_env(t_cmdblock *cmdblk, char **envp)
 	if (!envp)
 		return (0);
 	if (cmdblk->cmd[1] != NULL)
-	{
-		ft_putstr_fd("env: too many arguments\n", 2);
-		return (1);
-	}
+		return (ft_perror_ret(cmdblk->cmd[1], E_DENIED, -1));
 	i = 0;
 	while (envp[i])
 	{

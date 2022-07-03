@@ -42,15 +42,20 @@ int	ft_cd(const t_cmdblock *cmdblock, char **envp)
 	if (!cmdblock->cmd[1] && home)
 	{
 		if (chdir_home(home) < 0)
+		{
+			free(home);
 			return (-1);
+		}
+		free(home);
 		return (0);
 	}
+	free(home);
 	if (chdir(cmdblock->cmd[1]) < 0)
 	{
 		write(2, "cd: ", 4);
 		write(2, cmdblock->cmd[1], ft_strlen(cmdblock->cmd[1]));
 		write(2, ": Not a directory\n", 19);
-		return (1);
+		return (-1);
 	}
 	return (0);
 }
