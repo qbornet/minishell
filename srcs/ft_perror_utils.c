@@ -1,12 +1,8 @@
 #include <minishell.h>
 
-static char	*classic_error(const int status)
+static char	*error_126(const int status)
 {
-	g_exit_status = status;
-	if (status == E_NOT_FOUND)
-		return ("command not found\n");
-	if (status == E_NOT_EXIST)
-		return ("No such file or directory\n");
+	g_exit_status = 126;
 	if (status == E_IS_DIR)
 		return ("Is a directory\n");
 	if (status == E_DENIED)
@@ -14,10 +10,18 @@ static char	*classic_error(const int status)
 	return (NULL);
 }
 
-char	*internal_error(const int status)
+static char	*error_127(const int status)
 {
-	if (status < 500)
-		return (classic_error(status));
+	g_exit_status = 127;
+	if (status == E_NOT_FOUND)
+		return ("command not found\n");
+	if (status == E_NOT_EXIST)
+		return ("No such file or directory\n");
+	return (NULL);
+}
+
+static char	*error_2(const int status)
+{
 	g_exit_status = 2;
 	if (status == E_FORBIDDEN_0)
 		return ("make sure not to use ) ( &\n");
@@ -29,6 +33,17 @@ char	*internal_error(const int status)
 		return ("unclosed quotes\n");
 	if (status == E_SYNTAX)
 		return ("syntax error near unexpected token ");
+	return (NULL);
+}
+
+char	*error_selec(const int status)
+{
+	if (status < 410)
+		return (error_126(status));
+	if (status < 420)
+		return (error_127(status));
+	if (status < 430)
+		return (error_2(status));
 	return (NULL);
 }
 

@@ -14,7 +14,7 @@ void	ft_perror(const char *s, const int code)
 		write(2, s, ft_strlen(s));
 		write(2, ": ", 2);
 	}
-	write(2, internal_error(status), ft_strlen(internal_error(status)));
+	write(2, error_selec(status), ft_strlen(error_selec(status)));
 	if (status == E_SYNTAX)
 	{
 		write(2, "`", 1);
