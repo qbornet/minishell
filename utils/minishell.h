@@ -399,6 +399,7 @@ void	*ft_perror_ptr(const char *s, const int code, void *rvalue);
 /* Error printer utils */
 char	*error_selec(const int status);
 char	*internal_error(const int status);
+int		err_msg(const char *s, const int len, const int code);
 
 extern int	g_exit_status;
 

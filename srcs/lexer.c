@@ -71,8 +71,11 @@ int	lexical_analysis(char *input, t_tokenlist **lst)
 			token = get_next_token(&input, 0);
 		if (!token)
 			ft_perror(NULL, E_TOK_CREA);
-		if (!token || !token->lex)
+		if (!token->lex)
+		{
+			free(token);
 			return (-1);
+		}
 		newlst = ft_tokennew(token);
 		if (!newlst)
 			return (ft_perror_ret(NULL, E_TOK_CREA, -1));

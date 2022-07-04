@@ -28,12 +28,12 @@ static int set_default(t_cmdblock *cmdblk)
 static int	exec_status(t_data **frame, t_process *pr)
 {
 	int			wstatus;
-	int			status_code;
 
 	wstatus = 0;
-	status_code = 0; waitpid(pr->pids[0], &wstatus, 0);
+	g_exit_status = 0;
+	waitpid(pr->pids[0], &wstatus, 0);
 	if (WIFEXITED(wstatus))
-		status_code = WEXITSTATUS(wstatus);
+		g_exit_status = WEXITSTATUS(wstatus);
 	/* Faudrais refaire la ligne dup2 dans les pipes en gros le but ici,
 	 * c'est quand j'envoie un ^C je dois close la stdin du coup,
 	 * si je veux recup un prompt je suis obliger de redup juste apres.
@@ -43,7 +43,7 @@ static int	exec_status(t_data **frame, t_process *pr)
 	dup2((*frame)->std_fd->stdin, STDIN_FILENO);
 	free_pipes_pids(pr->pipes, pr->pids, 0);
 	ft_unlink_tmpfiles((*frame)->cmdblk);
-	return (status_code);
+	return (0);
 }
 
 static int	exec_single(t_process *pr, t_data **frame)

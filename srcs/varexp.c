@@ -1,6 +1,5 @@
 #include <minishell.h>
 
-
 static void	new_data(char *tmp, t_strlist **strlst, char *result)
 {
 	size_t	i;
