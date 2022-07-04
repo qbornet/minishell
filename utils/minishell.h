@@ -344,15 +344,11 @@ int			run_exec(t_data **frame);
 int			ft_len_cmdblk(t_cmdblock *cmdblock);
 int			ft_init_exec(t_data **frame);
 int			get_cmd_tab(t_cmdblock *cmdblock, char **env);
-int			exec_cmd(t_cmdblock *cmdblock, char **env);
+int			exec(t_data **frame, t_cmdblock *cmdblock);
 
 /* Builtin exec */
 int			is_builtin(t_cmdblock *cmdblock, t_data **frame);
 int			exec_builtin_single(t_cmdblock *cmdblock, t_data **frame);
-
-/* PIPE_H */
-/* Pipex */
-int			pipex(t_data **frame, t_cmdblock *cmdblock);
 
 /* Pipex tools */
 int			dup_in(int new_in);

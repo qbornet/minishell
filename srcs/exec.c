@@ -46,25 +46,6 @@ static int	exec_status(t_data **frame, t_process *pr)
 	return (status_code);
 }
 
-static int	exec(t_data **frame, t_cmdblock *cmdblock)
-{
-	int	ret;
-	if (g_exit_status == 130)
-		exit(g_exit_status);
-	ret = get_cmd_tab(cmdblock, (*frame)->envp);
-	if (ret < 0)
-		return (-1);
-	else if (ret == 127)
-	{
-		ft_free_all(frame);
-		exit(127);
-	}
-	if (exec_cmd(cmdblock, (*frame)->envp) < 0)
-		return (-1);
-	ft_free_all(frame);
-	exit(0);
-}
-
 static int	exec_single(t_process *pr, t_data **frame)
 {
 	pr->pids[0] = fork();
@@ -82,7 +63,7 @@ static int	exec_single(t_process *pr, t_data **frame)
 
 int	run_exec(t_data **frame)
 {
-	int			exec_code;
+	int			code;
 	t_process	*pr;
 
 	pr = &(*frame)->pr;
@@ -91,8 +72,8 @@ int	run_exec(t_data **frame)
 	pr->len_cmdb = ft_init_exec(frame);
 	if (pr->len_cmdb - 1 == 0)
 	{
-		exec_code = exec_builtin_single((*frame)->cmdblk, frame);
-		if (!exec_code || exec_code < 0)
+		code = exec_builtin_single((*frame)->cmdblk, frame);
+		if (!code || code < 0)
 			return (0);
 	}
 	if (alloc_pipes_pids(pr))

@@ -56,19 +56,26 @@ int	get_cmd_tab(t_cmdblock *cmdblock, char **env)
 		return (-1);
 	path = get_path(env, cmd[0]);
 	if (!path)
-		return (127);
+		return (-1);
 	cmd[0] = path;
+	if (access((cmdblock->cmd)[0], X_OK) == -1)
+	{
+		ft_perror((cmdblock->cmd)[0], E_DENIED);
+		return (-1);
+	}
 	cmdblock->cmd = cmd;
 	return (0);
 }
 
-int	exec_cmd(t_cmdblock *cmdblock, char **env)
+int	exec(t_data **frame, t_cmdblock *cmdblock)
 {
-	if (access((cmdblock->cmd)[0], X_OK) == -1)
-	{
-		ft_perror((cmdblock->cmd)[0], E_DENIED);
-		exit(127);
-	}
-	execve((cmdblock->cmd)[0], cmdblock->cmd, env);
+	if (!cmdblock->cmd)
+		return (-1);
+	if (g_exit_status == 130)
+		exit(g_exit_status);
+	if (get_cmd_tab(cmdblock, (*frame)->envp) < 0)
+		exit(g_exit_status);
+	if (execve((cmdblock->cmd)[0], cmdblock->cmd, (*frame)->envp) < 0)
+		exit(g_exit_status);
 	exit(0);
 }

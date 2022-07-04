@@ -77,7 +77,10 @@ char	*get_path(char **env, char *pg)
 			return (NULL);
 		path = get_program_path(paths, pg);
 		if (!path)
+		{
+			free_str_tab(paths, 0);
 			return ((char *)ft_perror_ptr(pg, E_NOT_FOUND, 0));
+		}
 		free_str_tab(paths, 0);
 	}
 	return (path);

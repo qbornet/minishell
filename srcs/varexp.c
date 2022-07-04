@@ -47,8 +47,12 @@ static char	*expand_var(char **s, t_strlist **strlst, char **env, t_data *frame)
 	len = ft_strlen(tmp) + ft_strlen((*strlst)->data) - ft_len_metachar(*s);
 	result = ft_calloc(len + 1, sizeof(char));
 	if (!result)
+	{
+		free(tmp);
 		return (NULL);
+	}
 	new_data(tmp, strlst, result);
+	free(tmp);
 	return (result);
 }
 
