@@ -56,7 +56,7 @@ int	get_cmd_tab(t_cmdblock *cmdblock, char **env)
 		return (-1);
 	path = get_path(env, cmd[0]);
 	if (!path)
-		return (-1);
+		return (127);
 	cmd[0] = path;
 	cmdblock->cmd = cmd;
 	return (0);

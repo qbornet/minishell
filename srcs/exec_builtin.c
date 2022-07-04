@@ -17,7 +17,7 @@ int	is_builtin(t_cmdblock *cmdblock, t_data **frame)
 	if (!ft_strcmp("env", cmdblock->cmd[0]))
 		return (ft_env(cmdblock, (*frame)->envp));
 	if (!ft_strcmp("exit", cmdblock->cmd[0]))
-		ft_exit(frame, 0);
+		ft_exit(frame);
 	return (1);
 }
 
