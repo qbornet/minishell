@@ -46,7 +46,6 @@ int	ft_cd(const t_cmdblock *cmdblock, char **envp)
 			free(home);
 			return (-1);
 		}
-		free(home);
 		return (0);
 	}
 	free(home);

@@ -63,22 +63,18 @@ void	word_token(char *input, t_token *token)
 	tmp = input;
 	while (*input == ' ')
 		input++;
-	if (*input == '\"' && !token->qt)
+	while (*input && !is_special_token(*input) && ((*input != ' ' && !token->qt) || token->qt))
 	{
-		token->qt = E_DOUBLE;
+		if (*input == '\"' && token->qt == E_DOUBLE)
+			token->qt = 0;
+		else if (*input == '\"' && !token->qt)
+			token->qt = E_DOUBLE;
+		if (*input == '\'' && token->qt == E_SINGLE)
+			token->qt = 0;
+		else if (*input == '\'' && !token->qt)
+			token->qt = E_SINGLE;
 		input++;
 	}
-	if (*input == '\'' && !token->qt)
-	{
-		token->qt = E_SINGLE;
-		input++;
-	}
-	if (*input && !token->qt)
-		while (*input && !is_special_token(*input)
-			&& *input != ' ' && *input != '\'' && *input != '\"')
-			input++;
-	else if (*input)
-		quotes_token(&input, token);
 	token->len = input - tmp;
 	token->type = E_WORD;
 }

@@ -1,19 +1,5 @@
 #include <minishell.h>
 
-static int	ft_removes_quotes(t_strlist **s_curr)
-{
-	char		*new;
-	t_strlist	*strlst;
-
-	strlst = *s_curr;
-	new = ft_substr(strlst->data, 1, (ft_strlen(strlst->data) - 2));
-	if (!new)
-		return (-1);
-	free(strlst->data);
-	strlst->data = new;
-	return (0);
-}
-
 int	ft_do_quotes(t_data **d_curr)
 {
 	char		*str;
@@ -25,7 +11,7 @@ int	ft_do_quotes(t_data **d_curr)
 	while (strlst)
 	{
 		str = strlst->data;
-		if (str && (str[0] == '\'' || str[0] == '\"'))
+		if (str)
 			if (ft_removes_quotes(&strlst) < 0)
 				return (-1);
 		strlst = strlst->next;

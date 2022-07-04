@@ -24,7 +24,10 @@ static int	ft_echo_printer(char **s, int i, int flag)
 
 	while (s[i])
 	{
-		len = write(1, s[i], ft_strlen(s[i]));
+		if (!s[i][0])
+			len = write(1, " ", 1);
+		else
+			len = write(1, s[i], ft_strlen(s[i]));
 		if (len < 0)
 			return (-2);
 		i++;

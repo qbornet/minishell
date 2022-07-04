@@ -201,7 +201,6 @@ t_tokenlist	*ft_tokenlast(t_tokenlist *lst);
 // Lexer utils
 int			is_special_token(char c);
 void		word_token(char *input, t_token *token);
-void		quotes_token(char **input, t_token *token);
 int			get_token(char **input, t_token *token);
 int			is_token_1(char *input, t_token *token);
 int			is_token_2(char *input, t_token *token);
@@ -278,6 +277,7 @@ void		ft_move_node(t_data **d_curr, t_strlist **s_curr);
 void		ft_cmdclear(t_cmdblock **cmd_curr);
 size_t		ft_len_var(char *str);
 t_lenlist	*ft_lennew(int data);
+int			ft_removes_quotes(t_strlist **s_curr);
 
 /* STAREXP_H */
 /* starexp.c starexp_utils.c */
