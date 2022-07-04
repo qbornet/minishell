@@ -151,8 +151,6 @@ typedef struct s_process
 	int		**pipes;
 	int		*pids;
 	int		len_cmdb;
-	pid_t	pgrp;
-	pid_t	sid;
 } t_process;
 
 // Notre struct "foure tout"
@@ -334,7 +332,7 @@ int			ft_cd(const t_cmdblock *cmdblock, char **envp);
 int			ft_export(t_data **frame);
 int			ft_unset(t_data **frame);
 int			ft_env(t_cmdblock *cmdblk, char **envp);
-void		ft_exit(t_data **d_curr, int status);
+void		ft_exit(t_data **d_curr);
 int			print_error(t_error code);
 char		*search_varpool(char *var, char **var_pool);
 

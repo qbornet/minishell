@@ -30,8 +30,8 @@ static int	exec_status(t_data **frame, t_process *pr)
 	int			wstatus;
 	int			status_code;
 
-	waitpid(pr->pids[0], &wstatus, 0);
-	status_code = 0;
+	wstatus = 0;
+	status_code = 0; waitpid(pr->pids[0], &wstatus, 0);
 	if (WIFEXITED(wstatus))
 		status_code = WEXITSTATUS(wstatus);
 	/* Faudrais refaire la ligne dup2 dans les pipes en gros le but ici,
@@ -48,12 +48,20 @@ static int	exec_status(t_data **frame, t_process *pr)
 
 static int	exec(t_data **frame, t_cmdblock *cmdblock)
 {
+	int	ret;
 	if (g_exit_status == 130)
 		exit(g_exit_status);
-	if (get_cmd_tab(cmdblock, (*frame)->envp) < 0)
+	ret = get_cmd_tab(cmdblock, (*frame)->envp);
+	if (ret < 0)
 		return (-1);
+	else if (ret == 127)
+	{
+		ft_free_all(frame);
+		exit(127);
+	}
 	if (exec_cmd(cmdblock, (*frame)->envp) < 0)
 		return (-1);
+	ft_free_all(frame);
 	exit(0);
 }
 
