@@ -12,8 +12,11 @@ int	ft_do_quotes(t_data **d_curr)
 	{
 		str = strlst->data;
 		if (str)
-			if (ft_removes_quotes(&strlst) < 0)
+		{
+			strlst->data = ft_removes_quotes((char **)&strlst->data);
+			if (!strlst->data)
 				return (-1);
+		}
 		strlst = strlst->next;
 	}
 	return (0);
