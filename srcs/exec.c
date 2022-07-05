@@ -48,6 +48,8 @@ int	exec_status(t_data **frame, t_process *pr)
 	{
 		if (close_pipe(pr->pipes[i]) == -1)
 		{
+			dup2((*frame)->std_fd->stdin, STDIN_FILENO);
+			dup2((*frame)->std_fd->stdout, STDIN_FILENO);
 			ft_unlink_tmpfiles((*frame)->cmdblk);
 			return (free_and_msg(pr->pipes,
 				pr->pids, "pipes[i]: close error"));
@@ -87,6 +89,7 @@ int	run_exec(t_data **frame)
 	int			code;
 	t_process	*pr;
 
+	g_exit_status = 0;
 	pr = &(*frame)->pr;
 	if (set_default((*frame)->cmdblk) < 0)
 		return (-1);

@@ -42,6 +42,7 @@ typedef enum e_error
 	E_TOK_CREA,
 	E_UNC_QUO,
 	E_SYNTAX,
+	E_INV_OPT,
 }	t_error;
 
 enum e_token

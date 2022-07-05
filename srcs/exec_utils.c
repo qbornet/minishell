@@ -72,11 +72,7 @@ int	exec(t_data **frame, t_cmdblock *cmdblock)
 	if (!cmdblock->cmd)
 		return (-1);
 	if (g_exit_status == 130 || g_exit_status == 131)
-	{
-		dup2((*frame)->std_fd->stdin, STDIN_FILENO); // faut toujours fix le 'cat | cat' quand on envoie un ctrl+c (je close la stdin du coup le prog ce ferme si on dup2 pas la stdin)
-		dup2((*frame)->std_fd->stdin, STDIN_FILENO); // faut toujours fix le 'cat | cat' quand on envoie un ctrl+c (je close la stdin du coup le prog ce ferme si on dup2 pas la stdin)
 		exit(g_exit_status);
-	}
 	if (get_cmd_tab(cmdblock, (*frame)->envp) < 0)
 		exit(g_exit_status);
 	if (execve((cmdblock->cmd)[0], cmdblock->cmd, (*frame)->envp) < 0)

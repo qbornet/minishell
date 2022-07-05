@@ -41,9 +41,6 @@ int	exec_builtin_single(t_cmdblock *cmdblock, t_data **frame)
 	if (dup_in((*frame)->std_fd->stdin) == -1)
 		return (-1);
 	if (exec_code < 0)
-	{
-		g_exit_status = 126;
 		return (-1);
-	}
 	return (exec_code);
 }
