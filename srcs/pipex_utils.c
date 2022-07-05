@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 16:46:50 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/29 07:51:52 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/05 15:51:14 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	set_fd(t_redirlist *fd)
 		if (fd->type == E_DGREAT)
 			if (ft_redirection_dgreat(fd->str) == -1)
 				return (-1);
-		if (fd->type == E_LESS)
+		if (fd->type == E_LESS || fd->type == E_DLESS)
 			if (ft_redirection_less(fd->str) == -1)
 				return (-1);
 		fd = fd->next;
