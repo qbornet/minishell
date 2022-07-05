@@ -33,6 +33,8 @@ static char	*error_2(const int status)
 		return ("unclosed quotes\n");
 	if (status == E_SYNTAX)
 		return ("syntax error near unexpected token ");
+	if (status == E_INV_OPT)
+		return ("invalid option\n");
 	return (NULL);
 }
 

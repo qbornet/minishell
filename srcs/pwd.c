@@ -13,8 +13,7 @@ static int	opt_pwd(t_cmdblock *cmdblk)
 			return (-1);
 		if (ft_strchr(var, '-'))
 		{
-			ft_putstr_fd("pwd: no option for pwd ", 2);
-			ft_putendl_fd(var, 2);
+			err_msg(var, ft_strlen(var), E_INV_OPT); 
 			free(var);
 			return (-1);
 		}
@@ -38,7 +37,6 @@ int	ft_pwd(t_cmdblock *cmdblk)
 		if (write(1, cwd, ft_strlen(cwd)) < 0)
 			return (-1);
 		if (write(1, "\n", 1) < 0)
-			return (-1);
 		free(cwd);
 		return (0);
 	}
