@@ -48,5 +48,5 @@ int	ft_pipe(t_process *pr, t_data **frame)
 				return (-1);
 		}
 	}
-	return (pipex_status(frame, pr));
+	return (exec_status(frame, pr));
 }

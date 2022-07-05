@@ -36,30 +36,35 @@ static int set_default(t_cmdblock *cmdblk)
 	return (0);
 }
 
-static int	exec_status(t_data **frame, t_process *pr)
+int	exec_status(t_data **frame, t_process *pr)
 {
+	int			i;
+	int			pipes_len;
 	int			wstatus;
-	int			status_code;
-	static int	in;
 
-	wstatus = 0;
-	waitpid(pr->pids[0], &wstatus, 0);
-	status_code = 0;
-	if ((g_exit_status == 130 || g_exit_status == 131) && !in)
+	i = -1;
+	pipes_len = pr->len_cmdb - 1;
+	while (++i < pipes_len)
 	{
-		in++;
-		dup2((*frame)->std_fd->stdin, STDIN_FILENO); // faut toujours fix le 'cat | cat' quand on envoie un ctrl+c (je close la stdin du coup le prog ce ferme si on dup2 pas la stdin)
-		return (g_exit_status);
+		if (close_pipe(pr->pipes[i]) == -1)
+		{
+			ft_unlink_tmpfiles((*frame)->cmdblk);
+			return (free_and_msg(pr->pipes,
+				pr->pids, "pipes[i]: close error"));
+		}
 	}
-	if (WIFEXITED(wstatus))
+	i = -1;
+	while (++i < pipes_len + 1)
 	{
-		in = 0;
-		status_code = WEXITSTATUS(wstatus);
+		waitpid(pr->pids[i], &wstatus, 0);
+		if (WIFEXITED(wstatus))
+			g_exit_status = WEXITSTATUS(wstatus);
 	}
 	dup2((*frame)->std_fd->stdin, STDIN_FILENO);
+	dup2((*frame)->std_fd->stdout, STDIN_FILENO);
 	free_pipes_pids(pr->pipes, pr->pids, 0);
 	ft_unlink_tmpfiles((*frame)->cmdblk);
-	return (status_code);
+	return (g_exit_status);
 }
 
 static int	exec_single(t_process *pr, t_data **frame)

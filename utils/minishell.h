@@ -339,6 +339,7 @@ char		*search_varpool(char *var, char **var_pool);
 /* EXEC_H */
 /* Exec */
 int			run_exec(t_data **frame);
+int			exec_status(t_data **frame, t_process *pr);
 
 /* Exec utils */
 int			ft_len_cmdblk(t_cmdblock *cmdblock);
@@ -388,7 +389,6 @@ int		free_and_msg(int **tab1, int *tab2, char *msg);
 int		standard_error(char *str);
 int		main_error(char *str);
 int		error(char *str);
-int		pipex_status(t_data **frame, t_process *pr);
 int		ft_unlink_tmpfiles(t_cmdblock *cmdblock);
 
 /* Error printer */
