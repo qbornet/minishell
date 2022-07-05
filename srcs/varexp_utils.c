@@ -17,14 +17,14 @@ int	is_metachar(char c)
 	if (c == ' '
 		|| c == '	'
 		|| c == '|'
-		|| c ==  '&'
+		|| c == '&'
 		|| c == ';'
 		|| c == '('
 		|| c == ')'
 		|| c == '<'
 		|| c == '>'
 		|| c == '/'
-		|| c == '$' 
+		|| c == '$'
 		|| c == '?'
 		|| c == '\''
 		|| c == '\"')
@@ -34,27 +34,22 @@ int	is_metachar(char c)
 
 size_t	ft_len_metachar(char *s)
 {
-	int		flag;
 	int		len;
 
 	if (!s)
 		return (0);
-	flag = 1;
 	len = 0;
-	while (*s && (!is_metachar(*s) || flag))
+	while (*s && (!is_metachar(*s) || (*s == '?' && len == 1)))
 	{
-		if (*s == '?')
-		{
+		if (*s == '?' && len == 1)
 			len--;
-			flag = 0;
-		}
 		len++;
 		s++;
 	}
 	return (len);
 }
 
-int		ft_isexit(char *s)
+int	ft_isexit(char *s)
 {
 	if (s[1] == '?')
 		return (1);

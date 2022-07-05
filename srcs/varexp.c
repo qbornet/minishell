@@ -93,7 +93,6 @@ static int	check_empty_dol(t_strlist *strlst, char **result)
 	return (0);
 }
 
-
 void	expand(t_strlist *strlst, t_data **frame)
 {
 	char	*s;
