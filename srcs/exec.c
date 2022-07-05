@@ -89,7 +89,6 @@ int	run_exec(t_data **frame)
 	int			code;
 	t_process	*pr;
 
-	g_exit_status = 0;
 	pr = &(*frame)->pr;
 	if (set_default((*frame)->cmdblk) < 0)
 		return (-1);
