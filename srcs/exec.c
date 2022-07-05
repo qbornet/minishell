@@ -92,8 +92,6 @@ int	run_exec(t_data **frame)
 		if (!code || code < 0)
 			return (0);
 	}
-	if (g_exit_status == 130 || g_exit_status == 131)
-		return (g_exit_status);
 	if (alloc_pipes_pids(pr))
 		return (-1);
 	if (pr->len_cmdb - 1)
