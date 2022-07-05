@@ -19,11 +19,20 @@ static int	ft_checkalnum(char *var)
 	if (!sub)
 		return (-1);
 	else if (!sub[0])
+	{
+		free(sub);
 		return (0);
+	}
 	i = -1;
 	while (sub[++i])
+	{
 		if (!ft_isword(sub[i]))
+		{
+			free(sub);
 			return (0);
+		}
+	}
+	free(sub);
 	return (1);
 }
 

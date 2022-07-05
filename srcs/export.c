@@ -102,7 +102,7 @@ int	ft_export(t_data **frame)
 		var = ft_strdup(cmdblock->cmd[i]);
 		if (!var)
 			return (-1);
-		if (ft_strchr(var, '-'))
+		if (ft_strchr(var, '-') && !ft_strchr(var, '='))
 		{
 			ft_putstr_fd("export: no option for export ", 2);
 			ft_putendl_fd(var, 2);
