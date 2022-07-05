@@ -25,7 +25,7 @@ int	is_metachar(char c)
 		|| c == '>'
 		|| c == '/'
 		|| c == '$' 
-		|| c == '*'
+		|| c == '?'
 		|| c == '\''
 		|| c == '\"')
 		return (1);
@@ -34,30 +34,55 @@ int	is_metachar(char c)
 
 size_t	ft_len_metachar(char *s)
 {
-	char	*tmp;
+	int		flag;
+	int		len;
 
 	if (!s)
 		return (0);
-	tmp = s;
-	while (*s && !is_metachar(*s))
+	flag = 1;
+	len = 0;
+	while (*s && (!is_metachar(*s) || flag))
+	{
+		if (*s == '?')
+		{
+			len--;
+			flag = 0;
+		}
+		len++;
 		s++;
-	return (s - tmp);
+	}
+	return (len);
 }
 
 int		ft_isexit(char *s)
 {
-	if (s[1] == '?' && s[2] == '\0')
+	if (s[1] == '?')
 		return (1);
 	return (0);
 }
 
-void	opt_expandvar(int *flag, char **tmp, char **env, char **s)
+char	*opt_expandvar(char **tmp, char **s, t_data *frame, int *flag)
 {
+	char	*cpy;
+
+	*tmp = NULL;
 	if (ft_isexit(*s))
 	{
 		*tmp = ft_itoa(g_exit_status);
 		*flag = 1;
+		return (*tmp);
 	}
-	else
-		*tmp = check_intab(env, *s + 1);
+	else if (!*tmp)
+		*tmp = check_intab(frame->envp, *s + 1);
+	else if (!*tmp)
+	{
+		*tmp = check_intab(frame->var_pool, *s + 1);
+		*flag = 1;
+	}
+	cpy = *tmp;
+	while (*tmp && **tmp && **tmp != '=')
+		(*tmp)++;
+	if (*tmp)
+		(*tmp)++;
+	return (cpy);
 }

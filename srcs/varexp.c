@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-static void	new_data(char *tmp, t_strlist **strlst, char *result)
+static void	new_data(char **s, char *tmp, t_strlist **strlst, char *result)
 {
 	size_t	i;
 	size_t	l_exp;
@@ -20,38 +20,39 @@ static void	new_data(char *tmp, t_strlist **strlst, char *result)
 	while (++i < l_exp)
 		result[i + l_before_exp] = tmp[i];
 	i = -1;
+	if ((*s)[1] == '?')
+		l_varname++;
 	while (++i < l_after_exp)
+	{
 		result[i + l_before_exp + l_exp] = ((char *)(*strlst)->data)
 		[i + l_before_exp + l_varname];
+	}
 }
 
-static char	*expand_var(char **s, t_strlist **strlst, char **env, t_data *frame)
+static char	*expand_var(char **s, t_strlist **strlst, t_data *frame)
 {
 	int		len;
 	int		flag;
 	char	*tmp;
+	char	*cpy;
 	char	*result;
 
 	flag = 0;
 	result = NULL;
 	if (!(*s)[1] && (*s)[0] == '$')
 		return (ft_strdup("$"));
-	opt_expandvar(&flag, &tmp, env, s);
-	if (!tmp)
-		tmp = check_intab(frame->var_pool, *s + 1);
-	while (!flag && tmp && *tmp && *tmp != '=')
-		tmp++;
-	if (!flag && tmp)
-		tmp++;
+	cpy = opt_expandvar(&tmp, s, frame, &flag);
 	len = ft_strlen(tmp) + ft_strlen((*strlst)->data) - ft_len_metachar(*s);
 	result = ft_calloc(len + 1, sizeof(char));
 	if (!result)
 	{
-		free(tmp);
+		if (flag)
+			free(cpy);
 		return (NULL);
 	}
-	new_data(tmp, strlst, result);
-	free(tmp);
+	new_data(s, tmp, strlst, result);
+	if (flag)
+		free(cpy);
 	return (result);
 }
 
@@ -93,7 +94,7 @@ static int	check_empty_dol(t_strlist *strlst, char **result)
 }
 
 
-void	expand(t_strlist *strlst, char **env, t_data **frame)
+void	expand(t_strlist *strlst, t_data **frame)
 {
 	char	*s;
 	char	*result;
@@ -103,7 +104,7 @@ void	expand(t_strlist *strlst, char **env, t_data **frame)
 		s++;
 	while (*s)
 	{
-		result = expand_var(&s, &strlst, env, *frame);
+		result = expand_var(&s, &strlst, *frame);
 		if (!result)
 			return ;
 		if (check_empty_dol(strlst, &result))

@@ -38,6 +38,7 @@ static int	ft_echo_printer(char **s, int i, int flag)
 	if (!flag)
 		if (write(1, "\n", 1) < 0)
 			return (-4);
+	g_exit_status = 0;
 	return (0);
 }
 
