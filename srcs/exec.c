@@ -1,4 +1,14 @@
-#include <minishell.h> // met toujours comme ca c'est pas pour faire le relou mais vue que notre .h est dans un dossier si je make ailleur que je creer mon propre .h je vais utiliser celui qui est dans le dir ou je make donc pas de '""' 🦊
+#include <minishell.h>
+
+static void	opt_default(struct sigaction *sa_int, struct sigaction *sa_new, struct sigaction *sa_quit)
+{
+	ft_memset(sa_int, 0, sizeof(struct sigaction));
+	ft_memset(sa_new, 0, sizeof(struct sigaction));
+	ft_memset(sa_quit, 0, sizeof(struct sigaction));
+	sa_int->sa_handler = SIG_IGN;
+	sa_new->sa_handler = &nint_handler;
+	sa_quit->sa_handler = &nquit_handler;
+}
 
 static int set_default(t_cmdblock *cmdblk)
 {
@@ -7,43 +17,49 @@ static int set_default(t_cmdblock *cmdblk)
 	struct sigaction	sa_new;
 	struct sigaction	sa_quit;
 
-	if (!cmdblk->cmd)
-		str = "";
-	else
+	str = "";
+	if (cmdblk->cmd[0])
 		str = cmdblk->cmd[0];
-	ft_memset(&sa_int, 0, sizeof(struct sigaction));
-	ft_memset(&sa_new, 0, sizeof(struct sigaction));
-	ft_memset(&sa_quit, 0, sizeof(struct sigaction));
-	sa_int.sa_handler = SIG_IGN;
-	sa_new.sa_handler = &nint_handler;
-	sa_quit.sa_handler = &nquit_handler;
+	opt_default(&sa_int, &sa_new, &sa_quit);
 	if (str && *str && !ft_strncmp(ft_last_level(str), BIN_NAME, ft_strlen(BIN_NAME)))
-		sigaction(SIGINT, &sa_int, NULL);
+	{
+		if (sigaction(SIGINT, &sa_int, NULL) < 0)
+			return (-1);
+	}
 	else
-		sigaction(SIGINT, &sa_new, NULL);
-	sigaction(SIGQUIT, &sa_quit, NULL);
+	{
+		if (sigaction(SIGINT, &sa_new, NULL) < 0)
+			return (-1);
+	}
+	if (sigaction(SIGQUIT, &sa_quit, NULL) < 0)
+		return (-1);
 	return (0);
 }
 
 static int	exec_status(t_data **frame, t_process *pr)
 {
 	int			wstatus;
+	int			status_code;
+	static int	in;
 
 	wstatus = 0;
-	g_exit_status = 0;
 	waitpid(pr->pids[0], &wstatus, 0);
+	status_code = 0;
+	if ((g_exit_status == 130 || g_exit_status == 131) && !in)
+	{
+		in++;
+		dup2((*frame)->std_fd->stdin, STDIN_FILENO); // faut toujours fix le 'cat | cat' quand on envoie un ctrl+c (je close la stdin du coup le prog ce ferme si on dup2 pas la stdin)
+		return (g_exit_status);
+	}
 	if (WIFEXITED(wstatus))
-		g_exit_status = WEXITSTATUS(wstatus);
-	/* Faudrais refaire la ligne dup2 dans les pipes en gros le but ici,
-	 * c'est quand j'envoie un ^C je dois close la stdin du coup,
-	 * si je veux recup un prompt je suis obliger de redup juste apres.
-	 * check ou tu dois le mettre dans ton code pour le refaire reprompt apres un ^C
-	 * genre test cat | cat
-	 * */
+	{
+		in = 0;
+		status_code = WEXITSTATUS(wstatus);
+	}
 	dup2((*frame)->std_fd->stdin, STDIN_FILENO);
 	free_pipes_pids(pr->pipes, pr->pids, 0);
 	ft_unlink_tmpfiles((*frame)->cmdblk);
-	return (0);
+	return (status_code);
 }
 
 static int	exec_single(t_process *pr, t_data **frame)
