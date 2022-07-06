@@ -107,6 +107,7 @@ PIPE = pipe.c \
 	unset_utils.c \
 	env.c \
 	exit.c \
+	underscore.c \
 	error_tools.c
 
 

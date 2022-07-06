@@ -45,9 +45,6 @@ static int	ft_cmd_str(int to_do, size_t index, t_strlist **strlst, t_data **d_cu
 
 	i = 0;
 	len = ft_check_isstar(to_do, strlst);
-	(*d_curr)->cmd_pool[index] = ft_calloc(len + 1, sizeof(char *));
-	if (!(*d_curr)->cmd_pool[index])
-		return (-1);
 	if (to_do == 1)
 	{
 		(*d_curr)->cmd_pool[index] = ft_split((*strlst)->data, ' ');
@@ -55,6 +52,12 @@ static int	ft_cmd_str(int to_do, size_t index, t_strlist **strlst, t_data **d_cu
 			return (-1);
 		len--;
 		*strlst = (*strlst)->next;
+	}
+	else
+	{
+		(*d_curr)->cmd_pool[index] = ft_calloc(len + 1, sizeof(char *));
+		if (!(*d_curr)->cmd_pool[index])
+			return (-1);
 	}
 	while (len > 0 && (*strlst))
 	{
