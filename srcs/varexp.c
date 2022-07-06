@@ -39,8 +39,6 @@ static char	*expand_var(char **s, t_strlist **strlst, t_data *frame)
 
 	flag = 0;
 	result = NULL;
-	if ((!(*s)[1] || (*s)[1] == ' ') && (*s)[0] == '$')
-		return (ft_strdup("$"));
 	tmp2 = opt_expandvar(&tmp1, s, frame, &flag);
 	len = ft_strlen(tmp1) + ft_strlen((*strlst)->data) - ft_len_metachar(*s);
 	result = ft_calloc(len + 1, sizeof(char));
@@ -93,7 +91,7 @@ static int	check_empty_dol(t_strlist *strlst, char **result)
 	return (0);
 }
 
-void	expand(t_strlist *strlst, t_data **frame)
+void	expand(t_strlist *strlst, t_data **frame, int flag)
 {
 	char	*s;
 	char	*result;
@@ -103,7 +101,10 @@ void	expand(t_strlist *strlst, t_data **frame)
 		s++;
 	while (*s)
 	{
-		result = expand_var(&s, &strlst, *frame);
+		if ((!s[1] || s[1] == ' ' || (flag && s[1] == '"')) && s[0] == '$')
+			result = ft_strdup("$");
+		else
+			result = expand_var(&s, &strlst, *frame);
 		if (!result)
 			return ;
 		if (check_empty_dol(strlst, &result))

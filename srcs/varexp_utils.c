@@ -22,8 +22,12 @@ int	is_metachar(char c)
 		|| c == '('
 		|| c == ')'
 		|| c == '<'
+		|| c == '*'
+		|| c == '%'
 		|| c == '>'
 		|| c == '/'
+		|| c == '['
+		|| c == ']'
 		|| c == '$'
 		|| c == '?'
 		|| c == '\''
@@ -49,21 +53,20 @@ size_t	ft_len_metachar(char *s)
 	return (len);
 }
 
-int	ft_isexit(char *s)
-{
-	if (s[1] == '?')
-		return (1);
-	return (0);
-}
-
 char	*opt_expandvar(char **tmp, char **s, t_data *frame, int *flag)
 {
 	char	*cpy;
 
 	*tmp = NULL;
-	if (ft_isexit(*s))
+	if ((*s)[1] == '?')
 	{
 		*tmp = ft_itoa(g_exit_status);
+		*flag = 1;
+		return (*tmp);
+	}
+	else if (ft_isdigit((*s)[1]))
+	{
+		*tmp = ft_strdup(*s + 2);
 		*flag = 1;
 		return (*tmp);
 	}

@@ -290,7 +290,7 @@ int			ft_starcmp(const char *s1, const char *s2);
 int			ft_isexit(char *s);
 char		*check_intab(char **tab, char *var_name);
 char		*opt_expandvar(char **tmp, char **s, t_data *frame, int *flag);
-void		expand(t_strlist *strlst, t_data **frame);
+void		expand(t_strlist *strlst, t_data **frame, int flag);
 size_t		ft_len_onechar(char *s, char a);
 size_t		ft_len_metachar(char *s);
 

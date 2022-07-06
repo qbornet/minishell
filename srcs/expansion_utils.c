@@ -76,7 +76,7 @@ void	ft_do_varexp(t_data **d_curr)
 		else if (str[0] == '\'')
 			flag = 2;
 		if ((flag == 1 || !flag) && strlst->data)
-			expand(strlst, &frame);
+			expand(strlst, &frame, flag);
 		strlst = strlst->next;
 	}
 	*d_curr = frame;
