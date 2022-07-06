@@ -53,6 +53,7 @@ static int	ft_cmd_str(int to_do, size_t index, t_strlist **strlst, t_data **d_cu
 		(*d_curr)->cmd_pool[index] = ft_split((*strlst)->data, ' ');
 		if (!(*d_curr)->cmd_pool[index])
 			return (-1);
+		len--;
 		*strlst = (*strlst)->next;
 	}
 	while (len > 0 && (*strlst))
