@@ -39,7 +39,7 @@ static char	*expand_var(char **s, t_strlist **strlst, t_data *frame)
 
 	flag = 0;
 	result = NULL;
-	if (!(*s)[1] && (*s)[0] == '$')
+	if ((!(*s)[1] || (*s)[1] == ' ') && (*s)[0] == '$')
 		return (ft_strdup("$"));
 	cpy = opt_expandvar(&tmp, s, frame, &flag);
 	len = ft_strlen(tmp) + ft_strlen((*strlst)->data) - ft_len_metachar(*s);
