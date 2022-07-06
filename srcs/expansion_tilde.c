@@ -19,6 +19,7 @@ static char	*opt_add_homes(char **str_curr, char *home, size_t pos)
 	char	*begin_str;
 	char	*end_str;
 	char	*str;
+	char	*tmp;
 
 	str = *str_curr;
 	begin_str = ft_substr(str, 0, pos);
@@ -26,12 +27,23 @@ static char	*opt_add_homes(char **str_curr, char *home, size_t pos)
 		return (NULL);
 	end_str = ft_substr(str, pos + 1, ft_strlen(str));
 	if (!end_str)
+	{
+		free(begin_str);
 		return (NULL);
+	}
 	free(str);
 	str = ft_strjoin(begin_str, home);
 	if (!str)
+	{
+		free(begin_str);
+		free(end_str);
 		return (NULL);
-	str = ft_strjoin(str, end_str);
+	}
+	tmp = str;
+	str = ft_strjoin(tmp, end_str);
+	free(tmp);
+	free(end_str);
+	free(begin_str);
 	if (!str)
 		return (NULL);
 	return (str);
@@ -59,6 +71,7 @@ static char	*ft_add_homes(char **str_curr, char **envp)
 	if (!home)
 		home = DFL_HOME;
 	str = opt_add_homes(&str, home, pos);
+	free(home);
 	if (!str)
 		return (NULL);
 	return (str);
@@ -83,12 +96,12 @@ int	ft_do_tilde(t_data **d_curr)
 	while (strlst)
 	{
 		str = strlst->data;
-		if (!str)
+		if (!str || !*str)
 			return (0);
 		ret = ft_strchr(str, '~');
 		if (!ret)
 			return (0);
-		else if (ret && !ft_isalnum(*(ret + 1)) && !ft_isalnum(*(ret - 1)) && !ft_findquotes(str))
+		else if (!*(ret + 1) || (ft_isalnum(*(ret + 1)) && !ft_isalnum(*(ret - 1)) && !ft_findquotes(str)))
 		{
 			strlst->data = ft_add_homes(&str, (*d_curr)->envp);
 			if (!strlst->data)
