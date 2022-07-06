@@ -62,7 +62,7 @@ static int	ft_search_expansion(t_data **d_curr)
 	while (s)
 	{
 		str = s->data;
-		if (str && ft_strchr(str, '=') && (!s->prev || !s->prev->data))
+		if (str && ft_strchr(str, '=') && str[0] != '=' && !ft_isdigit(str[0]) && (!s->prev || !s->prev->data))
 		{
 			if (ft_var(str, &frame) < 0)
 				return (ft_free_expan_error(&frame));
