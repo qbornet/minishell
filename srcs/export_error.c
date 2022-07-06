@@ -65,5 +65,6 @@ int	ft_printerror(char *var)
 	ft_putstr_fd("minishell: export: ", 2);
 	ft_putstr_fd(var, 2);
 	ft_putstr_fd(" : not a valid indentifier\n", 2);
+	free(var);
 	return (1);
 }

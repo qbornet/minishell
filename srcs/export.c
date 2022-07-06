@@ -104,6 +104,7 @@ int	ft_export(t_data **frame, t_cmdblock *cmdblock)
 		{
 			ft_putstr_fd("export: no option for export ", 2);
 			ft_putendl_fd(var, 2);
+			free(var);
 			return (-1);
 		}
 		if (ft_export_var(var, frame))
