@@ -21,9 +21,10 @@
 
 # define BIN_NAME "start"
 # define DFL_HOME "/home"
+# define DFL_TERM "TERM=xterm-256color"
 # define OPEN_MAX 1024
-# define HEREDOC_PROMPT "\1\e[1;38;5;11m\2?>\1\e[0m\2 "
 # define DEFAULT_PATH "PATH=/usr/local/bin:/usr/bin:/bin"
+# define HEREDOC_PROMPT "\1\e[1;38;5;11m\2?>\1\e[0m\2 "
 # define PROMPT "\1\e[1;38;5;12m\2minishell:>\1\e[0m\2 "
 # define ERR_PARSER "Error: Syntax error\n"
 # define ERR_COMMAND "Error: command not found\n"
@@ -337,6 +338,9 @@ int			ft_env(t_cmdblock *cmdblk, char **envp);
 void		ft_exit(t_data **d_curr);
 int			print_error(t_error code);
 char		*search_varpool(char *var, char **var_pool);
+
+/* UNDERSCORE_H */
+int			underscore(t_cmdblock *cmdblock, t_data **d_curr);
 
 /* EXEC_H */
 /* Exec */
