@@ -38,11 +38,13 @@ static int	opt_insert_filedes(t_btree *r, t_cmdblock **cmd_curr)
 			if (r->right->left && r->right->left->node->type == E_FD)
 				token = r->right->left->node->token;
 			str = ft_create_str(token->lex, token->len);
-			ft_removes_quotes(&str);
 			if (!str)
 				return (-1);
 			if (ft_rediradd_back(&(*cmd_curr)->fd, str, r->node->type) < 0)
+			{
+				free(str);
 				return (-1);
+			}
 	}
 	return (0);
 }
