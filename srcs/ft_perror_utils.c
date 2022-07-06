@@ -20,6 +20,14 @@ static char	*error_127(const int status)
 	return (NULL);
 }
 
+static char	*error_1(const int status)
+{
+	g_exit_status = 1;
+	if (status == E_TOO_MARGS)
+		return ("too many arguments\n");
+	return (NULL);
+}
+
 static char	*error_2(const int status)
 {
 	g_exit_status = 2;
@@ -46,6 +54,8 @@ char	*error_selec(const int status)
 		return (error_127(status));
 	if (status < 430)
 		return (error_2(status));
+	if (status < 440)
+		return (error_1(status));
 	return (NULL);
 }
 

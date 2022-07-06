@@ -43,6 +43,7 @@ typedef enum e_error
 	E_UNC_QUO,
 	E_SYNTAX,
 	E_INV_OPT,
+	E_TOO_MARGS = 430,
 }	t_error;
 
 enum e_token
@@ -330,8 +331,8 @@ int			ft_dup_error(char **arr);
 int			ft_pwd(t_cmdblock *cmdblock);
 int			ft_echo(const t_cmdblock *cmdblock);
 int			ft_cd(const t_cmdblock *cmdblock, char **envp);
-int			ft_export(t_data **frame);
-int			ft_unset(t_data **frame);
+int			ft_export(t_data **frame, t_cmdblock *cmdblock);
+int			ft_unset(t_data **frame, t_cmdblock *cmdblock);
 int			ft_env(t_cmdblock *cmdblk, char **envp);
 void		ft_exit(t_data **d_curr);
 int			print_error(t_error code);

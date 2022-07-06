@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/06 12:47:03 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/07/06 13:40:13 by jfrancai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ft_len_cmdblk(t_cmdblock *cmdblock)
@@ -52,17 +64,15 @@ int	get_cmd_tab(t_cmdblock *cmdblock, char **env)
 	char	**cmd;
 
 	cmd = cmdblock->cmd;
-	if (!*cmd || !**cmd)
-		return (-1);
+	if (*cmd && !**cmd)
+		return (ft_perror_ret(cmd[0], E_NOT_FOUND, -1));
 	path = get_path(env, cmd[0]);
 	if (!path)
 		return (-1);
+	free(cmd[0]);
 	cmd[0] = path;
 	if (access((cmdblock->cmd)[0], X_OK) == -1)
-	{
-		ft_perror((cmdblock->cmd)[0], E_DENIED);
-		return (-1);
-	}
+		return (ft_perror_ret((cmdblock->cmd)[0], E_DENIED, -1));
 	cmdblock->cmd = cmd;
 	return (0);
 }

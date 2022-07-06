@@ -20,6 +20,7 @@ void	ft_cmdclear(t_cmdblock **cmd_curr)
 	cmdblk = *cmd_curr;
 	while (cmdblk)
 	{
+		ft_redirclear(&cmdblk->fd, &free);
 		tmp = cmdblk;
 		cmdblk = cmdblk->next;
 		free(tmp);

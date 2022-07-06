@@ -98,6 +98,7 @@ int	here_doc(t_data **d_curr, t_cmdblock **c_curr, char *word)
 	char	*str;
 
 	res = NULL;
+	ft_removes_quotes(&word);
 	flag = opt_word(&word);
 	if (flag < 0)
 		return (-1);

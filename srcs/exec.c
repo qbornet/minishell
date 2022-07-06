@@ -64,8 +64,8 @@ int	exec_status(t_data **frame, t_process *pr)
 	}
 	dup2((*frame)->std_fd->stdin, STDIN_FILENO);
 	dup2((*frame)->std_fd->stdout, STDIN_FILENO);
-	free_pipes_pids(pr->pipes, pr->pids, 0);
 	ft_unlink_tmpfiles((*frame)->cmdblk);
+	free_pipes_pids(pr->pipes, pr->pids, 0);
 	return (g_exit_status);
 }
 

@@ -7,13 +7,13 @@ int	is_builtin(t_cmdblock *cmdblock, t_data **frame)
 	if (!ft_strcmp("echo", cmdblock->cmd[0]))
 		return (ft_echo(cmdblock));
 	if (!ft_strcmp("cd", cmdblock->cmd[0]))
-		return (ft_cd((*frame)->cmdblk, (*frame)->envp));
+		return (ft_cd(cmdblock, (*frame)->envp));
 	if (!ft_strcmp("pwd", cmdblock->cmd[0]))
 		return (ft_pwd(cmdblock));
 	if (!ft_strcmp("export", cmdblock->cmd[0]))
-		return (ft_export(frame));
+		return (ft_export(frame, cmdblock));
 	if (!ft_strcmp("unset", cmdblock->cmd[0]))
-		return (ft_unset(frame));
+		return (ft_unset(frame, cmdblock));
 	if (!ft_strcmp("env", cmdblock->cmd[0]))
 		return (ft_env(cmdblock, (*frame)->envp));
 	if (!ft_strcmp("exit", cmdblock->cmd[0]))
