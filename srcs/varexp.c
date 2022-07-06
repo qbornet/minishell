@@ -33,26 +33,26 @@ static char	*expand_var(char **s, t_strlist **strlst, t_data *frame)
 {
 	int		len;
 	int		flag;
-	char	*tmp;
-	char	*cpy;
+	char	*tmp1;
+	char	*tmp2;
 	char	*result;
 
 	flag = 0;
 	result = NULL;
 	if ((!(*s)[1] || (*s)[1] == ' ') && (*s)[0] == '$')
 		return (ft_strdup("$"));
-	cpy = opt_expandvar(&tmp, s, frame, &flag);
-	len = ft_strlen(tmp) + ft_strlen((*strlst)->data) - ft_len_metachar(*s);
+	tmp2 = opt_expandvar(&tmp1, s, frame, &flag);
+	len = ft_strlen(tmp1) + ft_strlen((*strlst)->data) - ft_len_metachar(*s);
 	result = ft_calloc(len + 1, sizeof(char));
 	if (!result)
 	{
 		if (flag)
-			free(cpy);
+			free(tmp2);
 		return (NULL);
 	}
-	new_data(s, tmp, strlst, result);
+	new_data(s, tmp1, strlst, result);
 	if (flag)
-		free(cpy);
+		free(tmp2);
 	return (result);
 }
 

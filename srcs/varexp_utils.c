@@ -67,13 +67,10 @@ char	*opt_expandvar(char **tmp, char **s, t_data *frame, int *flag)
 		*flag = 1;
 		return (*tmp);
 	}
-	else if (!*tmp)
+	if (!*tmp)
 		*tmp = check_intab(frame->envp, *s + 1);
-	else if (!*tmp)
-	{
+	if (!*tmp)
 		*tmp = check_intab(frame->var_pool, *s + 1);
-		*flag = 1;
-	}
 	cpy = *tmp;
 	while (*tmp && **tmp && **tmp != '=')
 		(*tmp)++;
