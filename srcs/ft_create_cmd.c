@@ -48,6 +48,7 @@ static int	ft_cmd_str(int to_do, size_t index, t_strlist **strlst, t_data **d_cu
 	(*d_curr)->cmd_pool[index] = ft_calloc(len + 1, sizeof(char *));
 	if (!(*d_curr)->cmd_pool[index])
 		return (-1);
+	/*
 	if (to_do == 1)
 	{
 		free((*d_curr)->cmd_pool[index]);
@@ -56,6 +57,7 @@ static int	ft_cmd_str(int to_do, size_t index, t_strlist **strlst, t_data **d_cu
 			return (-1);
 		*strlst = (*strlst)->next;
 	}
+	*/
 	while (len > 0 && (*strlst))
 	{
 		(*d_curr)->cmd_pool[index][i] = (*strlst)->data;
