@@ -47,14 +47,12 @@ static int	ft_unset_var(t_data **d_curr, char *var)
 	return (0);
 }
 
-int	ft_unset(t_data **frame)
+int	ft_unset(t_data **frame, t_cmdblock *cmdblock)
 {
 	int			i;
 	char		*var;
-	t_cmdblock *cmdblock;
 
 	i = 1;
-	cmdblock = (*frame)->cmdblk;
 	while (cmdblock->cmd[i])
 	{
 		var = ft_strdup(cmdblock->cmd[i]);

@@ -89,14 +89,12 @@ static int	ft_export_var(char *var, t_data **d_curr)
 	return (ft_free_env(temp));
 }
 
-int	ft_export(t_data **frame)
+int	ft_export(t_data **frame, t_cmdblock *cmdblock)
 {
 	int			i;
 	char		*var;
-	t_cmdblock *cmdblock;
 
 	i = 1;
-	cmdblock = (*frame)->cmdblk;
 	while (cmdblock->cmd[i])
 	{
 		var = ft_strdup(cmdblock->cmd[i]);

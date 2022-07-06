@@ -25,7 +25,6 @@ static int	ft_isvalidargs(char *str)
 static int	opt_exit(t_cmdblock *cmdblk, t_data **d_curr)
 {
 	size_t		i;
-	size_t		j;
 	char		*str;
 
 	i = 0;
@@ -34,7 +33,6 @@ static int	opt_exit(t_cmdblock *cmdblk, t_data **d_curr)
 		str = ft_strdup(cmdblk->cmd[i]);
 		if (!str)
 			return (-1);
-		j = -1;
 		if (!ft_isvalidargs(str)
 				|| !ft_strcmp(str, "-9223372036854775809") || !ft_strcmp(str, "9223372036854775808"))
 		{
