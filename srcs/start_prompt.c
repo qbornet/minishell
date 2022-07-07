@@ -50,7 +50,6 @@ int	start_prompt(t_data **d_curr)
 
 	str = "";
 	ft_addlevel(&(*d_curr)->envp);
-	g_exit_status = 0;
 	while (str && ft_check_tty())
 	{
 		if (set_start(&term, &act_int, &act_quit) < 0)

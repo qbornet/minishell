@@ -20,8 +20,7 @@
 # include <readline/history.h>
 
 # define BIN_NAME "start"
-# define DFL_HOME "/home"
-# define DFL_TERM "TERM=xterm-256color"
+# define DFL_HOME "/home/qbornet"
 # define OPEN_MAX 1024
 # define DEFAULT_PATH "PATH=/usr/local/bin:/usr/bin:/bin"
 # define HEREDOC_PROMPT "\1\e[1;38;5;11m\2?>\1\e[0m\2 "
@@ -175,20 +174,21 @@ typedef struct s_data
 /* START_H */
 /* exit_free.c start.c start_prompt.c stat_utils.c */
 
-int		exit_group(t_data **d_curr);
-int		start_prompt(t_data **d_curr);
-int		free_redoo(t_data **d_curr, char *str);
-int		ft_addlevel(char ***envp_curr);
-char	**ft_envp(char **envp);
-void	ft_free_all(t_data **d_curr);
-void	ft_free_envp(char **envp);
-void	ft_free_cpool(char ***cpool);
-void	ft_free_vpool(char **var_pool);
-void	close_allfd(void);
+int			exit_group(t_data **d_curr);
+int			start_prompt(t_data **d_curr);
+int			free_redoo(t_data **d_curr, char *str);
+int			ft_addlevel(char ***envp_curr);
+char		**ft_envp(char **envp);
+char		**ft_checkenv(char **envp);
+void		ft_free_all(t_data **d_curr);
+void		ft_free_envp(char **envp);
+void		ft_free_cpool(char ***cpool);
+void		ft_free_vpool(char **var_pool);
+void		close_allfd(void);
 
 /* SORT_H */
 /* ft_qsort.c */
-void	ft_qsort(char **tab, int start, int end);
+void		ft_qsort(char **tab, int start, int end);
 
 // Token list utils
 int			ft_tokentsize(t_tokenlist *lst);

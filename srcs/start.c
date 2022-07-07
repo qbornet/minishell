@@ -56,6 +56,9 @@ int	start(char **envp)
 	frame->envp = ft_envp(envp);
 	if (!frame->envp)
 		return (exit_group(&frame));
+	frame->envp = ft_checkenv(frame->envp);
+	if (!frame->envp)
+		return (exit_group(&frame));
 	if (start_prompt(&frame) < 0)
 		return (exit_group(&frame));
 	return (0);
@@ -63,8 +66,8 @@ int	start(char **envp)
 
 int	main(int ac, char **av, char **envp)
 {
-	(void)ac;
 	(void)av;
+	(void)ac;
 	start(envp);
 	return (0);
 }
