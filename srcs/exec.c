@@ -41,11 +41,9 @@ int	exec_status(t_data **frame, t_process *pr)
 	int			i;
 	int			pipes_len;
 	int			wstatus;
-	t_cmdblock	*cmdblk;
 
 	i = -1;
 	pipes_len = pr->len_cmdb - 1;
-	cmdblk = (*frame)->cmdblk;
 	while (++i < pipes_len)
 	{
 		if (close_pipe(pr->pipes[i]) == -1)
@@ -63,10 +61,8 @@ int	exec_status(t_data **frame, t_process *pr)
 		waitpid(pr->pids[i], &wstatus, 0);
 		if (WIFEXITED(wstatus))
 			g_exit_status = WEXITSTATUS(wstatus);
-		if (underscore(cmdblk, frame) < 0)
-			return (-1);
-		cmdblk = cmdblk->next;
 	}
+	underscore(frame, pr);
 	dup2((*frame)->std_fd->stdin, STDIN_FILENO);
 	dup2((*frame)->std_fd->stdout, STDIN_FILENO);
 	ft_unlink_tmpfiles((*frame)->cmdblk);

@@ -340,7 +340,7 @@ int			print_error(t_error code);
 char		*search_varpool(char *var, char **var_pool);
 
 /* UNDERSCORE_H */
-int			underscore(t_cmdblock *cmdblock, t_data **d_curr);
+int			underscore(t_data **frame, t_process *pr);
 
 /* EXEC_H */
 /* Exec */
