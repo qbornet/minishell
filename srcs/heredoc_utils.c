@@ -71,6 +71,8 @@ int	ft_strcmp_here(char *s1, char *s2)
 	i = 0;
 	if (!s1)
 	{
+		if (g_exit_status != 130)
+			ft_putstr_fd("warning: read eof", 2);
 		write(1, "\n", 1);
 		return (0);
 	}

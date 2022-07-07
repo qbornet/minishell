@@ -6,11 +6,11 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:27:11 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/27 12:23:25 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 07:11:50 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <minishell.h>
 
 static char	*get_env_home(char **env)
 {
@@ -44,10 +44,7 @@ int	ft_cd(const t_cmdblock *cmdblock, char **envp)
 	char	*home;
 
 	if (cmdblock->cmd[1] && cmdblock->cmd[2])
-	{
-		ft_putendl_fd("cd: too many arguments", 2);
-		return (-1);
-	}
+		return (ft_perror_ret(cmdblock->cmd[0], E_TOO_MARGS, -1));
 	home = get_env_home(envp);
 	if (!home && !cmdblock->cmd[1])
 		return (0);
@@ -57,12 +54,8 @@ int	ft_cd(const t_cmdblock *cmdblock, char **envp)
 			return (-1);
 		return (0);
 	}
+	free(home);
 	if (chdir(cmdblock->cmd[1]) < 0)
-	{
-		write(2, "cd: ", 4);
-		write(2, cmdblock->cmd[1], ft_strlen(cmdblock->cmd[1]));
-		write(2, ": Not a directory\n", 19);
-		return (-1);
-	}
+		return (ft_perror_ret(cmdblock->cmd[0], E_NOT_EXIST, -1));
 	return (0);
 }

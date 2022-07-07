@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:30:18 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 11:41:36 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 08:06:25 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,6 @@ static int	ft_check_tty(void)
 	return (0);
 }
 
-static int	ret_perror(char *str)
-{
-	perror(str);
-	return (-1);
-}
-
 static int	set_start(struct termios *t
 	, struct sigaction *act_int, struct sigaction *act_quit)
 {
@@ -44,15 +38,15 @@ static int	set_start(struct termios *t
 	if (ft_check_tty())
 	{
 		if (set_sig(act_int, act_quit) < 0)
-			return (ret_perror("sigaction(), sigemptyset(), sigaddset() "));
+			return (-1);
 		if (tcgetattr(STDIN_FILENO, t) < 0)
-			return (ret_perror("tcgetattr() "));
+			return (-1);
 		if (t->c_lflag & ECHOCTL)
 			t->c_lflag &= ~ECHOCTL;
 		if (t->c_lflag & TOSTOP)
 			t->c_lflag &= ~TOSTOP;
 		if (tcsetattr(STDIN_FILENO, TCSANOW, t) < 0)
-			return (ret_perror("tsetattr() "));
+			return (-1);
 	}
 	return (0);
 }
@@ -60,12 +54,15 @@ static int	set_start(struct termios *t
 int	start_prompt(t_data **d_curr)
 {
 	char				*str;
+	int					code;
 	struct termios		term;
 	struct sigaction	act_int;
 	struct sigaction	act_quit;
 
 	str = "";
-	while (str && ft_check_tty() && term_isig(&term))
+	ft_addlevel(&(*d_curr)->envp);
+	g_exit_status = 0;
+	while (str && ft_check_tty())
 	{
 		if (set_start(&term, &act_int, &act_quit) < 0)
 			return (exit_group(d_curr));
@@ -73,13 +70,18 @@ int	start_prompt(t_data **d_curr)
 		if (!str)
 			return (write(1, "exit\n", 5) && exit_group(d_curr));
 		ft_history(str);
-		if (lexer_parser_main(str, (*d_curr)->envp, d_curr) < 0)
+		code = lexer_parser_main(str, (*d_curr)->envp, d_curr);
+		if (code < 0)
 			return (exit_group(d_curr));
-		if (start_expansion(d_curr) < 0)
-			return (exit_group(d_curr));
-		g_exit_status = run_exec(d_curr);
-		if (g_exit_status < 0)
-			return (exit_group(d_curr));
+		if (!code)
+		{
+			if (start_expansion(d_curr) < 0)
+				return (exit_group(d_curr));
+			if (g_exit_status == 130 || g_exit_status == 131)
+				g_exit_status = 0;
+			if (run_exec(d_curr) < 0)
+				return (exit_group(d_curr));
+		}
 		free_redoo(d_curr, str);
 	}
 	return (write(1, "exit\n", 5) && exit_group(d_curr));

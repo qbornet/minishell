@@ -11,8 +11,9 @@ OBJS_DIR = objs
 UTILS_DIR = utils
 
 # Utils
+# Faut pas oublier d'enlever le fsan pour checker les exit_codes
 CC = clang
-CFLAGS = -MMD -Wall -Wextra -Werror -g3 #-fsanitize=address
+CFLAGS = -MMD -Wall -Wextra -Werror -g3 -fsanitize=address
 CPPFLAGS = -I ./$(UTILS_DIR) -I ./libft/utils
 LDFLAGS = -L ./libft
 RM = rm -rf
@@ -39,11 +40,14 @@ TOOLS = ft_tokenadd_back.c \
 	ft_tokensize.c \
 	free_str_utils.c \
 	free_int_utils.c \
+	ft_perror.c \
+	ft_perror_utils.c \
 	ft_qsort.c
 
 # File to create lexer part
 LEXER = lexer.c \
-	lexer_utils.c
+	lexer_utils.c \
+	quotes.c
 
 # File to create binary tree part
 BTREE = btreebuilder.c \
@@ -69,6 +73,8 @@ EXPAN = expansion.c \
 		expansion_utils.c \
 		expansion_error.c \
 		expansion_check.c \
+		expansion_tilde.c \
+		opt_join.c \
 		ft_create_cmd.c \
 		ft_create_join.c \
 		ft_lenlist.c \
@@ -87,7 +93,6 @@ HEREDOC = heredoc_utils.c \
 PIPE = pipe.c \
 	pipe_utils_0.c \
 	pipe_utils_1.c \
-	pipex.c \
 	pipex_utils.c \
 	ft_redirection.c \
 	exec.c \
@@ -104,6 +109,7 @@ PIPE = pipe.c \
 	unset_utils.c \
 	env.c \
 	exit.c \
+	underscore.c \
 	error_tools.c
 
 

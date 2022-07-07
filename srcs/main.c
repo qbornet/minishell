@@ -6,12 +6,21 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 13:59:15 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/27 13:59:32 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 08:05:04 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <minishell.h>
 
+int	main(int ac, char **av, char **envp)
+{
+	(void)ac;
+	(void)av;
+	start(envp);
+	return (0);
+}
+
+/*
 int	main(int ac, char **av, char **envp)
 {
 	pid_t	pid;
@@ -34,3 +43,4 @@ int	main(int ac, char **av, char **envp)
 	}
 	return (0);
 }
+*/

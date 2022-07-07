@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:27:52 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 11:56:18 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 07:48:31 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ static int	ft_search_expansion(t_data **d_curr)
 	while (s)
 	{
 		str = s->data;
-		if (str && ft_strchr(str, '=') && (!s->prev || !s->prev->data))
+		if (str && ft_strchr(str, '=') && is_valid_id(str)
+			&& (!s->prev || !s->prev->data))
 		{
 			if (ft_var(str, &frame) < 0)
 				return (ft_free_expan_error(&frame));
@@ -91,7 +92,9 @@ int	start_expansion(t_data **d_curr)
 	if (ft_search_expansion(d_curr) < 0)
 		return (-1);
 	ft_do_varexp(d_curr);
-	if (ft_do_starexp(d_curr, 0) < 0)
+	if (ft_do_tilde(d_curr) < 0)
+		return (ft_free_expan_error(d_curr));
+	if (ft_do_starexp(d_curr) < 0)
 		return (ft_free_expan_error(d_curr));
 	if (ft_do_quotes(d_curr) < 0)
 		return (ft_free_expan_error(d_curr));

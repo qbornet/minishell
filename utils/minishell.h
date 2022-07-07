@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 12:54:12 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/27 14:33:16 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 08:25:58 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,11 @@
 # include <readline/history.h>
 
 # define BIN_NAME "start"
+# define DFL_HOME "/home"
+# define DFL_TERM "TERM=xterm-256color"
 # define OPEN_MAX 1024
-# define HEREDOC_PROMPT "\1\e[1;38;5;11m\2?>\1\e[0m\2 "
 # define DEFAULT_PATH "PATH=/usr/local/bin:/usr/bin:/bin"
+# define HEREDOC_PROMPT "\1\e[1;38;5;11m\2?>\1\e[0m\2 "
 # define PROMPT "\1\e[1;38;5;12m\2minishell:>\1\e[0m\2 "
 # define ERR_PARSER "Error: Syntax error\n"
 # define ERR_COMMAND "Error: command not found\n"
@@ -44,10 +46,17 @@ typedef struct t_list	t_garbage;
 
 typedef enum e_error
 {
-	E_FILE = 1,
-	E_PARSER,
-	E_COMMAND = 127,
-	E_MAX
+	E_IS_DIR = 400,
+	E_DENIED,
+	E_NOT_FOUND = 410,
+	E_NOT_EXIST,
+	E_FORBIDDEN_0 = 420,
+	E_FORBIDDEN_1,
+	E_TOK_CREA,
+	E_UNC_QUO,
+	E_SYNTAX,
+	E_INV_OPT,
+	E_TOO_MARGS = 430,
 }	t_error;
 
 enum e_token
@@ -81,7 +90,6 @@ enum e_quote
 };
 
 typedef struct s_token {
-	int				error;
 	char			*lex;
 	size_t			len;
 	enum e_token	type;	
@@ -148,8 +156,7 @@ typedef struct s_cmdblock
 {
 	int					len;
 	char				**cmd;
-	t_redirlist			*infile;
-	t_redirlist			*outfile;
+	t_redirlist			*fd;
 	t_termstd			*std_fd;
 	struct s_cmdblock	*next;
 }	t_cmdblock;
@@ -159,8 +166,6 @@ typedef struct s_process
 	int		**pipes;
 	int		*pids;
 	int		len_cmdb;
-	pid_t	pgrp;
-	pid_t	sid;
 }	t_process;
 
 // Notre struct "foure tout"
@@ -180,18 +185,18 @@ typedef struct s_data
 }	t_data;
 
 /* START_H */
-/* exit_free.c start.c start_prompt.c */
+/* exit_free.c start.c start_prompt.c stat_utils.c */
 
 int			exit_group(t_data **d_curr);
 int			start_prompt(t_data **d_curr);
 int			free_redoo(t_data **d_curr, char *str);
+int			ft_addlevel(char ***envp_curr);
 char		**ft_envp(char **envp);
 void		ft_free_all(t_data **d_curr);
 void		ft_free_envp(char **envp);
 void		ft_free_cpool(char ***cpool);
 void		ft_free_vpool(char **var_pool);
 void		close_allfd(void);
-int			start(char **envp);
 
 /* SORT_H */
 /* ft_qsort.c */
@@ -207,7 +212,7 @@ t_tokenlist	*ft_tokennew(void *content);
 t_tokenlist	*ft_tokenlast(t_tokenlist *lst);
 
 // Lexer utils
-int			is_special_token(char c, t_token *token);
+int			is_special_token(char c);
 void		word_token(char *input, t_token *token);
 int			get_token(char **input, t_token *token);
 int			is_token_1(char *input, t_token *token);
@@ -215,7 +220,7 @@ int			is_token_2(char *input, t_token *token);
 //void		sep_token(char *input, t_token *token);
 
 // Lexer
-int			lexical_analysis(char *input, t_tokenlist **lst);
+int			lexical_analysis(char *input, t_tokenlist **lst, t_token *token);
 
 // Btree builder
 t_btree		*buildbtree(char **envp, t_tokenlist *lst);
@@ -244,6 +249,7 @@ char		*free_str(char *str);
 char		*free_tab(char **tab);
 char		*free_elt_tab(char **tab);
 char		*free_str_tab(char **tab, int index);
+char		*ft_last_level(char *str);
 /* AST_H */
 /* ft_strlist.c ft_read_flow.c */
 int			lexer_parser_main(char *input, char **envp, t_data **d_curr);
@@ -265,15 +271,21 @@ void		ft_treeprint(t_btree *tree, int type);
 void		ft_print_tokenlist(t_tokenlist *lst);
 
 /* EXPANSION_H */
-/* expansion.c expansion_utils.c expansion_error.c expansion_check.c */
+/* expansion.c expansion_utils.c expansion_error.c */
+/* expansion_check.c expansion_tidle.c */
 /* ft_create_join.c ft_create_cmd.c ft_lenlst.c */
 /* command_block.c ft_cmdblock.c */
 int			command_block(t_data **d_curr);
 int			start_expansion(t_data **d_curr);
+int			opt_strlst(t_btree *root, t_lenlist **len_curr, int *cmd);
+int			ft_length_lst(t_tokenlist *tokenlst);
+int			ft_retlenclear(t_lenlist **len_curr);
+int			ft_do_tilde(t_data	**d_curr);
 int			ft_do_quotes(t_data	**d_curr);
 int			ft_create_cmd(t_data **d_curr, int total_cmd);
 int			ft_create_join(t_data **d_curr);
 int			ft_check_pool(char *str, char **pool, int res);
+char		is_valid_id(char *s);
 int			ft_free_expan_error(t_data **d_curr);
 int			ft_do_starexp(t_data **d_curr, unsigned int i);
 int			ft_blockadd_back(t_cmdblock **cmd_curr, t_termstd *fd, char **cmd);
@@ -287,6 +299,7 @@ void		ft_move_node(t_data **d_curr, t_strlist **s_curr);
 void		ft_cmdclear(t_cmdblock **cmd_curr);
 size_t		ft_len_var(char *str);
 t_lenlist	*ft_lennew(int data);
+char		*ft_removes_quotes(char **s);
 
 /* STAREXP_H */
 /* starexp.c starexp_utils.c */
@@ -299,8 +312,8 @@ int			ft_starcmp(const char *s1, const char *s2);
 /* varexp.c varexp_utils.c */
 int			ft_isexit(char *s);
 char		*check_intab(char **tab, char *var_name);
-void		opt_expandvar(int *flag, char **tmp, char **envp, char **s);
-void		expand(t_strlist *strlst, char **env, t_data **frame);
+char		*opt_expandvar(char **tmp, char **s, t_data *frame, int *flag);
+void		expand(t_strlist *strlst, t_data **frame, int flag);
 size_t		ft_len_onechar(char *s, char a);
 size_t		ft_len_metachar(char *s);
 
@@ -327,50 +340,52 @@ size_t		ft_strjoin_len(char *str);
 /* SIG_H */
 /* sig.c */
 int			set_sig(struct sigaction *act_int, struct sigaction *act_quit);
-int			term_isig(const struct termios *term);
-void		new_handler(int signum);
+void		nquit_handler(int signum);
+void		nint_handler(int signum);
 void		sigint_handler(int signum);
 void		sigquit_handler(int signum);
 
 /* BIN_H */
+int			ft_checkvar_name(char *var, t_data **d_curr);
+int			ft_printerror(char *var);
 int			ft_recreate_envp(char ***envp, ssize_t index_envp);
 int			ft_recreate_vpool(char ***vpool, ssize_t index_vpool);
 int			ft_dup_error(char **arr);
-int			ft_pwd(void);
+int			ft_pwd(t_cmdblock *cmdblock);
 int			ft_echo(const t_cmdblock *cmdblock);
 int			ft_cd(const t_cmdblock *cmdblock, char **envp);
-int			ft_export(t_data **frame);
 int			ft_free_env(char **old);
-int			ft_unset(t_data **frame);
-int			ft_env(char **envp);
+int			ft_export(t_data **frame, t_cmdblock *cmdblock);
+int			ft_unset(t_data **frame, t_cmdblock *cmdblock);
+int			ft_env(t_cmdblock *cmdblk, char **envp);
+void		ft_exit(t_data **d_curr);
 int			print_error(t_error code);
 char		*search_varpool(char *var, char **var_pool);
-void		ft_exit(t_data **d_curr, int status);
+
+/* UNDERSCORE_H */
+int			underscore(t_cmdblock *cmdblock, t_data **d_curr);
 
 /* EXEC_H */
 /* Exec */
 int			run_exec(t_data **frame);
+int			exec_status(t_data **frame, t_process *pr);
 
 /* Exec utils */
 int			ft_len_cmdblk(t_cmdblock *cmdblock);
 int			ft_init_exec(t_data **frame);
 int			get_cmd_tab(t_cmdblock *cmdblock, char **env);
-int			exec_cmd(t_cmdblock *cmdblock, char **env);
+int			exec(t_data **frame, t_cmdblock *cmdblock);
 
 /* Builtin exec */
 int			is_builtin(t_cmdblock *cmdblock, t_data **frame);
 int			exec_builtin_single(t_cmdblock *cmdblock, t_data **frame);
 
-/* PIPE_H */
-/* Pipex */
-int			pipex(t_process *pr, t_data **frame, t_cmdblock *cmdblock);
-
 /* Pipex tools */
+int			dup_stdinout(t_termstd *std_fd);
 int			dup_in(int new_in);
 int			dup_out(int new_out);
 int			close_pipe(int *pd);
-int			set_outfile(t_redirlist *outfile);
-int			set_infile(t_redirlist *infile);
+int			set_fd(t_redirlist *fd);
 
 /* Pipes */
 int			ft_pipe(t_process *pr, t_data **frame);
@@ -387,6 +402,8 @@ int			ft_redirection_pipe_in(int *pd, int pid);
 int			ft_redirection_pipe_out(int *pd, int pid);
 
 /* Pipe utils 1 */
+int			close_all_pipes(t_cmdblock *cmdblock,
+				t_termstd *std_fd, t_process *pr);
 int			close_pipes(t_process *pr, int i);
 int			alloc_pipes_pids(t_process *pr);
 
@@ -397,16 +414,24 @@ char		*free_elt_tab(char **tab);
 char		*free_str_tab(char **tab, int index);
 void		*free_int_tab(int **tab, int i);
 void		*free_int(int *tab);
-int			free_pipes_pids(int **tab1, int *tab2,
-				int pipes_len, int return_val);
-int			free_and_msg(int **tab1, int *tab2, int pipes_len, char *msg);
+int			free_pipes_pids(int **tab1, int *tab2, int return_val);
+int			free_and_msg(int **tab1, int *tab2, char *msg);
 
 /* Error tools */
 int			standard_error(char *str);
 int			main_error(char *str);
 int			error(char *str);
-int			pipex_status(t_data **frame, t_process *pr);
 int			ft_unlink_tmpfiles(t_cmdblock *cmdblock);
+
+/* Error printer */
+void		ft_perror(const char *s, const int code);
+int			ft_perror_ret(const char *s, const int code, const int rvalue);
+void		*ft_perror_ptr(const char *s, const int code, void *rvalue);
+
+/* Error printer utils */
+char		*error_selec(const int status);
+char		*internal_error(const int status);
+int			err_msg(const char *s, const int len, const int code);
 
 extern int				g_exit_status;
 #endif

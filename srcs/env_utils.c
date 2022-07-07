@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:27:25 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 11:27:26 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 08:23:38 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,35 @@ static char	*get_program_path(char **paths, char *pg_name)
 	return (NULL);
 }
 
+static int	is_file(const char *path)
+{
+	DIR	*dir;
+
+	dir = opendir(path);
+	if (dir)
+	{
+		closedir(dir);
+		return (0);
+	}
+	if (errno == ENOTDIR)
+		return (1);
+	return (-1);
+}
+
 char	*get_path(char **env, char *pg)
 {
 	char	**paths;
 	char	*path;
 
 	path = NULL;
-	if (pg[0] == '/' || !ft_strncmp(pg, "./", 2) || !ft_strncmp(pg, "../", 3))
+	if (pg[0] == '/' || !ft_strncmp(pg, ".", 1) || !ft_strncmp(pg, "..", 2))
 	{
+		if (!is_file(pg))
+			return ((char *)ft_perror_ptr(pg, E_IS_DIR, 0));
 		if (access(pg, F_OK) == 0)
 			path = ft_strdup(pg);
+		else
+			return ((char *)ft_perror_ptr(pg, E_NOT_EXIST, 0));
 	}
 	else
 	{
@@ -69,6 +88,11 @@ char	*get_path(char **env, char *pg)
 		if (!paths)
 			return (NULL);
 		path = get_program_path(paths, pg);
+		if (!path)
+		{
+			free_str_tab(paths, 0);
+			return ((char *)ft_perror_ptr(pg, E_NOT_FOUND, 0));
+		}
 		free_str_tab(paths, 0);
 	}
 	return (path);

@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:30:29 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 12:08:47 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 08:08:41 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,18 @@ int	is_metachar(char c)
 		|| c == '|'
 		|| c == '&'
 		|| c == ';'
+		|| c == '='
 		|| c == '('
 		|| c == ')'
 		|| c == '<'
+		|| c == '*'
+		|| c == '%'
 		|| c == '>'
 		|| c == '/'
+		|| c == '['
+		|| c == ']'
 		|| c == '$'
-		|| c == '*'
+		|| c == '?'
 		|| c == '\''
 		|| c == '\"')
 		return (1);
@@ -46,30 +51,46 @@ int	is_metachar(char c)
 
 size_t	ft_len_metachar(char *s)
 {
-	char	*tmp;
+	int		len;
 
 	if (!s)
 		return (0);
-	tmp = s;
-	while (*s && !is_metachar(*s))
+	len = 0;
+	while (*s && (!is_metachar(*s) || (*s == '?' && len == 1)))
+	{
+		if (*s == '?' && len == 1)
+			len--;
+		len++;
 		s++;
-	return (s - tmp);
+	}
+	return (len);
 }
 
-int	ft_isexit(char *s)
+char	*opt_expandvar(char **tmp, char **s, t_data *frame, int *flag)
 {
-	if (s[1] == '?' && s[2] == '\0')
-		return (1);
-	return (0);
-}
+	char	*cpy;
 
-void	opt_expandvar(int *flag, char **tmp, char **env, char **s)
-{
-	if (ft_isexit(*s))
+	*tmp = NULL;
+	if ((*s)[1] == '?')
 	{
 		*tmp = ft_itoa(g_exit_status);
 		*flag = 1;
+		return (*tmp);
 	}
-	else
-		*tmp = check_intab(env, *s + 1);
+	else if (ft_isdigit((*s)[1]))
+	{
+		*tmp = ft_strdup(*s + 2);
+		*flag = 1;
+		return (*tmp);
+	}
+	if (!*tmp)
+		*tmp = check_intab(frame->envp, *s + 1);
+	if (!*tmp)
+		*tmp = check_intab(frame->var_pool, *s + 1);
+	cpy = *tmp;
+	while (*tmp && **tmp && **tmp != '=')
+		(*tmp)++;
+	if (*tmp)
+		(*tmp)++;
+	return (cpy);
 }

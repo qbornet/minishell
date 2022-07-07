@@ -6,11 +6,13 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:30:15 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/27 14:00:39 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 08:05:06 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+int	g_exit_status;
 
 int	exit_group(t_data **d_curr)
 {
@@ -18,27 +20,9 @@ int	exit_group(t_data **d_curr)
 	exit(g_exit_status);
 }
 
-void	ft_free_all(t_data **d_curr)
-{
-	t_data	*frame;
-
-	frame = *d_curr;
-	ft_lenclear(&frame->lenlst);
-	ft_strclear(&frame->strlst, &free);
-	ft_cmdclear(&frame->cmdblk);
-	ft_tokenclear(&frame->tokenlst, &free);
-	ft_treeclear(frame->root, &free);
-	ft_free_cpool(frame->cmd_pool);
-	ft_free_vpool(frame->var_pool);
-	ft_free_envp(frame->envp);
-	free(frame->std_fd);
-	free(frame);
-	close_allfd();
-}
-
 void	ft_null_reset(t_data **d_curr)
 {
-	t_data	*frame;
+	t_data		*frame;
 
 	frame = *d_curr;
 	frame->lenlst = NULL;

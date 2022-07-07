@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:28:05 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/27 14:32:58 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 07:45:06 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	replace_env(char *var, char ***env_curr)
 		return (1);
 	envp = *env_curr;
 	free(envp[start]);
-	envp[start] = var;
+	envp[start] = ft_strdup(var);
 	*env_curr = envp;
 	return (0);
 }
@@ -65,8 +65,8 @@ static int	ft_export_var(char *var, t_data **d_curr)
 
 	i = -1;
 	temp = (*d_curr)->envp;
-	if (!*var)
-		return (0);
+	if (ft_checkvar_name(var, d_curr))
+		return (ft_printerror(var));
 	if ((index_match(var, (*d_curr)->envp) >= 0))
 		return (replace_env(var, &(*d_curr)->envp));
 	var = search_varpool(var, (*d_curr)->var_pool);
@@ -81,27 +81,33 @@ static int	ft_export_var(char *var, t_data **d_curr)
 		if (!new[i])
 			return (ft_dup_error(new));
 	}
-	new[i++] = var;
+	new[i] = var;
 	(*d_curr)->envp = new;
 	return (ft_free_env(temp));
 }
 
-int	ft_export(t_data **frame)
+int	ft_export(t_data **frame, t_cmdblock *cmdblock)
 {
 	int			i;
 	char		*var;
-	t_cmdblock	*cmdblock;
 
 	i = 1;
-	cmdblock = (*frame)->cmdblk;
 	while (cmdblock->cmd[i])
 	{
 		var = ft_strdup(cmdblock->cmd[i]);
 		if (!var)
 			return (-1);
+		if (ft_strchr(var, '-') && !ft_strchr(var, '='))
+		{
+			ft_putstr_fd("export: no option for export ", 2);
+			ft_putendl_fd(var, 2);
+			free(var);
+			return (-1);
+		}
 		if (ft_export_var(var, frame))
 			return (-1);
 		i++;
+		free(var);
 	}
 	return (0);
 }

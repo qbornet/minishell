@@ -5,12 +5,21 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/25 11:30:03 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 11:30:04 by jfrancai         ###   ########.fr       */
+/*   Created: 2022/02/18 16:46:50 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/07/07 07:25:32 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <minishell.h>
+
+int	dup_stdinout(t_termstd *std_fd)
+{
+	if (dup2(std_fd->stdin, STDIN_FILENO) < 0)
+		return (-1);
+	if (dup2(std_fd->stdout, STDIN_FILENO) < 0)
+		return (-1);
+	return (0);
+}
 
 int	dup_in(int new_in)
 {
@@ -35,28 +44,20 @@ int	close_pipe(int *pd)
 	return (0);
 }
 
-int	set_infile(t_redirlist *infile)
+int	set_fd(t_redirlist *fd)
 {
-	while (infile)
+	while (fd)
 	{
-		if (ft_redirection_less(infile->str) == -1)
-			return (-1);
-		infile = infile->next;
-	}
-	return (0);
-}
-
-int	set_outfile(t_redirlist *outfile)
-{
-	while (outfile)
-	{
-		if (outfile->type == E_GREAT)
-			if (ft_redirection_great(outfile->str) == -1)
+		if (fd->type == E_GREAT)
+			if (ft_redirection_great(fd->str) == -1)
 				return (-1);
-		if (outfile->type == E_DGREAT)
-			if (ft_redirection_dgreat(outfile->str) == -1)
+		if (fd->type == E_DGREAT)
+			if (ft_redirection_dgreat(fd->str) == -1)
 				return (-1);
-		outfile = outfile->next;
+		if (fd->type == E_LESS || fd->type == E_DLESS)
+			if (ft_redirection_less(fd->str) == -1)
+				return (-1);
+		fd = fd->next;
 	}
 	return (0);
 }

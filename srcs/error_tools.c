@@ -5,53 +5,29 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/25 11:27:35 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 11:50:51 by jfrancai         ###   ########.fr       */
+/*   Created: 2022/02/18 21:21:18 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/07/07 07:16:00 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <minishell.h>
 
 int	ft_unlink_tmpfiles(t_cmdblock *cmdblock)
 {
-	t_redirlist	*infile;
+	t_redirlist	*fd;
 
 	while (cmdblock)
 	{
-		infile = cmdblock->infile;
-		while (infile)
+		fd = cmdblock->fd;
+		while (fd)
 		{
-			if (infile->type == E_DLESS)
-				unlink(infile->str);
-			infile = infile->next;
+			if (fd->type == E_DLESS)
+				unlink(fd->str);
+			fd = fd->next;
 		}
 		cmdblock = cmdblock->next;
 	}
 	return (0);
-}
-
-int	pipex_status(t_data **frame, t_process *pr)
-{
-	int			i;
-	int			pipes_len;
-	int			wstatus;
-
-	pipes_len = pr->len_cmdb - 1;
-	i = -1;
-	while (++i < pipes_len)
-		if (close_pipe(pr->pipes[i]) == -1)
-			return (free_and_msg(pr->pipes,
-					pr->pids, pipes_len, "pipes[i]: close error"));
-	i = -1;
-	while (++i < pipes_len + 1)
-	{
-		waitpid(pr->pids[i], &wstatus, 0);
-		if (WIFEXITED(wstatus))
-			g_exit_status = WEXITSTATUS(wstatus);
-	}
-	free_pipes_pids(pr->pipes, pr->pids, pipes_len, 0);
-	ft_unlink_tmpfiles((*frame)->cmdblk);
-	return (g_exit_status);
 }
 
 int	standard_error(char *str)

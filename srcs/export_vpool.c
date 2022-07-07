@@ -12,11 +12,11 @@
 
 #include <minishell.h>
 
-static int	ft_search_equals(char **var)
+static int	ft_search_equals(char *var)
 {
 	char	*varcpy;
 
-	varcpy = *var;
+	varcpy = var;
 	while (*varcpy && *varcpy != '=')
 		varcpy++;
 	if (!*varcpy)
@@ -48,9 +48,17 @@ static int	ft_replace_var(char **v_curr, char **var_pool)
 
 char	*search_varpool(char *var, char **var_pool)
 {
-	if (ft_search_equals(&var))
-		return (var);
-	if (ft_replace_var(&var, var_pool) < 0)
+	char	*dup;
+
+	dup = ft_strdup(var);
+	if (!dup)
 		return (NULL);
-	return (var);
+	if (ft_search_equals(dup))
+		return (dup);
+	if (ft_replace_var(&dup, var_pool) < 0)
+	{
+		free(dup);
+		return (NULL);
+	}
+	return (dup);
 }

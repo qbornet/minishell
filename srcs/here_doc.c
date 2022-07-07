@@ -29,7 +29,7 @@ static int	ret_res(t_cmdblock **c_curr, char *res, char *word)
 	write(fd_val, res, ft_null(res));
 	close(fd_val);
 	free(res);
-	return (ft_replace_node(&(*c_curr)->infile, word, str));
+	return (ft_replace_node(&(*c_curr)->fd, word, str));
 }
 
 static char	*ft_strjoin_here(char *s1, char *s2)
@@ -110,6 +110,7 @@ int	here_doc(t_data **d_curr, t_cmdblock **c_curr, char *word)
 	char	*str;
 
 	res = NULL;
+	ft_removes_quotes(&word);
 	flag = opt_word(&word);
 	if (flag < 0)
 		return (-1);

@@ -6,11 +6,11 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:27:20 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/27 13:53:09 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 07:13:25 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <minishell.h>
 
 // Upon successful return, this function return the number of characters
 // printed (excluding the null byte used to end output to strings).
@@ -36,7 +36,10 @@ static int	ft_echo_printer(char **s, int i, int flag)
 
 	while (s[i])
 	{
-		len = write(1, s[i], ft_strlen(s[i]));
+		if (!s[i][0])
+			len = write(1, "", 1);
+		else
+			len = write(1, s[i], ft_strlen(s[i]));
 		if (len < 0)
 			return (-2);
 		i++;
@@ -47,6 +50,7 @@ static int	ft_echo_printer(char **s, int i, int flag)
 	if (!flag)
 		if (write(1, "\n", 1) < 0)
 			return (-4);
+	g_exit_status = 0;
 	return (0);
 }
 

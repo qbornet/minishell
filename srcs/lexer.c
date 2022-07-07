@@ -6,23 +6,22 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:29:41 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 12:19:07 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 07:57:21 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <minishell.h>
 
 static t_token	*tokeninit(char **input, unsigned int qt)
 {
 	t_token	*token;
 
-	token = malloc(sizeof(t_token));
+	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
 		return (NULL);
 	token->lex = *input;
 	token->type = 0;
 	token->qt = qt;
-	token->error = 0;
 	token->len = 0;
 	return (token);
 }
@@ -46,32 +45,17 @@ static t_token	*get_next_token(char **input, unsigned int qt)
 	token = tokeninit(input, qt);
 	if (!token)
 		return (NULL);
-	token->error = get_token(input, token);
+	get_token(input, token);
 	*input += token->len;
-	if (token->type == E_ERROR
-		|| (token->qt && token->type == E_EOI)
-		|| !token->type)
+	if (token->qt)
 	{
-		token->lex = NULL;
-		return (token);
+		token->type = E_ERROR;
+		ft_perror(NULL, E_UNC_QUO);
 	}
+	if (token->type == E_ERROR
+		|| !token->type)
+		token->lex = NULL;
 	return (token);
-}
-
-static int	ft_free_handler(t_token **token, t_tokenlist **lst)
-{
-	int	code;
-
-	if (!*lst)
-		code = 4;
-	else
-		ft_tokenclear(lst, free);
-	if (!*token)
-		code = 3;
-	else if ((*token)->error)
-		code = (*token)->error;
-	free(*token);
-	return (code);
 }
 
 /* Fonction pour generer une liste chaine de token
@@ -84,9 +68,8 @@ static int	ft_free_handler(t_token **token, t_tokenlist **lst)
  * @return: void
  * - La valeur de retour sera determine plus tard pour gerer les cas d'erreurs
  * */
-int	lexical_analysis(char *input, t_tokenlist **lst)
+int	lexical_analysis(char *input, t_tokenlist **lst, t_token *token)
 {
-	t_token		*token;
 	t_tokenlist	*newlst;
 
 	*lst = NULL;
@@ -97,11 +80,16 @@ int	lexical_analysis(char *input, t_tokenlist **lst)
 			token = get_next_token(&input, ft_tokenlast(newlst)->token->qt);
 		else
 			token = get_next_token(&input, 0);
-		if (!token || !token->lex)
-			return (ft_free_handler(&token, lst));
+		if (!token)
+			return (ft_perror_ret(NULL, E_TOK_CREA, -1));
+		if (!token->lex)
+		{
+			free(token);
+			return (-1);
+		}
 		newlst = ft_tokennew(token);
 		if (!newlst)
-			return (ft_free_handler(&token, lst));
+			return (ft_perror_ret(NULL, E_TOK_CREA, -1));
 		ft_tokenadd_back(lst, newlst);
 		if (token->type == E_EOI)
 			break ;

@@ -27,11 +27,13 @@ int	ft_recreate_envp(char ***envp_curr, ssize_t index_envp)
 	char	**new;
 	char	**envp;
 	ssize_t	i;
+	ssize_t	j;
 
 	envp = *envp_curr;
 	if (index_envp == -1)
 		return (0);
 	i = 0;
+	j = 0;
 	new = ft_calloc((ft_len(envp)), sizeof(char *));
 	if (!new)
 		return (-1);
@@ -42,8 +44,7 @@ int	ft_recreate_envp(char ***envp_curr, ssize_t index_envp)
 			free(envp[i++]);
 			continue ;
 		}
-		new[i] = envp[i];
-		i++;
+		new[j++] = envp[i++];
 	}
 	*envp_curr = new;
 	return (0);
@@ -54,10 +55,12 @@ int	ft_recreate_vpool(char ***vpool_curr, ssize_t index_vpool)
 	char	**new;
 	char	**vpool;
 	ssize_t	i;
+	ssize_t	j;
 
 	if (index_vpool == -1)
 		return (0);
 	i = 0;
+	j = 0;
 	vpool = *vpool_curr;
 	new = ft_calloc(4096, sizeof(char *));
 	if (!new)
@@ -69,8 +72,7 @@ int	ft_recreate_vpool(char ***vpool_curr, ssize_t index_vpool)
 			free(vpool[i++]);
 			continue ;
 		}
-		new[i] = vpool[i];
-		i++;
+		new[j++] = vpool[i++];
 	}
 	*vpool_curr = new;
 	return (0);

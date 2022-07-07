@@ -52,3 +52,17 @@ char	*free_str_tab(char **tab, int index)
 	free_elt_tab(tab + index);
 	return (free_tab(tab));
 }
+
+char	*ft_last_level(char *str)
+{
+	char	*strcpy;
+
+	strcpy = str;
+	while (*strcpy)
+	{
+		if (!ft_strchr(strcpy, '/'))
+			break ;
+		strcpy++;
+	}
+	return (strcpy);
+}

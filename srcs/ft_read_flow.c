@@ -72,6 +72,52 @@ int	ft_find_operator(t_btree *tree)
 	return (0);
 }
 
+static int	is_operator(t_btree *tree)
+{
+	t_token			*token;
+	t_token			*token_next;
+	enum e_token	type;
+	enum e_token	type_next;
+
+	token = tree->node->token;
+	type = token->type;
+	token_next = tree->node->tokenlst->next->token;
+	type_next = tree->node->tokenlst->next->token->type;
+	/*
+	if (token)
+		printf("token [%s] type %d\n", token->lex, token->type);
+	else
+		printf("null\n");
+	if (token_next)
+		printf("token_next [%s] type %d\n", token_next->lex, token_next->type);
+	else
+		printf("null\n");
+	*/
+
+	if (type == E_PIPE && (!tree->left || tree->left->node->type == E_ERROR))
+	{
+		//printf("Ici 0\n");
+		if (err_msg(token->lex, token->len, E_SYNTAX) < 0)
+			return (-1);
+		return (1);
+	}
+	if ((type == E_PIPE || type == E_LESS || type == E_GREAT || type == E_DLESS || type == E_DGREAT) && (type_next == E_ERROR || type_next == E_EOI))
+	{
+		//printf("Ici 1\n");
+		return (ft_perror_ret("newline", E_SYNTAX, 1));
+	}
+	else if (((type == E_LESS || type == E_GREAT || type == E_DLESS || type == E_DGREAT) && type_next != E_FD && type_next != E_WORD)
+		|| (type == E_PIPE && type_next == E_PIPE))
+	{
+		//printf("Ici 2\n");
+		if (err_msg(token_next->lex, token_next->len, E_SYNTAX) < 0)
+			return (-1);
+		return (1);
+	}
+	//printf("ailleur\n");
+	return (0);
+}
+
 int	ft_read_flow(t_btree *tree, t_strlist **s_curr)
 {
 	int	res;
@@ -89,11 +135,9 @@ int	ft_read_flow(t_btree *tree, t_strlist **s_curr)
 			if (!*s_curr)
 				return (-1);
 		}
-		else if (tree && tree->node->type == E_ERROR)
-			return (-1);
 		res = ft_find_operator(tree);
 		if (res)
-			if (!tree->right)
+			if (is_operator(tree))
 				return (-1);
 		if (ft_read_flow(tree->right, s_curr) < 0)
 			return (-1);

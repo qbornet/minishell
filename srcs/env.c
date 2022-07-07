@@ -6,18 +6,20 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:27:23 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 11:27:24 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 07:14:00 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <minishell.h>
 
-int	ft_env(char **envp)
+int	ft_env(t_cmdblock *cmdblk, char **envp)
 {
 	int	i;
 
 	if (!envp)
 		return (0);
+	if (cmdblk->cmd[1] != NULL)
+		return (ft_perror_ret(cmdblk->cmd[1], E_DENIED, -1));
 	i = 0;
 	while (envp[i])
 	{
@@ -28,13 +30,3 @@ int	ft_env(char **envp)
 	}
 	return (0);
 }
-
-/*
-int	main(int ac, char **av, char **envp)
-{
-	if (ac != 1)
-		return (-1);
-	ft_env(envp);
-	return (0);
-}
-*/
