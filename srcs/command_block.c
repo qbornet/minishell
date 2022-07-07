@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:27:18 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 11:27:19 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 11:45:33 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,18 @@ static int	opt_insert_filedes(t_btree *r, t_cmdblock **cmd_curr)
 	if (r->node->type == E_GREAT || r->node->type == E_DGREAT
 		|| r->node->type == E_LESS || r->node->type == E_DLESS)
 	{
-			if (r->right && r->right->node->type == E_FD)
-				token = r->right->node->token;
-			if (r->right->left && r->right->left->node->type == E_FD)
-				token = r->right->left->node->token;
-			str = ft_create_str(token->lex, token->len);
-			if (!str)
-				return (-1);
-			if (ft_rediradd_back(&(*cmd_curr)->fd, str, r->node->type) < 0)
-			{
-				free(str);
-				return (-1);
-			}
+		if (r->right && r->right->node->type == E_FD)
+			token = r->right->node->token;
+		if (r->right->left && r->right->left->node->type == E_FD)
+			token = r->right->left->node->token;
+		str = ft_create_str(token->lex, token->len);
+		if (!str)
+			return (-1);
+		if (ft_rediradd_back(&(*cmd_curr)->fd, str, r->node->type) < 0)
+		{
+			free(str);
+			return (-1);
+		}
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:29:46 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 11:29:47 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 11:46:16 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ void	word_token(char *input, t_token *token)
 	tmp = input;
 	while (*input == ' ')
 		input++;
-	while (*input && !is_special_token(*input) && ((*input != ' ' && !token->qt) || token->qt))
+	while (*input && !is_special_token(*input)
+		&& ((*input != ' ' && !token->qt) || token->qt))
 	{
 		if (*input == '\"' && token->qt == E_DOUBLE)
 			token->qt = 0;

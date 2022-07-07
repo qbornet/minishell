@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:28:07 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/27 14:27:49 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 11:52:40 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	ft_isword(int c)
 {
-	if (ft_isalnum(c) || c== '_')
+	if (ft_isalnum(c) || c == '_')
 		return (1);
 	return (0);
 }
@@ -58,7 +58,6 @@ int	ft_dup_error(char **arr)
 	free(arr);
 	return (-1);
 }
-
 
 int	ft_checkvar_name(char *var, t_data **d_curr)
 {

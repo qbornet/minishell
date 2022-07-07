@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:31:03 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 11:31:05 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 12:08:42 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ char	**ft_checkenv(char **envp)
 		new[1] = ft_strdup("SHLVL=0");
 		new[2] = ft_strdup(DEFAULT_PATH);
 		new[3] = ft_strjoin("HOME=", DFL_HOME);
-		if (!new[0] || !new[1] 
-				|| !new[2] || !new[3])
+		if (!new[0] || !new[1]
+			|| !new[2] || !new[3])
 			return (NULL);
 	}
 	return (new);

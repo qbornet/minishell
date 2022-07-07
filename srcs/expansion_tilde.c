@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expansion_tilde.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/07 11:55:27 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/07/07 12:05:20 by jfrancai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 static char	*get_home(char *var)
@@ -17,32 +29,13 @@ static char	*get_home(char *var)
 static char	*opt_add_homes(char **str_curr, char *home, size_t pos)
 {
 	char	*begin_str;
-	char	*end_str;
 	char	*str;
-	char	*tmp;
 
 	str = *str_curr;
 	begin_str = ft_substr(str, 0, pos);
 	if (!begin_str)
 		return (NULL);
-	end_str = ft_substr(str, pos + 1, ft_strlen(str));
-	if (!end_str)
-	{
-		free(begin_str);
-		return (NULL);
-	}
-	free(str);
-	str = ft_strjoin(begin_str, home);
-	if (!str)
-	{
-		free(begin_str);
-		free(end_str);
-		return (NULL);
-	}
-	tmp = str;
-	str = ft_strjoin(tmp, end_str);
-	free(tmp);
-	free(end_str);
+	alloc_str(&str, home, pos, begin_str);
 	free(begin_str);
 	if (!str)
 		return (NULL);
@@ -101,7 +94,8 @@ int	ft_do_tilde(t_data **d_curr)
 		ret = ft_strchr(str, '~');
 		if (!ret)
 			return (0);
-		else if (!*(ret + 1) || (ft_isalnum(*(ret + 1)) && !ft_isalnum(*(ret - 1)) && !ft_findquotes(str)))
+		else if (!*(ret + 1) || (ft_isalnum(*(ret + 1))
+				&& !ft_isalnum(*(ret - 1)) && !ft_findquotes(str)))
 		{
 			strlst->data = ft_add_homes(&str, (*d_curr)->envp);
 			if (!strlst->data)

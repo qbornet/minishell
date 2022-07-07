@@ -1,36 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   opt_join.c                                         :+:      :+:    :+:   */
+/*   expansion_tilde_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/07 12:27:36 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 12:27:52 by jfrancai         ###   ########.fr       */
+/*   Created: 2022/07/07 11:57:20 by jfrancai          #+#    #+#             */
+/*   Updated: 2022/07/07 12:06:46 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	opt_strlst(t_btree *r, t_lenlist **len_curr, int *cmd)
+char	*alloc_str(char **str, char *home, size_t pos, char *begin_str)
 {
-	int			i;
+	char	*end_str;
+	char	*tmp;
 
-	if (r->node->type == E_VALID_FILE || r->node->type == E_VALID_BUILTIN
-		|| r->node->type == E_WORD)
+	end_str = ft_substr(*str, pos + 1, ft_strlen(*str));
+	if (!end_str)
+		return (NULL);
+	free(*str);
+	*str = ft_strjoin(begin_str, home);
+	if (!*str)
 	{
-		i = ft_length_lst(r->node->tokenlst);
-		if (!*cmd)
-		{
-			(*len_curr)->length = i;
-			*cmd = 1;
-		}
-		return (0);
+		free(end_str);
+		return (NULL);
 	}
-	if (r->node->type == E_PIPE)
-	{
-		*len_curr = (*len_curr)->next;
-		*cmd = 0;
-	}
-	return (0);
+	tmp = *str;
+	*str = ft_strjoin(tmp, end_str);
+	free(tmp);
+	free(end_str);
+	return (*str);
 }

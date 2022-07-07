@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:28:03 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 11:11:48 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 11:53:59 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void	ft_do_varexp(t_data **d_curr)
 	char		*str;
 	t_data		*frame;
 	t_strlist	*strlst;
-	//t_strlist	*tmp;
 
 	str = "";
 	frame = *d_curr;
@@ -89,23 +88,6 @@ void	ft_do_varexp(t_data **d_curr)
 			flag = 2;
 		if ((flag == 1 || !flag) && strlst->data)
 			expand(strlst, &frame, flag);
-		/*
-		if (strlst->data && !((char *)(strlst->data))[0])
-		{
-			free(strlst->data);
-			if (strlst->next)
-				strlst->next->prev = strlst->prev;
-			if (strlst->prev)
-				strlst->prev->next = strlst->next;
-			tmp = strlst;
-			strlst = strlst->next;
-			free(tmp);
-			if (!strlst || !strlst->prev)
-				frame->strlst = strlst;
-		}
-		else
-			strlst = strlst->next;
-		*/
 		strlst = strlst->next;
 	}
 	*d_curr = frame;

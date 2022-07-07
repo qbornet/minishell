@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:28:28 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 11:28:29 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 11:54:33 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_lenlist	*ft_lennew(int data)
 	return (lenlst);
 }
 
-int		ft_retlenclear(t_lenlist **len_curr)
+int	ft_retlenclear(t_lenlist **len_curr)
 {
 	ft_lenclear(len_curr);
 	return (-1);

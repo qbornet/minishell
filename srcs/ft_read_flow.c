@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:28:33 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 12:10:39 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 12:13:35 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,38 +83,20 @@ static int	is_operator(t_btree *tree)
 	type = token->type;
 	token_next = tree->node->tokenlst->next->token;
 	type_next = tree->node->tokenlst->next->token->type;
-	/*
-	if (token)
-		printf("token [%s] type %d\n", token->lex, token->type);
-	else
-		printf("null\n");
-	if (token_next)
-		printf("token_next [%s] type %d\n", token_next->lex, token_next->type);
-	else
-		printf("null\n");
-	*/
-
 	if (type == E_PIPE && (!tree->left || tree->left->node->type == E_ERROR))
 	{
-		//printf("Ici 0\n");
 		if (err_msg(token->lex, token->len, E_SYNTAX) < 0)
 			return (-1);
 		return (1);
 	}
-	if ((type == E_PIPE || type == E_LESS || type == E_GREAT || type == E_DLESS || type == E_DGREAT) && (type_next == E_ERROR || type_next == E_EOI))
-	{
-		//printf("Ici 1\n");
+	if (condition_0(type, type_next))
 		return (ft_perror_ret("newline", E_SYNTAX, 1));
-	}
-	else if (((type == E_LESS || type == E_GREAT || type == E_DLESS || type == E_DGREAT) && type_next != E_FD && type_next != E_WORD)
-		|| (type == E_PIPE && type_next == E_PIPE))
+	else if (condition_1(type, type_next))
 	{
-		//printf("Ici 2\n");
 		if (err_msg(token_next->lex, token_next->len, E_SYNTAX) < 0)
 			return (-1);
 		return (1);
 	}
-	//printf("ailleur\n");
 	return (0);
 }
 

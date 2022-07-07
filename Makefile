@@ -42,7 +42,8 @@ TOOLS = ft_tokenadd_back.c \
 	free_str_utils.c \
 	free_int_utils.c \
 	ft_perror.c \
-	ft_perror_utils.c \
+	ft_perror_utils_0.c \
+	ft_perror_utils_1.c \
 	ft_qsort.c
 
 # File to create lexer part
@@ -67,7 +68,8 @@ VAREXP = varexp.c \
 
 # File to create read parser part
 READ = ft_read_flow.c \
-	   ft_strlist.c
+	ft_read_flow_utils.c \
+	ft_strlist.c
 
 # File to create expansion part
 EXPAN = expansion.c \
@@ -75,6 +77,7 @@ EXPAN = expansion.c \
 		expansion_error.c \
 		expansion_check.c \
 		expansion_tilde.c \
+		expansion_tilde_utils.c \
 		opt_join.c \
 		ft_create_cmd.c \
 		ft_create_join.c \

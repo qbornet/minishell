@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 12:54:12 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 11:35:01 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 12:16:33 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,6 +256,8 @@ char		*ft_last_level(char *str);
 int			lexer_parser_main(char *input, t_data **d_curr);
 int			ft_find_operator(t_btree *tree);
 int			ft_read_flow(t_btree *tree, t_strlist **s_curr);
+int			condition_0(enum e_token type, enum e_token type_next);
+int			condition_1(enum e_token type, enum e_token type_next);
 int			ft_strlst_addback(\
 		t_strlist **lst_curr, void *data, enum e_token type);
 void		ft_strdelone(t_strlist *strlst, void (*del) (void *));
@@ -282,6 +284,7 @@ int			opt_strlst(t_btree *root, t_lenlist **len_curr, int *cmd);
 int			ft_length_lst(t_tokenlist *tokenlst);
 int			ft_retlenclear(t_lenlist **len_curr);
 int			ft_do_tilde(t_data	**d_curr);
+char		*alloc_str(char **str, char *home, size_t pos, char *begin_str);
 int			ft_do_quotes(t_data	**d_curr);
 int			ft_create_cmd(t_data **d_curr, int total_cmd);
 int			ft_create_join(t_data **d_curr);
@@ -429,10 +432,16 @@ void		ft_perror(const char *s, const int code);
 int			ft_perror_ret(const char *s, const int code, const int rvalue);
 void		*ft_perror_ptr(const char *s, const int code, void *rvalue);
 
-/* Error printer utils */
+/* Error printer utils 0 */
 char		*error_selec(const int status);
 char		*internal_error(const int status);
 int			err_msg(const char *s, const int len, const int code);
+
+/* Error printer utils 1 */
+char		*error_126(const int status);
+char		*error_127(const int status);
+char		*error_1(const int status);
+char		*error_2(const int status);
 
 extern int				g_exit_status;
 #endif

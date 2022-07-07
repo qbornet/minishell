@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:27:25 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 08:23:38 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 12:33:40 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,26 @@ static int	is_file(const char *path)
 	return (-1);
 }
 
-char	*get_path(char **env, char *pg)
+static char	*set_path(char **env, char *pg)
 {
 	char	**paths;
+	char	*path;
+
+	paths = get_env_paths(env);
+	if (!paths)
+		return (NULL);
+	path = get_program_path(paths, pg);
+	if (!path)
+	{
+		free_str_tab(paths, 0);
+		return ((char *)ft_perror_ptr(pg, E_NOT_FOUND, 0));
+	}
+	free_str_tab(paths, 0);
+	return (path);
+}
+
+char	*get_path(char **env, char *pg)
+{
 	char	*path;
 
 	path = NULL;
@@ -83,17 +100,6 @@ char	*get_path(char **env, char *pg)
 			return ((char *)ft_perror_ptr(pg, E_NOT_EXIST, 0));
 	}
 	else
-	{
-		paths = get_env_paths(env);
-		if (!paths)
-			return (NULL);
-		path = get_program_path(paths, pg);
-		if (!path)
-		{
-			free_str_tab(paths, 0);
-			return ((char *)ft_perror_ptr(pg, E_NOT_FOUND, 0));
-		}
-		free_str_tab(paths, 0);
-	}
+		path = set_path(env, pg);
 	return (path);
 }
