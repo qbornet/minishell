@@ -47,6 +47,20 @@ static int	ft_var(char *str, t_data **d_curr)
 	return (0);
 }
 
+static char	is_valid_id(char *s)
+{
+	if (!ft_isalpha(*s))
+		return (0);
+	while (*(++s))
+	{
+		if (*s == '=')
+			break;
+		if (!ft_isalnum(*s))
+			return (0);
+	}
+	return (1);
+}
+
 static int	ft_search_expansion(t_data **d_curr)
 {
 	char		*str;
@@ -62,7 +76,7 @@ static int	ft_search_expansion(t_data **d_curr)
 	while (s)
 	{
 		str = s->data;
-		if (str && ft_strchr(str, '=') && str[0] != '=' && !ft_isdigit(str[0]) && (!s->prev || !s->prev->data))
+		if (str && ft_strchr(str, '=') && is_valid_id(str) && (!s->prev || !s->prev->data))
 		{
 			if (ft_var(str, &frame) < 0)
 				return (ft_free_expan_error(&frame));
@@ -72,18 +86,6 @@ static int	ft_search_expansion(t_data **d_curr)
 		s = s->next;
 	}
 	return (0);
-}
-
-void	print_strlst(t_strlist *strlst)
-{
-
-	printf("strlst: ");
-	while (strlst)
-	{
-		printf("%s:%d->", (char *)strlst->data, strlst->s_id);
-		strlst = strlst->next;
-	}
-	printf("NULL\n");
 }
 
 int	start_expansion(t_data **d_curr)
@@ -104,6 +106,19 @@ int	start_expansion(t_data **d_curr)
 	return (0);
 }
 
+/*
+void	print_strlst(t_strlist *strlst)
+{
+
+	printf("strlst: ");
+	while (strlst)
+	{
+		printf("%s:%d->", (char *)strlst->data, strlst->s_id);
+		strlst = strlst->next;
+	}
+	printf("NULL\n");
+}
+*/
 /*
 char	**ft_dup_envp(char **envp)
 {
