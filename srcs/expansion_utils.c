@@ -62,7 +62,7 @@ void	ft_do_varexp(t_data **d_curr)
 	char		*str;
 	t_data		*frame;
 	t_strlist	*strlst;
-	t_strlist	*tmp;
+	//t_strlist	*tmp;
 
 	str = "";
 	frame = *d_curr;
@@ -78,6 +78,7 @@ void	ft_do_varexp(t_data **d_curr)
 			flag = 2;
 		if ((flag == 1 || !flag) && strlst->data)
 			expand(strlst, &frame, flag);
+		/*
 		if (strlst->data && !((char *)(strlst->data))[0])
 		{
 			free(strlst->data);
@@ -93,6 +94,8 @@ void	ft_do_varexp(t_data **d_curr)
 		}
 		else
 			strlst = strlst->next;
+		*/
+		strlst = strlst->next;
 	}
 	*d_curr = frame;
 }

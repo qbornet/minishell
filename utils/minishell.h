@@ -20,7 +20,7 @@
 # include <readline/history.h>
 
 # define BIN_NAME "start"
-# define DFL_HOME "/home/qbornet"
+# define DFL_HOME "/"
 # define OPEN_MAX 1024
 # define DEFAULT_PATH "PATH=/usr/local/bin:/usr/bin:/bin"
 # define HEREDOC_PROMPT "\1\e[1;38;5;11m\2?>\1\e[0m\2 "
