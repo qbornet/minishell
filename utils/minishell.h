@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 12:54:12 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 08:25:58 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 11:35:01 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@
 # include <readline/history.h>
 
 # define BIN_NAME "start"
-# define DFL_HOME "/home"
-# define DFL_TERM "TERM=xterm-256color"
+# define DFL_HOME "/"
 # define OPEN_MAX 1024
 # define DEFAULT_PATH "PATH=/usr/local/bin:/usr/bin:/bin"
 # define HEREDOC_PROMPT "\1\e[1;38;5;11m\2?>\1\e[0m\2 "
@@ -187,11 +186,13 @@ typedef struct s_data
 /* START_H */
 /* exit_free.c start.c start_prompt.c stat_utils.c */
 
+int			start(char **envp);
 int			exit_group(t_data **d_curr);
 int			start_prompt(t_data **d_curr);
 int			free_redoo(t_data **d_curr, char *str);
 int			ft_addlevel(char ***envp_curr);
 char		**ft_envp(char **envp);
+char		**ft_checkenv(char **envp);
 void		ft_free_all(t_data **d_curr);
 void		ft_free_envp(char **envp);
 void		ft_free_cpool(char ***cpool);
@@ -223,7 +224,7 @@ int			is_token_2(char *input, t_token *token);
 int			lexical_analysis(char *input, t_tokenlist **lst, t_token *token);
 
 // Btree builder
-t_btree		*buildbtree(char **envp, t_tokenlist *lst);
+t_btree		*buildbtree(t_tokenlist *lst);
 int			is_redirection(int type);
 
 // Btree utils 0
@@ -252,7 +253,7 @@ char		*free_str_tab(char **tab, int index);
 char		*ft_last_level(char *str);
 /* AST_H */
 /* ft_strlist.c ft_read_flow.c */
-int			lexer_parser_main(char *input, char **envp, t_data **d_curr);
+int			lexer_parser_main(char *input, t_data **d_curr);
 int			ft_find_operator(t_btree *tree);
 int			ft_read_flow(t_btree *tree, t_strlist **s_curr);
 int			ft_strlst_addback(\
@@ -287,7 +288,7 @@ int			ft_create_join(t_data **d_curr);
 int			ft_check_pool(char *str, char **pool, int res);
 char		is_valid_id(char *s);
 int			ft_free_expan_error(t_data **d_curr);
-int			ft_do_starexp(t_data **d_curr, unsigned int i);
+int			ft_do_starexp(t_data **d_curr);
 int			ft_blockadd_back(t_cmdblock **cmd_curr, t_termstd *fd, char **cmd);
 int			ft_rediradd_back(t_redirlist **r_curr,
 				char *str, enum e_token type);
@@ -363,7 +364,7 @@ int			print_error(t_error code);
 char		*search_varpool(char *var, char **var_pool);
 
 /* UNDERSCORE_H */
-int			underscore(t_cmdblock *cmdblock, t_data **d_curr);
+int			underscore(t_data **frame, t_process *pr);
 
 /* EXEC_H */
 /* Exec */

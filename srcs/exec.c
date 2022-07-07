@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:27:38 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 07:40:40 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 11:09:10 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,16 @@ int	exec_status(t_data **frame, t_process *pr)
 {
 	int			i;
 	int			wstatus;
-	t_cmdblock	*cmdblock;
 
-	cmdblock = (*frame)->cmdblk;
-	close_all_pipes(cmdblock, (*frame)->std_fd, pr);
+	close_all_pipes((*frame)->cmdblk, (*frame)->std_fd, pr);
 	i = -1;
 	while (++i < pr->len_cmdb)
 	{
 		waitpid(pr->pids[i], &wstatus, 0);
 		if (WIFEXITED(wstatus))
 			g_exit_status = WEXITSTATUS(wstatus);
-		if (underscore(cmdblock, frame) < 0)
-			return (-1);
-		cmdblock = cmdblock->next;
 	}
+	underscore(frame, pr);
 	dup_stdinout((*frame)->std_fd);
 	ft_unlink_tmpfiles((*frame)->cmdblk);
 	free_pipes_pids(pr->pipes, pr->pids, 0);

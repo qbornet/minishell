@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:27:02 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 07:08:36 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 11:33:39 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,8 @@ static void	go_to_token(t_tokenlist **lst, enum e_token type)
 		*lst = (*lst)->next;
 }
 
-static void	check_root(char **envp, t_btree *root, t_tokenlist **lst)
+static void	next_step(t_btree *root, t_tokenlist **lst)
 {
-	if (root && root->right && root->right->node->type == E_WORD)
-		check_cmd(root->right->node, envp);
-	else
-		check_cmd(root->node, envp);
-	go_to_token(lst, E_WORD);
-}
-
-static void	next_step(char **envp, t_btree *root, t_tokenlist **lst)
-{
-	(void)envp;
 	if (!is_redirection(root->node->type)
 		&& (root->node->type == E_WORD
 			|| (root->right && root->right->node->type == E_WORD)))
@@ -61,20 +51,20 @@ static void	next_step(char **envp, t_btree *root, t_tokenlist **lst)
 	}
 }
 
-t_btree	*buildbtree(char **envp, t_tokenlist *lst)
+t_btree	*buildbtree(t_tokenlist *lst)
 {
 	t_btree		*root;
 
 	root = ft_newleaf(lst);
 	if (!root)
 		return (NULL);
-	next_step(envp, root, &lst);
+	next_step(root, &lst);
 	while (lst && lst->token->type != E_EOI)
 	{
 		btree_addnode(&root, &lst);
 		if (!root)
 			return (NULL);
-		next_step(envp, root, &lst);
+		next_step(root, &lst);
 	}
 	return (root);
 }

@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:28:03 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 11:56:37 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 11:11:48 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,12 @@ static void	ft_change_node(t_strlist **s_curr, t_strlist **head_curr)
 	*s_curr = strlst;
 }
 
-int	ft_do_starexp(t_data **d_curr, unsigned int i)
+int	ft_do_starexp(t_data **d_curr)
 {
 	int				flag;
 	char			*str;
 	t_strlist		*strlst;
+	unsigned int	i;
 
 	str = "";
 	strlst = (*d_curr)->strlst;
@@ -72,7 +73,7 @@ void	ft_do_varexp(t_data **d_curr)
 	char		*str;
 	t_data		*frame;
 	t_strlist	*strlst;
-	t_strlist	*tmp;
+	//t_strlist	*tmp;
 
 	str = "";
 	frame = *d_curr;
@@ -88,6 +89,7 @@ void	ft_do_varexp(t_data **d_curr)
 			flag = 2;
 		if ((flag == 1 || !flag) && strlst->data)
 			expand(strlst, &frame, flag);
+		/*
 		if (strlst->data && !((char *)(strlst->data))[0])
 		{
 			free(strlst->data);
@@ -103,6 +105,8 @@ void	ft_do_varexp(t_data **d_curr)
 		}
 		else
 			strlst = strlst->next;
+		*/
+		strlst = strlst->next;
 	}
 	*d_curr = frame;
 }

@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:30:15 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 08:05:06 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/07 11:07:56 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,9 @@ int	start(char **envp)
 	if (frame->std_fd->stdin == -1 || frame->std_fd->stdin == -1)
 		return (exit_group(&frame));
 	frame->envp = ft_envp(envp);
+	if (!frame->envp)
+		return (exit_group(&frame));
+	frame->envp = ft_checkenv(frame->envp);
 	if (!frame->envp)
 		return (exit_group(&frame));
 	if (start_prompt(&frame) < 0)
