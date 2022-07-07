@@ -38,7 +38,8 @@ static size_t	ft_check_isstar(int to_do, t_strlist **s_curr)
 	return (i);
 }
 
-static int	ft_cmd_str(int to_do, size_t index, t_strlist **strlst, t_data **d_curr)
+static int	ft_cmd_str(int to_do, size_t index
+		, t_strlist **strlst, t_data **d_curr)
 {
 	size_t	i;
 	size_t	len;
@@ -48,16 +49,6 @@ static int	ft_cmd_str(int to_do, size_t index, t_strlist **strlst, t_data **d_cu
 	(*d_curr)->cmd_pool[index] = ft_calloc(len + 1, sizeof(char *));
 	if (!(*d_curr)->cmd_pool[index])
 		return (-1);
-	/*
-	if (to_do == 1)
-	{
-		free((*d_curr)->cmd_pool[index]);
-		(*d_curr)->cmd_pool[index] = ft_split((*strlst)->data, ' ');
-		if (!(*d_curr)->cmd_pool[index])
-			return (-1);
-		*strlst = (*strlst)->next;
-	}
-	*/
 	while (len > 0 && (*strlst))
 	{
 		(*d_curr)->cmd_pool[index][i] = (*strlst)->data;
