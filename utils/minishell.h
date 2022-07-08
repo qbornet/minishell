@@ -33,7 +33,7 @@ typedef struct t_list	t_garbage;
 
 typedef enum e_error
 {
-	E_IS_DIR = 400,
+	E_IS_DIR_126= 400,
 	E_DENIED,
 	E_NOT_FOUND = 410,
 	E_NOT_EXIST,
@@ -44,6 +44,10 @@ typedef enum e_error
 	E_SYNTAX,
 	E_INV_OPT,
 	E_TOO_MARGS = 430,
+	E_IS_DIR_1,
+	E_NOT_DIR_1,
+	E_DENIED_1,
+	E_NOT_EXIST_1,
 }	t_error;
 
 enum e_token
@@ -406,6 +410,11 @@ void	*ft_perror_ptr(const char *s, const int code, void *rvalue);
 char	*error_selec(const int status);
 char	*internal_error(const int status);
 int		err_msg(const char *s, const int len, const int code);
+
+/* IO tools */
+int		is_file(const char* path);
+int		is_dir(const char* path);
+int		is_dirfile(const char *path);
 
 extern int	g_exit_status;
 

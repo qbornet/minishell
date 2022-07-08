@@ -3,7 +3,7 @@
 static char	*error_126(const int status)
 {
 	g_exit_status = 126;
-	if (status == E_IS_DIR)
+	if (status == E_IS_DIR_126)
 		return ("Is a directory\n");
 	if (status == E_DENIED)
 		return ("Permission denied\n");
@@ -25,6 +25,14 @@ static char	*error_1(const int status)
 	g_exit_status = 1;
 	if (status == E_TOO_MARGS)
 		return ("too many arguments\n");
+	if (status == E_IS_DIR_1)
+		return ("Is a directory\n");
+	if (status == E_NOT_DIR_1)
+		return ("Not a directory\n");
+	if (status == E_DENIED_1)
+		return ("Permission denied\n");
+	if (status == E_NOT_EXIST_1)
+		return ("No such file or directory\n");
 	return (NULL);
 }
 

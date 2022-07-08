@@ -40,21 +40,6 @@ static char	*get_program_path(char **paths, char *pg_name)
 	return (NULL);
 }
 
-static int	is_file(const char* path)
-{
-	DIR	*dir;
-
-	dir = opendir(path);
-	if(dir)
-	{
-		closedir(dir);
-		return (0);
-	}
-	if(errno == ENOTDIR)
-		return (1);
-	return (-1);
-}
-
 char	*get_path(char **env, char *pg)
 {
 	char	**paths;
@@ -64,7 +49,7 @@ char	*get_path(char **env, char *pg)
 	if (pg[0] == '/' || !ft_strncmp(pg, ".", 1) || !ft_strncmp(pg, "..", 2))
 	{
 		if (!is_file(pg))
-			return ((char *)ft_perror_ptr(pg, E_IS_DIR, 0));
+			return ((char *)ft_perror_ptr(pg, E_IS_DIR_126, 0));
 		if (access(pg, F_OK) == 0)
 			path = ft_strdup(pg);
 		else

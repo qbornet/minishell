@@ -46,7 +46,14 @@ int	ft_cd(const t_cmdblock *cmdblock, char **envp)
 		return (0);
 	}
 	free(home);
-	if (chdir(cmdblock->cmd[1]) < 0)
-		return (ft_perror_ret(cmdblock->cmd[0], E_NOT_EXIST, -1));
+	if (is_dir(cmdblock->cmd[1]) < 0)
+		return (ft_perror_ret(cmdblock->cmd[1], E_NOT_EXIST_1, -1));
+	else if (is_dir(cmdblock->cmd[1]))
+	{
+		if (chdir(cmdblock->cmd[1]) < 0)
+			return (ft_perror_ret(cmdblock->cmd[1], E_DENIED_1, -1));
+	}
+	else
+		return (ft_perror_ret(cmdblock->cmd[1], E_NOT_DIR_1, -1));
 	return (0);
 }
