@@ -26,11 +26,9 @@ static char	**free_temp(char **temp)
 static char	**ft_create_temp(char **envp, char **noeq)
 {
 	char	**temp;
-	size_t	i;
 	size_t	len_envp;
 	size_t	len_noeq;
 
-	i = -1;
 	len_envp = 0;
 	len_noeq = 0;
 	while (envp && envp[len_envp])
@@ -40,22 +38,7 @@ static char	**ft_create_temp(char **envp, char **noeq)
 	temp = ft_calloc(len_envp + len_noeq + 1, sizeof(char *));
 	if (!temp)
 		return (NULL);
-	len_envp = -1;
-	while (envp && envp[++len_envp])
-	{
-		temp[++i] = ft_strdup(envp[len_envp]);
-		if (!temp[i])
-			return (free_temp(temp));
-	}
-	len_noeq = -1;
-	while (noeq && noeq[++len_noeq])
-	{
-		temp[i] = ft_strdup(noeq[len_noeq]);
-		if (!temp[i])
-			return (free_temp(temp));
-		i++;
-	}
-	return (temp);
+	return (opt_create_temp(envp, noeq, temp));
 }
 
 int	ft_print_export(char **envp, char **noeq)
@@ -83,11 +66,19 @@ int	ft_print_export(char **envp, char **noeq)
 int	add_noeq(t_data **d_curr, char *var)
 {
 	size_t		i;
+	char		*temp;
 	static char	*noeq[4096];
 
 	i = 0;
 	while (noeq[i])
 		i++;
+	temp = search_varpool(var, (*d_curr)->var_pool);
+	if (temp && !ft_strcmp(var, temp))
+	{
+		free(var);
+		free(temp);
+		return (0);
+	}
 	noeq[i] = var;
 	(*d_curr)->noeq = noeq;
 	return (0);

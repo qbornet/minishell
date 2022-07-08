@@ -373,6 +373,7 @@ int			ft_env(t_cmdblock *cmdblk, char **envp);
 void		ft_exit(t_data **d_curr);
 int			print_error(t_error code);
 char		*search_varpool(char *var, char **var_pool);
+char		**opt_create_temp(char **envp, char **noeq, char **temp);
 
 /* UNDERSCORE_H */
 int			underscore(t_data **frame, t_process *pr);
