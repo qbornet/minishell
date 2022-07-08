@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:30:18 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 11:35:52 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 11:26:23 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,28 @@ static int	set_start(struct termios *t
 	return (0);
 }
 
+static int	run_prompt(t_data **d_curr, char *str)
+{
+	int	code;
+
+	code = lexer_parser_main(str, d_curr);
+	if (code < 0)
+		return (-1);
+	if (!code)
+	{
+		if (start_expansion(d_curr) < 0)
+			return (-1);
+		if (g_exit_status == 130 || g_exit_status == 131)
+			g_exit_status = 0;
+		if (run_exec(d_curr) < 0)
+			return (-1);
+	}
+	return (0);
+}
+
 int	start_prompt(t_data **d_curr)
 {
 	char				*str;
-	int					code;
 	struct termios		term;
 	struct sigaction	act_int;
 	struct sigaction	act_quit;
@@ -69,18 +87,8 @@ int	start_prompt(t_data **d_curr)
 		if (!str)
 			return (write(1, "exit\n", 5) && exit_group(d_curr));
 		ft_history(str);
-		code = lexer_parser_main(str, d_curr);
-		if (code < 0)
+		if (run_prompt(d_curr, str) < 0)
 			return (exit_group(d_curr));
-		if (!code)
-		{
-			if (start_expansion(d_curr) < 0)
-				return (exit_group(d_curr));
-			if (g_exit_status == 130 || g_exit_status == 131)
-				g_exit_status = 0;
-			if (run_exec(d_curr) < 0)
-				return (exit_group(d_curr));
-		}
 		free_redoo(d_curr, str);
 	}
 	return (write(1, "exit\n", 5) && exit_group(d_curr));
