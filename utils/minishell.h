@@ -163,6 +163,7 @@ typedef struct s_process
 typedef struct s_data
 {
 	int			total_cmd;
+	char		**noeq;
 	char		**envp;
 	char		**var_pool;
 	char		***cmd_pool;
@@ -314,7 +315,7 @@ char	*ft_error_malloc(char **arr);
 char	*ft_random_str(char *pathname, int bytes);
 void	heredoc_handler(int signum);
 void	opt_free_doexpand(char *str, char *begin_str, char *end_str);
-void	opt_find_dollars(char **s_curr, size_t *i);
+void	opt_find_dollars(char **s_curr, ssize_t *i);
 size_t	ft_num_expand(char *str);
 size_t	ft_null(char *str);
 size_t	ft_strjoin_len(char *str);
@@ -328,6 +329,9 @@ void	sigint_handler(int signum);
 void	sigquit_handler(int signum);
 
 /* BIN_H */
+int			opt_export(char *var);
+int			add_noeq(t_data **d_curr, char *var);
+int			ft_print_export(char **envp, char **noeq);
 int			ft_checkvar_name(char *var, t_data **d_curr);
 int			ft_printerror(char *var);
 int			ft_recreate_envp(char ***envp, ssize_t index_envp);
