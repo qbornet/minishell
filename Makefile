@@ -11,7 +11,6 @@ OBJS_DIR = objs
 UTILS_DIR = utils
 
 # Utils
-# Faut pas oublier d'enlever le fsan pour checker les exit_codes
 CC = clang
 CFLAGS = -MMD -Wall -Wextra -Werror -g3
 CPPFLAGS = -I ./$(UTILS_DIR) -I ./libft/utils
