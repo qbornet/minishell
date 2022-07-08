@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:28:05 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 07:45:06 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 15:25:49 by qbornet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,10 @@ int	ft_export(t_data **frame, t_cmdblock *cmdblock)
 	int			i;
 	char		*var;
 
-	i = 1;
+	i = 0;
 	if (!cmdblock->cmd[1])
 		return (ft_print_export((*frame)->envp, (*frame)->noeq));
-	while (cmdblock->cmd[i])
+	while (cmdblock->cmd[++i])
 	{
 		var = ft_strdup(cmdblock->cmd[i]);
 		if (!var)

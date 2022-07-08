@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:29:39 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/08 13:46:27 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 16:51:51 by qbornet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	ft_replace_node(t_redirlist	**r_curr, char *word, char *tempfile)
 	while (redir)
 	{
 		str = redir->str;
+		ft_removes_quotes(&str);
 		if (!ft_strncmp(str, word, ft_strlen(str)))
 		{
 			free(redir->str);

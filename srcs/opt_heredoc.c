@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:29:48 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 12:12:09 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 17:01:55 by qbornet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,10 @@ void	opt_find_dollars(char **s_curr, ssize_t *i)
 	str = *s_curr;
 	while (str[*i])
 	{
-		if (*i - 1 != -1)
+		if (str[*i] == '$' && *i - 1 >= 0 && str[*i - 1] == '\\')
 		{
-			if (str[*i] == '$' && str[*i - 1] == '\\')
-			{
-				str = ft_remove(str, *i);
-				continue ;
-			}
+			str = ft_remove(str, *i);
+			continue ;
 		}
 		else if (str[*i] == '$')
 			break ;
@@ -72,25 +69,25 @@ void	opt_find_dollars(char **s_curr, ssize_t *i)
 
 int	opt_word(char **w_curr)
 {
-	char				*tmp;
 	char				*word;
+	size_t				i;
 	struct sigaction	act;
 
-	tmp = NULL;
+	i = 0;
 	word = *w_curr;
 	ft_memset(&act, 0, sizeof(struct sigaction));
 	act.sa_handler = &heredoc_handler;
 	if (sigaction(SIGINT, &act, NULL) < 0)
 		return (-1);
-	if (word[0] == '\"' || word[0] == '\'')
+	while (word && word[i])
 	{
-		tmp = ft_substr(word, 1, (ft_strlen(word) - 2));
-		if (!tmp)
-			return (-1);
-		free(word);
-		word = tmp;
-		*w_curr = word;
-		return (0);
+		if (word[i] == '\"' || word[i] == '\'')
+		{
+			ft_removes_quotes(w_curr);
+			return (0);
+		}
+		i++;
 	}
+	ft_removes_quotes(w_curr);
 	return (1);
 }

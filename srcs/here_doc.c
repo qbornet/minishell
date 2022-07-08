@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:29:30 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 12:09:40 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 16:48:17 by qbornet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static int	ret_res(t_cmdblock **c_curr, char *res, char *word)
 	fd_val = open(str, O_CREAT | O_EXCL | O_RDWR, 0644);
 	if (fd_val == -1)
 	{
+		free(str);
 		free(res);
 		return (-1);
 	}
@@ -110,7 +111,6 @@ int	here_doc(t_data **d_curr, t_cmdblock **c_curr, char *word)
 	char	*str;
 
 	res = NULL;
-	ft_removes_quotes(&word);
 	flag = opt_word(&word);
 	if (flag < 0)
 		return (-1);

@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:54:58 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 11:54:59 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 16:10:34 by qbornet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ static int	update_data(char **s, char *old, int len)
 			old++;
 		}
 	}
-	free(*s);
 	*s = new;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 12:47:03 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 07:22:34 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 16:30:03 by qbornet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,18 @@ static int	ft_call_heredoc(t_data **f, t_cmdblock **c, t_redirlist *fd)
 
 int	ft_init_exec(t_data **frame)
 {
-	int			len;
 	t_cmdblock	*cmdblock;
 
 	cmdblock = (*frame)->cmdblk;
-	len = ft_len_cmdblk(cmdblock);
+	(*frame)->pr.len_cmdb = ft_len_cmdblk(cmdblock);
 	while (cmdblock)
 	{
 		if (ft_call_heredoc(frame, &cmdblock, cmdblock->fd) < 0)
 			return (-1);
-		cmdblock->len = len;
+		cmdblock->len = (*frame)->pr.len_cmdb;
 		cmdblock = cmdblock->next;
 	}
-	return (len);
+	return (0);
 }
 
 int	get_cmd_tab(t_cmdblock *cmdblock, char **env)

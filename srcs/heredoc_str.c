@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:29:36 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 11:29:37 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 15:59:52 by qbornet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ size_t	ft_num_expand(char *str)
 
 	i = -1;
 	count = 0;
-	while (str[++i])
+	while (str && str[++i])
 		if (str[i] == '$' && (i - 1 == -1 || str[i - 1] != '\\'))
 			count++;
 	return (count);

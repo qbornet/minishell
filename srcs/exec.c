@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:27:38 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/08 13:59:11 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 16:46:09 by qbornet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ int	run_exec(t_data **frame)
 	pr = &(*frame)->pr;
 	if (set_default((*frame)->cmdblk) < 0)
 		return (-1);
-	pr->len_cmdb = ft_init_exec(frame);
+	if (ft_init_exec(frame) < 0)
+		return (0);
 	if (pr->len_cmdb - 1 == 0)
 	{
 		code = exec_builtin_single((*frame)->cmdblk, frame);
