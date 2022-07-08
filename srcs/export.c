@@ -96,11 +96,7 @@ int	ft_export(t_data **frame, t_cmdblock *cmdblock)
 
 	i = 1;
 	if (!cmdblock->cmd[1])
-	{
-		int ret;
-		ret = ft_print_export((*frame)->std_fd, (*frame)->envp, (*frame)->noeq);
-		return (ret);
-	}
+		return (ft_print_export((*frame)->envp, (*frame)->noeq));
 	while (cmdblock->cmd[i])
 	{
 		var = ft_strdup(cmdblock->cmd[i]);
