@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 11:05:02 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/08 11:05:03 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 13:15:17 by qbornet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char	**opt_create_temp(char **envp, char **noeq, char **temp)
 	}
 	return (temp);
 }
+
 int	opt_export(char *var)
 {
 	if (ft_strchr(var, '-') && !ft_strchr(var, '=') && ft_strlen(var) == 2)
