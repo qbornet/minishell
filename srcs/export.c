@@ -95,22 +95,21 @@ int	ft_export(t_data **frame, t_cmdblock *cmdblock)
 	char		*var;
 
 	i = 1;
+	if (!cmdblock->cmd[1])
+		ft_print_export((*frame)->envp, (*frame)->noeq);
 	while (cmdblock->cmd[i])
 	{
 		var = ft_strdup(cmdblock->cmd[i]);
 		if (!var)
 			return (-1);
-		if (ft_strchr(var, '-') && !ft_strchr(var, '='))
-		{
-			ft_putstr_fd("export: no option for export ", 2);
-			ft_putendl_fd(var, 2);
-			free(var);
+		if (!ft_strchr(var, '=') && ft_checkvar_name(var, frame))
+			add_noeq(frame, var);
+		if (opt_export(var) < 0)
 			return (-1);
-		}
 		if (ft_export_var(var, frame))
 			return (-1);
-		i++;
-		free(var);
+		if (ft_strchr(var, '='))
+			free(var);
 	}
 	return (0);
 }

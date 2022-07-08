@@ -14,13 +14,13 @@ static char	*ft_ret_random(char *pathname, char *bytes_str, int j)
 
 size_t	ft_num_expand(char *str)
 {
-	size_t	i;
+	ssize_t	i;
 	size_t	count;
 
 	i = -1;
 	count = 0;
 	while (str[++i])
-		if (str[i] == '$' && str[i - 1] != '\\')
+		if (str[i] == '$' && (i - 1 == -1 || str[i - 1] != '\\'))
 			count++;
 	return (count);
 }
@@ -86,7 +86,7 @@ char	*do_expand(t_data **d_curr, char *str)
 	char	*new_str;
 	char	*begin_str;
 	char	*end_str;
-	size_t	i;
+	ssize_t	i;
 
 	i = 0;
 	opt_find_dollars(&str, &i);

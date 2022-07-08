@@ -36,17 +36,20 @@ void	opt_free_doexpand(char *str, char *begin_str, char *end_str)
 		free(end_str);
 }
 
-void	opt_find_dollars(char **s_curr, size_t *i)
+void	opt_find_dollars(char **s_curr, ssize_t *i)
 {
 	char	*str;
 
 	str = *s_curr;
 	while (str[*i])
 	{
-		if (str[*i] == '$' && str[*i - 1] == '\\')
+		if (*i - 1 != -1)
 		{
-			str = ft_remove(str, *i);
-			continue ;
+			if (str[*i] == '$' && str[*i - 1] == '\\')
+			{
+				str = ft_remove(str, *i);
+				continue ;
+			}
 		}
 		else if (str[*i] == '$')
 			break ;

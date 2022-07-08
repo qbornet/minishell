@@ -109,6 +109,8 @@ PIPE = pipe.c \
 	env.c \
 	exit.c \
 	underscore.c \
+	ft_print_export.c \
+	opt_export.c \
 	error_tools.c
 
 

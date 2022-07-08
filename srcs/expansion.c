@@ -88,6 +88,18 @@ static int	ft_search_expansion(t_data **d_curr)
 	return (0);
 }
 
+void	print_strlst(t_strlist *strlst)
+{
+
+	printf("strlst: ");
+	while (strlst)
+	{
+		printf("%s:%d->", (char *)strlst->data, strlst->s_id);
+		strlst = strlst->next;
+	}
+	printf("NULL\n");
+}
+
 int	start_expansion(t_data **d_curr)
 {
 	if (ft_search_expansion(d_curr) < 0)
@@ -103,22 +115,18 @@ int	start_expansion(t_data **d_curr)
 		return (ft_free_expan_error(d_curr));
 	if (command_block(d_curr) < 0)
 		return (ft_free_expan_error(d_curr));
+#ifdef DEBUG
+	print_strlst((*d_curr)->strlst);
+	for (int i = 0; (*d_curr)->cmd_pool[i]; i++)
+	{
+		printf("cmd_pool[%d]:\n", i);
+		for (int j = 0; (*d_curr)->cmd_pool[i][j]; j++)
+			printf("%s\n", (*d_curr)->cmd_pool[i][j]);
+	}
+#endif
 	return (0);
 }
 
-/*
-void	print_strlst(t_strlist *strlst)
-{
-
-	printf("strlst: ");
-	while (strlst)
-	{
-		printf("%s:%d->", (char *)strlst->data, strlst->s_id);
-		strlst = strlst->next;
-	}
-	printf("NULL\n");
-}
-*/
 /*
 char	**ft_dup_envp(char **envp)
 {

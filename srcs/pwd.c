@@ -11,10 +11,11 @@ static int	opt_pwd(t_cmdblock *cmdblk)
 		var = ft_strdup(cmdblk->cmd[i]);
 		if (!var)
 			return (-1);
-		if (ft_strchr(var, '-'))
+		if (ft_strchr(var, '-') && ft_strlen(var) == 2)
 		{
 			err_msg(var, ft_strlen(var), E_INV_OPT); 
 			free(var);
+			g_exit_status = 2;
 			return (-1);
 		}
 		i++;
