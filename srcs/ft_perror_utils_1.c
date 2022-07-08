@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:47:10 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/08 11:15:34 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 11:43:39 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,14 @@ char	*error_1(const int status)
 	g_exit_status = 1;
 	if (status == E_TOO_MARGS)
 		return ("too many arguments\n");
+	if (status == E_IS_DIR_1)
+		return ("Is a directory\n");
+	if (status == E_NOT_DIR_1)
+		return ("Not a directory\n");
+	if (status == E_DENIED_1)
+		return ("Permission denied\n");
+	if (status == E_NOT_EXIST_1)
+		return ("No such file or directory\n");
 	return (NULL);
 }
 
