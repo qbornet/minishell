@@ -35,8 +35,11 @@ int	ft_pwd(t_cmdblock *cmdblk)
 	if (cwd)
 	{
 		if (write(1, cwd, ft_strlen(cwd)) < 0)
+		{
+			free(cwd);
 			return (-1);
-		if (write(1, "\n", 1) < 0)
+		}
+		write(1, "\n", 1);
 		free(cwd);
 		return (0);
 	}

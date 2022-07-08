@@ -39,10 +39,7 @@ int	ft_cd(const t_cmdblock *cmdblock, char **envp)
 	if (!cmdblock->cmd[1] && home)
 	{
 		if (chdir_home(home) < 0)
-		{
-			free(home);
 			return (-1);
-		}
 		return (0);
 	}
 	free(home);
