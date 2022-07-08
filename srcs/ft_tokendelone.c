@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <minishell.h>
 
 void	ft_tokendelone(t_tokenlist *lst, void (*del)(void *))
 {

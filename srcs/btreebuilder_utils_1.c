@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <minishell.h>
 
 void	ft_word_or_brace(t_btree **leaf, t_btree **root)
 {

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <minishell.h>
 
 static int	open_first(int **pipes, t_cmdblock *cmdblock, int i)
 {

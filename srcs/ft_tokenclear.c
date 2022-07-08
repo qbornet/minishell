@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <minishell.h>
 
 void	ft_tokenclear(t_tokenlist **lst, void (*del)(void *))
 {

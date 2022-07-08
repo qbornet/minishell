@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <minishell.h>
 
 t_cmdblock	*next_cmdb(int i, t_cmdblock **curr)
 {

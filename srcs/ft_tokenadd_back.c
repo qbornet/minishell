@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <minishell.h>
 
 void	ft_tokenadd_back(t_tokenlist **alst, t_tokenlist *new)
 {
