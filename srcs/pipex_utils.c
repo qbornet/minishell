@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 16:46:50 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 07:25:32 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 14:00:52 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,23 @@ int	dup_stdinout(t_termstd *std_fd)
 int	dup_in(int new_in)
 {
 	if (dup2(new_in, STDIN_FILENO) == -1)
-		return (standard_error("dup_inout in"));
+		return (-1);
 	return (0);
 }
 
 int	dup_out(int new_out)
 {
 	if (dup2(new_out, STDOUT_FILENO) == -1)
-		return (standard_error("dup_inout out"));
+		return (-1);
 	return (0);
 }
 
 int	close_pipe(int *pd)
 {
 	if (close(pd[0]) == -1)
-		return (standard_error("close_pipe pid[0]"));
+		return (-1);
 	if (close(pd[1]) == -1)
-		return (standard_error("close_pipe pid[1]"));
+		return (-1);
 	return (0);
 }
 

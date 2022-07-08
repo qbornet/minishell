@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:28:40 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 11:28:41 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 14:00:06 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_redirection_less(char *infile)
 	if (dup_in(fd) == -1)
 		return (-1);
 	if (close(fd) == -1)
-		return (standard_error("pipe_in close fd"));
+		return (-1);
 	return (0);
 }
 
@@ -47,7 +47,7 @@ int	ft_redirection_great(char *outfile)
 	if (dup_out(fd) == -1)
 		return (-1);
 	if (close(fd) == -1)
-		return (standard_error("pipe_out fd"));
+		return (-1);
 	return (0);
 }
 
@@ -67,7 +67,7 @@ int	ft_redirection_dgreat(char *outfile)
 	if (dup_out(fd) == -1)
 		return (-1);
 	if (close(fd) == -1)
-		return (standard_error("pipe_out fd"));
+		return (-1);
 	return (0);
 }
 
@@ -76,7 +76,7 @@ int	ft_redirection_pipe_out(int *pd, int pid)
 	if (dup_out(pd[pid]) == -1)
 		return (-1);
 	if (close_pipe(pd) == -1)
-		return (standard_error("pipe_out close pd"));
+		return (-1);
 	return (0);
 }
 
@@ -85,6 +85,6 @@ int	ft_redirection_pipe_in(int *pd, int pid)
 	if (dup_in(pd[pid]) == -1)
 		return (-1);
 	if (close_pipe(pd) == -1)
-		return (standard_error("pipe_in close pd"));
+		return (-1);
 	return (0);
 }

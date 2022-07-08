@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:29:39 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/06/25 11:29:40 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 13:46:27 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,9 @@ int	ft_strcmp_here(char *s1, char *s2)
 	size_t	i;
 
 	i = 0;
-	if (!s1)
+	if (s2 && s2[0] == 0)
+		return (0);
+	if (!s1 || !s2)
 	{
 		if (g_exit_status != 130)
 			ft_putstr_fd("warning: read eof", 2);

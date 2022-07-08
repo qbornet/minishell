@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 21:21:18 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 07:16:00 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 13:59:10 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,25 +28,4 @@ int	ft_unlink_tmpfiles(t_cmdblock *cmdblock)
 		cmdblock = cmdblock->next;
 	}
 	return (0);
-}
-
-int	standard_error(char *str)
-{
-	perror(str);
-	return (-1);
-}
-
-int	main_error(char *str)
-{
-	perror(str);
-	return (1);
-}
-
-int	error(char *str)
-{
-	if (errno)
-		return (main_error(str));
-	else
-		return (ft_putendl_fd(str, 2));
-	return (2);
 }
