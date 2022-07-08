@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 12:54:12 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/08 13:35:30 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 14:56:58 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # include <readline/history.h>
 
 # define BIN_NAME "start"
-# define DFL_HOME "/"
+# define DFL_HOME "/mnt/nfs/homes/jfrancai"
 # define OPEN_MAX 1024
 # define DEFAULT_PATH "PATH=/usr/local/bin:/usr/bin:/bin"
 # define HEREDOC_PROMPT "\1\e[1;38;5;11m\2?>\1\e[0m\2 "
