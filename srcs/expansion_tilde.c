@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:55:27 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 12:05:20 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 17:55:08 by qbornet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,19 +70,11 @@ static char	*ft_add_homes(char **str_curr, char **envp)
 	return (str);
 }
 
-static int	ft_findquotes(char *str)
-{
-	if (str && (str[0] == '\'' || str[0] == '\"'))
-		return (1);
-	return (0);
-}
-
 int	ft_do_tilde(t_data **d_curr)
 {
 	t_data		*frame;
 	t_strlist	*strlst;
 	char		*str;
-	char		*ret;
 
 	frame = *d_curr;
 	strlst = frame->strlst;
@@ -91,11 +83,7 @@ int	ft_do_tilde(t_data **d_curr)
 		str = strlst->data;
 		if (!str || !*str)
 			return (0);
-		ret = ft_strchr(str, '~');
-		if (!ret)
-			return (0);
-		else if (!*(ret + 1) || (ft_isalnum(*(ret + 1))
-				&& !ft_isalnum(*(ret - 1)) && !ft_findquotes(str)))
+		if ((str[0] == '~' && str[1] == '/') || str[0] == '~')
 		{
 			strlst->data = ft_add_homes(&str, (*d_curr)->envp);
 			if (!strlst->data)
