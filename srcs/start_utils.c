@@ -36,6 +36,7 @@ void	ft_free_all(t_data **d_curr)
 	ft_free_cpool(frame->cmd_pool);
 	ft_free_vpool(frame->var_pool);
 	ft_free_envp(frame->envp);
+	ft_free_envp(frame->noeq);
 	free(frame->std_fd);
 	free(frame);
 	close_allfd();

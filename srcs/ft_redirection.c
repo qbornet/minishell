@@ -17,6 +17,9 @@ int	ft_redirection_less(char *infile)
 	int		fd;
 
 	ft_removes_quotes(&infile);
+	if (!access(infile, F_OK) && (access(infile, F_OK) < 0
+			|| access(infile, R_OK) < 0))
+		return (ft_perror_ret(infile, E_DENIED_1, -1));
 	fd = open(infile, O_RDONLY);
 	if (fd == -1)
 		return (ft_perror_ret(infile, E_NOT_EXIST, -1));
@@ -29,11 +32,16 @@ int	ft_redirection_less(char *infile)
 
 int	ft_redirection_great(char *outfile)
 {
-	int		fd;
+	int			fd;
 
 	ft_removes_quotes(&outfile);
+	if (!is_file(outfile) && is_dir(outfile))
+		return (ft_perror_ret(outfile, E_IS_DIR_1, -1));
+	if (!access(outfile, F_OK) && (access(outfile, F_OK) < 0
+			|| access(outfile, W_OK) < 0))
+		return (ft_perror_ret(outfile, E_DENIED_1, -1));
 	unlink(outfile);
-	fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0664);
 	if (fd == -1)
 		return (ft_perror_ret(outfile, E_NOT_EXIST, -1));
 	if (dup_out(fd) == -1)
@@ -48,7 +56,12 @@ int	ft_redirection_dgreat(char *outfile)
 	int		fd;
 
 	ft_removes_quotes(&outfile);
-	fd = open(outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (!is_file(outfile) && is_dir(outfile))
+		return (ft_perror_ret(outfile, E_IS_DIR_1, -1));
+	if (!access(outfile, F_OK) && (access(outfile, F_OK) < 0
+			|| access(outfile, W_OK) < 0))
+		return (ft_perror_ret(outfile, E_DENIED_1, -1));
+	fd = open(outfile, O_WRONLY | O_CREAT | O_APPEND, 0664);
 	if (fd == -1)
 		return (ft_perror_ret(outfile, E_NOT_EXIST, -1));
 	if (dup_out(fd) == -1)

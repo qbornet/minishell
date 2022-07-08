@@ -13,7 +13,7 @@ UTILS_DIR = utils
 # Utils
 # Faut pas oublier d'enlever le fsan pour checker les exit_codes
 CC = clang
-CFLAGS = -MMD -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -MMD -Wall -Wextra -Werror -g3 #-fsanitize=address
 CPPFLAGS = -I ./$(UTILS_DIR) -I ./libft/utils
 LDFLAGS = -L ./libft
 RM = rm -rf
@@ -27,9 +27,10 @@ SRCS = 	env_utils.c \
 	sig.c \
 	exit_free.c \
 	start_prompt.c \
-	start.c \
 	start_utils.c \
-	main.c
+	io_tools.c \
+	main.c \
+	start.c 
 
 # Tools
 TOOLS = ft_tokenadd_back.c \
@@ -114,6 +115,8 @@ PIPE = pipe.c \
 	env.c \
 	exit.c \
 	underscore.c \
+	ft_print_export.c \
+	opt_export.c \
 	error_tools.c
 
 

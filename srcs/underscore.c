@@ -63,8 +63,11 @@ int	underscore(t_data **frame, t_process *pr)
 	cmdblock = (*frame)->cmdblk;
 	while (++i < pr->len_cmdb)
 	{
-		if (underscore_match(cmdblock, frame) < 0)
-			return (0);
+		if (!check_builtin(cmdblock))
+		{
+			if (underscore_match(cmdblock, frame) < 0)
+				return (0);
+		}
 		cmdblock = cmdblock->next;
 	}
 	return (0);

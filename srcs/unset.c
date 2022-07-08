@@ -12,9 +12,22 @@
 
 #include <minishell.h>
 
+static int	ft_isvalid_varname(char *var)
+{
+	size_t	i;
+
+	i = -1;
+	if (var[0] == '\0' || ft_isdigit(var[0]))
+		return (0);
+	while (var[++i])
+		if (!(ft_isalnum(var[i]) || var[i] == '_'))
+			return (0);
+	return (1);
+}
+
 static long	index_match(char *var, char **envp)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (envp[i])
@@ -45,14 +58,20 @@ static int	ft_unset_var(t_data **d_curr, char *var)
 	long	index_envp;
 	long	index_vpool;
 
-	if (!*var)
+	if (!ft_isvalid_varname(var))
+	{
+		ft_putstr_fd("minishell: unset: '", 2);
+		ft_putstr_fd(var, 2);
+		ft_putstr_fd("' : not a valid indentifier\n", 2);
+		g_exit_status = 1;
 		return (0);
+	}
 	index_envp = index_match(var, (*d_curr)->envp);
 	index_vpool = index_match_vpool(var, (*d_curr)->var_pool);
 	if (ft_recreate_envp(&(*d_curr)->envp, index_envp) < 0)
-		return (1);
+		return (-1);
 	if (ft_recreate_vpool(&(*d_curr)->var_pool, index_vpool) < 0)
-		return (1);
+		return (-1);
 	return (0);
 }
 
@@ -67,14 +86,15 @@ int	ft_unset(t_data **frame, t_cmdblock *cmdblock)
 		var = ft_strdup(cmdblock->cmd[i]);
 		if (!var)
 			return (-1);
-		if (ft_strchr(var, '-'))
+		if (ft_strchr(var, '-') && ft_strlen(var) == 2)
 		{
 			ft_putstr_fd("unset: no option for unset ", 2);
 			ft_putendl_fd(var, 2);
 			free(var);
-			return (1);
+			g_exit_status = 2;
+			return (-1);
 		}
-		if (ft_unset_var(frame, cmdblock->cmd[i]))
+		if (ft_unset_var(frame, cmdblock->cmd[i]) < 0)
 			return (-1);
 		i++;
 		free(var);

@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:47:10 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 11:49:10 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 11:15:34 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*error_126(const int status)
 {
 	g_exit_status = 126;
-	if (status == E_IS_DIR)
+	if (status == E_IS_DIR_126)
 		return ("Is a directory\n");
 	if (status == E_DENIED)
 		return ("Permission denied\n");

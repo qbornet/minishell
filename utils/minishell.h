@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 12:54:12 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/08 09:32:35 by qbornet          ###   ########.fr       */
+/*   Updated: 2022/07/08 11:11:23 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct t_list	t_garbage;
 
 typedef enum e_error
 {
-	E_IS_DIR = 400,
+	E_IS_DIR_126= 400,
 	E_DENIED,
 	E_NOT_FOUND = 410,
 	E_NOT_EXIST,
@@ -56,6 +56,10 @@ typedef enum e_error
 	E_SYNTAX,
 	E_INV_OPT,
 	E_TOO_MARGS = 430,
+	E_IS_DIR_1,
+	E_NOT_DIR_1,
+	E_DENIED_1,
+	E_NOT_EXIST_1,
 }	t_error;
 
 enum e_token
@@ -385,6 +389,7 @@ int			get_cmd_tab(t_cmdblock *cmdblock, char **env);
 int			exec(t_data **frame, t_cmdblock *cmdblock);
 
 /* Builtin exec */
+int			check_builtin(t_cmdblock *cmdblock);
 int			is_builtin(t_cmdblock *cmdblock, t_data **frame);
 int			exec_builtin_single(t_cmdblock *cmdblock, t_data **frame);
 
@@ -446,6 +451,11 @@ char		*error_126(const int status);
 char		*error_127(const int status);
 char		*error_1(const int status);
 char		*error_2(const int status);
+
+/* IO tools */
+int			is_file(const char *path);
+int			is_dir(const char *path);
+int			is_dirfile(const char *path);
 
 extern int				g_exit_status;
 #endif

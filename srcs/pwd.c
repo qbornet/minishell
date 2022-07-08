@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:30:06 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 08:01:48 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 11:01:05 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@ static int	opt_pwd(t_cmdblock *cmdblk)
 		var = ft_strdup(cmdblk->cmd[i]);
 		if (!var)
 			return (-1);
-		if (ft_strchr(var, '-'))
+		if (ft_strchr(var, '-') && ft_strlen(var) == 2)
 		{
 			err_msg(var, ft_strlen(var), E_INV_OPT);
 			free(var);
+			g_exit_status = 2;
 			return (-1);
 		}
 		i++;
@@ -52,7 +53,6 @@ int	ft_pwd(t_cmdblock *cmdblk)
 		return (-1);
 	}
 	free(cwd);
-	if (write(1, "\n", 1) < 0)
-		return (-1);
+	write(1, "\n", 1);
 	return (0);
 }

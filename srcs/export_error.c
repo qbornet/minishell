@@ -30,7 +30,7 @@ static int	ft_checkalnum(char *var)
 	sub = ft_substr(var, 0, i);
 	if (!sub)
 		return (-1);
-	else if (!sub[0])
+	else if (!sub[0] || ft_isdigit(sub[0]))
 	{
 		free(sub);
 		return (0);
@@ -73,9 +73,10 @@ int	ft_checkvar_name(char *var, t_data **d_curr)
 
 int	ft_printerror(char *var)
 {
-	ft_putstr_fd("minishell: export: ", 2);
+	ft_putstr_fd("minishell: export: '", 2);
 	ft_putstr_fd(var, 2);
-	ft_putstr_fd(" : not a valid indentifier\n", 2);
+	ft_putstr_fd("' : not a valid indentifier\n", 2);
 	free(var);
+	g_exit_status = 1;
 	return (1);
 }

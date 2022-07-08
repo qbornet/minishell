@@ -12,6 +12,27 @@
 
 #include "minishell.h"
 
+int	check_builtin(t_cmdblock *cmdblock)
+{
+	if (!cmdblock->cmd || !cmdblock->cmd[0])
+		return (0);
+	if (!ft_strcmp("echo", cmdblock->cmd[0]))
+		return (1);
+	if (!ft_strcmp("cd", cmdblock->cmd[0]))
+		return (1);
+	if (!ft_strcmp("pwd", cmdblock->cmd[0]))
+		return (1);
+	if (!ft_strcmp("export", cmdblock->cmd[0]))
+		return (1);
+	if (!ft_strcmp("unset", cmdblock->cmd[0]))
+		return (1);
+	if (!ft_strcmp("env", cmdblock->cmd[0]))
+		return (1);
+	if (!ft_strcmp("exit", cmdblock->cmd[0]))
+		return (1);
+	return (0);
+}
+
 int	is_builtin(t_cmdblock *cmdblock, t_data **frame)
 {
 	if (!cmdblock->cmd || !cmdblock->cmd[0])
