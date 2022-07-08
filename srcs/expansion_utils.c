@@ -47,7 +47,8 @@ int	ft_do_starexp(t_data **d_curr)
 			flag = 2;
 		if (!flag && strlst->data)
 		{
-			strlst = starexp(&strlst, (*d_curr), &i);
+			if (ft_strchr(strlst->data, '*'))
+				strlst = starexp(&strlst, (*d_curr), &i);
 			if (!strlst)
 				return (-1);
 		}
@@ -78,23 +79,6 @@ void	ft_do_varexp(t_data **d_curr)
 			flag = 2;
 		if ((flag == 1 || !flag) && strlst->data)
 			expand(strlst, &frame, flag);
-		/*
-		if (strlst->data && !((char *)(strlst->data))[0])
-		{
-			free(strlst->data);
-			if (strlst->next)
-				strlst->next->prev = strlst->prev;
-			if (strlst->prev)
-				strlst->prev->next = strlst->next;
-			tmp = strlst;
-			strlst = strlst->next;
-			free(tmp);
-			if (!strlst || !strlst->prev)
-				frame->strlst = strlst;
-		}
-		else
-			strlst = strlst->next;
-		*/
 		strlst = strlst->next;
 	}
 	*d_curr = frame;

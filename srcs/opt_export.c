@@ -1,41 +1,5 @@
 #include <minishell.h>
 
-static char	**free_temp(char **temp)
-{
-	size_t	i;
-
-	i = -1;
-	while (temp[++i])
-		free(temp[i]);
-	free(temp);
-	return (NULL);
-}
-
-char	**opt_create_temp(char **envp, char **noeq, char **temp)
-{
-	size_t	i;
-	size_t	index_envp;
-	size_t	index_noeq;
-
-	i = 0;
-	index_envp = -1;
-	index_noeq = -1;
-	while (envp && envp[++index_envp])
-	{
-		temp[i] = ft_strdup(envp[index_envp]);
-		if (!temp[i])
-			return (free_temp(temp));
-		i++;
-	}
-	while (noeq && noeq[++index_noeq])
-	{
-		temp[i] = ft_strdup(noeq[index_noeq]);
-		if (!temp[i])
-			return (free_temp(temp));
-		i++;
-	}
-	return (temp);
-}
 int	opt_export(char *var)
 {
 	if (ft_strchr(var, '-') && !ft_strchr(var, '=') && ft_strlen(var) == 2)
