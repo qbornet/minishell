@@ -52,7 +52,7 @@ static int	replace_env(char *var, char ***env_curr)
 
 	start = index_match(var, *env_curr);
 	if (start < 0)
-		return (1);
+		return (-1);
 	envp = *env_curr;
 	free(envp[start]);
 	envp[start] = ft_strdup(var);

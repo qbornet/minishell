@@ -363,6 +363,7 @@ int			get_cmd_tab(t_cmdblock *cmdblock, char **env);
 int			exec(t_data **frame, t_cmdblock *cmdblock);
 
 /* Builtin exec */
+int			check_builtin(t_cmdblock *cmdblock);
 int			is_builtin(t_cmdblock *cmdblock, t_data **frame);
 int			exec_builtin_single(t_cmdblock *cmdblock, t_data **frame);
 
