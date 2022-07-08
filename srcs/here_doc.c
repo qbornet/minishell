@@ -86,7 +86,7 @@ static char	*ft_strendl(char *str)
 static char	*opt_here_doc(t_data **d_curr, char *str, int flag)
 {
 	int		to_do;
-	size_t	i;
+	ssize_t	i;
 
 	i = 0;
 	if (flag)
