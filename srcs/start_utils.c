@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:31:03 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 12:08:42 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 15:09:07 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,10 @@ static ssize_t	ft_findshlvl(char **envp)
 
 void	ft_free_all(t_data **d_curr)
 {
+	size_t	i;
 	t_data	*frame;
 
+	i = -1;
 	frame = *d_curr;
 	ft_lenclear(&frame->lenlst);
 	ft_strclear(&frame->strlst, &free);
@@ -36,7 +38,8 @@ void	ft_free_all(t_data **d_curr)
 	ft_free_cpool(frame->cmd_pool);
 	ft_free_vpool(frame->var_pool);
 	ft_free_envp(frame->envp);
-	ft_free_envp(frame->noeq);
+	while (frame->noeq && frame->noeq[++i])
+		free(frame->noeq[i]);
 	free(frame->std_fd);
 	free(frame);
 	close_allfd();

@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:28:07 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 11:52:40 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 15:05:40 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ int	ft_printerror(char *var)
 	ft_putstr_fd("minishell: export: '", 2);
 	ft_putstr_fd(var, 2);
 	ft_putstr_fd("' : not a valid indentifier\n", 2);
-	free(var);
 	g_exit_status = 1;
 	return (1);
 }
