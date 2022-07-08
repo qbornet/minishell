@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 12:54:12 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/08 11:11:23 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 13:35:30 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -373,6 +373,7 @@ int			ft_env(t_cmdblock *cmdblk, char **envp);
 void		ft_exit(t_data **d_curr);
 int			print_error(t_error code);
 char		*search_varpool(char *var, char **var_pool);
+char		**opt_create_temp(char **envp, char **neoq, char **temp);
 
 /* UNDERSCORE_H */
 int			underscore(t_data **frame, t_process *pr);

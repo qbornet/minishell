@@ -6,7 +6,7 @@
 /*   By: jfrancai <jfrancai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:28:03 by jfrancai          #+#    #+#             */
-/*   Updated: 2022/07/07 11:53:59 by jfrancai         ###   ########.fr       */
+/*   Updated: 2022/07/08 13:39:58 by jfrancai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,15 @@ int	ft_do_starexp(t_data **d_curr)
 	t_strlist		*strlst;
 	unsigned int	i;
 
-	str = "";
 	strlst = (*d_curr)->strlst;
 	while (strlst)
 	{
 		flag = 0;
 		if (strlst->data)
 			str = strlst->data;
-		if (str[0] == '\"')
+		if (str && str[0] == '\"')
 			flag = 1;
-		else if (str[0] == '\'')
+		else if (str && str[0] == '\'')
 			flag = 2;
 		if (!flag && strlst->data)
 		{
